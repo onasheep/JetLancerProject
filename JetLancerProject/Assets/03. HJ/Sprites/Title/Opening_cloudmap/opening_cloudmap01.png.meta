@@ -127,7 +127,133 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: opening_cloudmap01_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 813
+        width: 1024
+        height: 198
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 761ea219b742c5944b28967a00dc0b57
+      internalID: -1241511964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: opening_cloudmap01_1
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 1003
+        width: 14
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e57d12258d23d8a47a82629ac0ec3f83
+      internalID: 1235648801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: opening_cloudmap01_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 604
+        width: 1024
+        height: 200
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a03b90b69a16d2f41b8123879cfe71f2
+      internalID: -507690929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: opening_cloudmap01_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 392
+        width: 1024
+        height: 207
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9791068c5b7c454abfb42ef52ecdabc
+      internalID: -598440484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: opening_cloudmap01_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 195
+        width: 1024
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 217e18bd0be623d44ae0c9eccd7c33bd
+      internalID: 1563597666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: opening_cloudmap01_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1024
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c86a3a03cb7d0044885d549c63725d2a
+      internalID: -716088642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -138,7 +264,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      opening_cloudmap01_0: -1241511964
+      opening_cloudmap01_1: 1235648801
+      opening_cloudmap01_2: -507690929
+      opening_cloudmap01_3: -598440484
+      opening_cloudmap01_4: 1563597666
+      opening_cloudmap01_5: -716088642
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
