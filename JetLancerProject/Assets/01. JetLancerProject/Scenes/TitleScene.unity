@@ -666,7 +666,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1093150107}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.2, z: 0}
+  m_LocalPosition: {x: 0, y: -3.89, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -686,11 +686,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cloudPrefab:
-  - {fileID: 4473094521528683854, guid: 146c2b420c8bfb24fa9e0d9d590b545c, type: 3}
   - {fileID: 3216243698747390906, guid: 64e4117ee08640f4084caf1e3f02620a, type: 3}
-  - {fileID: 5971646825809554966, guid: 8d6bcb3520fbddf4983d32fc909ee84d, type: 3}
   - {fileID: 2919160297481130184, guid: 6233a12a783719b4da5fd9f45dab468a, type: 3}
+  - {fileID: 5971646825809554966, guid: 8d6bcb3520fbddf4983d32fc909ee84d, type: 3}
   - {fileID: 1960593192147904615, guid: 1684425e4dad8984aaff0d3e30099943, type: 3}
+  - {fileID: 4473094521528683854, guid: 146c2b420c8bfb24fa9e0d9d590b545c, type: 3}
   cloudPos: {fileID: 1093150108}
 --- !u!1 &1292485898
 GameObject:
