@@ -1,48 +1,70 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
 public class buttonMove : MonoBehaviour
 {
-    public Text[] buttonText; 
-    public Transform btnSprite; // 버튼 스프라이트 입니다
-    private int btnChoice; //버튼이 위치하는 값을 의미합니다.
-    void Start()
+    public Text[] buttonText;
+    public Transform btnSprite;
+    private int btnChoice;
+    public AudioSource soundEffect;
+    public AudioSource enterSoundEffect;
+
+    private void Start()
     {
         btnChoice = 0;
-        Vector3 destination = buttonText[btnChoice].transform.position;
-        btnSprite.transform.position = Vector3.MoveTowards(btnSprite.transform.position, destination, 1);
+        UpdateButtonPosition();
     }
 
-
-    void Update()
+    private void Update()
     {
-        Vector3 destination = buttonText[btnChoice].transform.position;
+        // 아래 두 함수를 호출하여 각각 S와 W 키 입력을 처리합니다.
+        HandleButtonInput(KeyCode.S, 1); // S 키를 눌렀을 때 버튼 선택을 1 증가시킵니다.
+        HandleButtonInput(KeyCode.W, -1); // W 키를 눌렀을 때 버튼 선택을 1 감소시킵니다.
 
-        if (Input.GetKeyDown(KeyCode.S)  && btnChoice >= 0 && btnChoice < 2)
+        // Enter 키 입력을 처리합니다.
+        if (Input.GetKeyDown(KeyCode.Return))
+            ProcessEnterKey();
+    }
+
+    // 버튼 입력 처리 함수
+    private void HandleButtonInput(KeyCode key, int change)
+    {
+        // key에 해당하는 키가 눌렸으며, 변경된 버튼 선택이 유효한 범위 내에 있을 경우 실행됩니다.
+        if (Input.GetKeyDown(key) && btnChoice + change >= 0 && btnChoice + change < buttonText.Length)
         {
-            btnChoice += 1;
-            destination = buttonText[btnChoice].transform.position;
-            btnSprite.transform.position = Vector3.MoveTowards(btnSprite.transform.position, destination, 1);
-            //Debug.Log(btnChoice);
+            btnChoice += change; // 버튼 선택을 변경합니다.
+            UpdateButtonPosition(); // 버튼 스프라이트 위치를 업데이트합니다.
+            PlaySoundEffect(soundEffect); // 효과음을 재생합니다.
         }
-        if (Input.GetKeyDown(KeyCode.W)  && btnChoice <= 2&& btnChoice >0)
+    }
+
+    // 버튼 스프라이트 위치를 업데이트하는 함수
+    private void UpdateButtonPosition()
+    {
+        btnSprite.transform.position = Vector3.MoveTowards(btnSprite.transform.position, buttonText[btnChoice].transform.position, 1);
+    }
+
+    // Enter 키를 처리하는 함수
+    private void ProcessEnterKey()
+    {
+        if (btnChoice == 0)
         {
-            btnChoice -= 1;
-            destination = buttonText[btnChoice].transform.position;
-            btnSprite.transform.position = Vector3.MoveTowards(btnSprite.transform.position, destination, 1);
-            //Debug.Log(btnChoice);
+            PlaySoundEffect(enterSoundEffect); // Enter 효과음을 재생합니다.
+            // TODO: 캐릭터 선택씬 생성시 이곳에 넣어놔야합니다.
+            // SceneManager.LoadScene("CharacterSelect");
         }
-        if (Input.GetKeyDown(KeyCode.Return)  && btnChoice == 0)
+        else if (btnChoice == 2)
         {
-            //Todo 캐릭터 선택씬 생성시 이곳에 넣어놔야합니다.
-            //SceneManager.LoadScene("CharacterSelect"); 
+            UnityEditor.EditorApplication.isPlaying = false; // 플레이 모드 종료
+            // Application.Quit(); // 어플 종료
         }
-        else if (Input.GetKeyDown(KeyCode.Return)  && btnChoice == 2)
-        {
-            UnityEditor.EditorApplication.isPlaying = false; //플레이 모드 종료합니다 Todo 밑에 교체해야합니다.
-            //	Application.Quit(); //어플 종료 넣어야합니다
-        }
+    }
+
+    // 효과음을 재생하는 함수
+    private void PlaySoundEffect(AudioSource audioSource)
+    {
+        if (audioSource != null)
+            audioSource.Play();
     }
 }
