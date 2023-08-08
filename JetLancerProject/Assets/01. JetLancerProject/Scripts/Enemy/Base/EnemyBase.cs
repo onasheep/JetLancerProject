@@ -23,7 +23,6 @@ public abstract class EnemyBase : MonoBehaviour
 
     protected float bulletTimer = 0f;
     protected float fireTime = 3f;
-
     // Enemy 정보}
 
     // {Enemy 공격시 탐지 범위 및 각도
@@ -31,6 +30,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected float detectRadius = 6f;
     protected float distToTarget = default;
     protected Vector2 dirToTarget = default;
+    protected Vector2 dirToShoot = default;
     protected Transform targetPos = default;
     protected float targetAngle = default; 
     // Enemy 공격시 탐지 범위 및 각도}
@@ -65,6 +65,7 @@ public abstract class EnemyBase : MonoBehaviour
 
     private void DefaultMove()
     {
+        // LEGACY :
         // 없어도 움직이는지 테스트
         //// { 타겟, 거리, 방향 정보값, 발사에 필요한 정보가 담겨 있으므로, 위치가 변경 될 수 있음
         //Transform targetPos = target.transform;
@@ -93,5 +94,5 @@ public abstract class EnemyBase : MonoBehaviour
             // TODO : 탄환 발사 혹은 회피기동 구현하기
 
         }       // else : 일정 거리 내에 들어갓을 때 할 행동   
-    }
+    }       // DefaultMove()
 }

@@ -32,7 +32,7 @@ public class BigBulletEnemy : EnemyBase, IDamageable
     // 해당 초기화 값은 임시값 
     protected override void Init()
     {
-        Type = TYPE.GOLD;
+        Type = TYPE.HOMING;
         hp = 30;
         damage = 1;
         speed = 5f;
@@ -91,8 +91,13 @@ public class BigBulletEnemy : EnemyBase, IDamageable
         }       // if : 감지 범위안에 들어오면 탄환 발사
         else { /* Do noting */ }
         
+    }
+
+    public void FireMissile()
+    {
 
     }
+
 
     protected override void SetTarget()
     {

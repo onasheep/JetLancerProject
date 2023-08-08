@@ -32,7 +32,7 @@ public class HomingEnemy : EnemyBase, IDamageable
     // 해당 초기화 값은 임시값 
     protected override void Init()
     {
-        Type = TYPE.GOLD;
+        Type = TYPE.BIGBULLET;
         hp = 30;
         damage = 1;
         speed = 5f;
