@@ -24,7 +24,7 @@ public class buttonMove : MonoBehaviour
 
         // Enter 키 입력을 처리합니다.
         if (Input.GetKeyDown(KeyCode.Return))
-            ProcessEnterKey();
+            EnterKey();
     }
 
     // 버튼 입력 처리 함수
@@ -46,13 +46,13 @@ public class buttonMove : MonoBehaviour
     }
 
     // Enter 키를 처리하는 함수
-    private void ProcessEnterKey()
+    private void EnterKey()
     {
         if (btnChoice == 0)
         {
             PlaySoundEffect(enterSoundEffect); // Enter 효과음을 재생합니다.
-            // TODO: 캐릭터 선택씬 생성시 이곳에 넣어놔야합니다.
-            // SceneManager.LoadScene("CharacterSelect");
+           
+            SceneManager.LoadScene("CharacterSelect");
         }
         else if (btnChoice == 2)
         {
