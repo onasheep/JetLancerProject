@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class deleteWbottle : MonoBehaviour
+public class deleteBullet : MonoBehaviour
 {
     private float deleteTimer;
     // Start is called before the first frame update
     void Start()
     {
-        deleteTimer = Time.time + 0.5f;
+        deleteTimer = Time.time + 3f;
     }
 
     // Update is called once per frame
@@ -18,5 +18,10 @@ public class deleteWbottle : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Destroy(gameObject);
     }
 }
