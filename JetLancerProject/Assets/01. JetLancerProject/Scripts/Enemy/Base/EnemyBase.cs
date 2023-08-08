@@ -13,7 +13,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected TYPE Type = TYPE.NONE;
     protected UnityAction moveFunc = default;
 
-    // Enemy 정보
+    // {Enemy 정보
     protected int hp = default;
     protected int damage = default;
     protected int score = default;    
@@ -21,9 +21,19 @@ public abstract class EnemyBase : MonoBehaviour
     protected float speed = default;
     protected float maxSpeed = default;
 
-    // Enemy 공격시 탐지 범위 및 각도
-    protected float detectRange = 30f;
+    protected float bulletTimer = 0f;
+    protected float fireTime = 3f;
+
+    // Enemy 정보}
+
+    // {Enemy 공격시 탐지 범위 및 각도
+    protected float detectAngle = 45f;
     protected float detectRadius = 6f;
+    protected float distToTarget = default;
+    protected Vector2 dirToTarget = default;
+    protected Transform targetPos = default;
+    protected float targetAngle = default; 
+    // Enemy 공격시 탐지 범위 및 각도}
 
     protected Rigidbody2D rigid = default;
 
@@ -31,7 +41,9 @@ public abstract class EnemyBase : MonoBehaviour
     protected GameObject target = default;
 
     protected abstract void Init();
-    protected abstract void FindTarget();
+    protected abstract void SetTarget();
+
+    protected abstract void CheckTarget();
 
     // 교수님이 예시용으로 짜주신거
     protected virtual void Move()
@@ -53,12 +65,13 @@ public abstract class EnemyBase : MonoBehaviour
 
     private void DefaultMove()
     {
-        // { 타겟, 거리, 방향 정보값, 발사에 필요한 정보가 담겨 있으므로, 위치가 변경 될 수 있음
-        Transform targetPos = target.transform;
-        float dist = (targetPos.position - this.transform.position).magnitude;
-        Vector2 dir = (targetPos.position - this.transform.position).normalized;
-        float angle = Mathf.Atan(dir.y / dir.x) * Mathf.Rad2Deg;
-        //  타겟, 거리, 방향 정보값, 발사에 필요한 정보가 담겨 있으므로, 위치가 변경 될 수 있음 }
+        // 없어도 움직이는지 테스트
+        //// { 타겟, 거리, 방향 정보값, 발사에 필요한 정보가 담겨 있으므로, 위치가 변경 될 수 있음
+        //Transform targetPos = target.transform;
+        //dist = (targetPos.position - this.transform.position).magnitude;
+        //dir = (targetPos.position - this.transform.position).normalized;
+        //float angle = Mathf.Atan(dir.y / dir.x) * Mathf.Rad2Deg;
+        ////  타겟, 거리, 방향 정보값, 발사에 필요한 정보가 담겨 있으므로, 위치가 변경 될 수 있음 }
 
         if (rigid.velocity.magnitude > maxSpeed)
         {
@@ -66,14 +79,14 @@ public abstract class EnemyBase : MonoBehaviour
         }       // if : 속도가 최대 속도를 넘어가면 최대속도로 고정
 
         // 임시 움직임 제한 거리값 5f 
-        if (dist > 5f)
+        if (distToTarget > 5f)
         {
-            rigid.AddForce(speed * Time.deltaTime * dir, ForceMode2D.Impulse);
-            if (this.transform.position.x > 0 || angle > 180f)
+            rigid.AddForce(speed * Time.deltaTime * dirToTarget, ForceMode2D.Impulse);
+            if (this.transform.position.x > 0 || targetAngle > 180f)
             {
-                angle -= 180f;
+                targetAngle -= 180f;
             }
-            rigid.rotation = Mathf.Lerp(this.transform.rotation.z, angle, 0.5f * Time.time);
+            rigid.rotation = Mathf.Lerp(this.transform.rotation.z, targetAngle, 0.5f * Time.time);
         }       // if : 일정 거리까지 플레이어를 향해 이동
         else
         {
