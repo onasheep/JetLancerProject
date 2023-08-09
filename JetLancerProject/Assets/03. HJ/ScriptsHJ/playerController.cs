@@ -93,13 +93,13 @@ public class playerController : MonoBehaviour
         {
             StartCoroutine(SwitchCollidersCoroutine());
             myAudio.clip = dodgeClip;
-            myAudio.Play();
+            myAudio.PlayOneShot(myAudio.clip);
             isColliderSwitching = true;
             
         }
         myAnimator.SetBool("Dodged", isColliderSwitching);
         //Debug.Log(myRigid.velocity.magnitude);
-        Debug.Log(transform.rotation.z.ToString("F3"));
+        //Debug.Log(transform.rotation.z.ToString("F3"));
     }
 
     private void MoveCharacter()
@@ -163,7 +163,9 @@ public class playerController : MonoBehaviour
             bullet.GetComponent<Rigidbody2D>().AddForce(this.transform.right * bulletSpeed, ForceMode2D.Impulse);
             shooTimer = Time.time + 0.11f;
             myAudio.clip = fireClip;
-            myAudio.Play();
+            myAudio.PlayOneShot(myAudio.clip);
+
+            //myAudio.Play();
         }
     }
     private void LimitVelocity(float maxVelocity)
@@ -191,6 +193,11 @@ public class playerController : MonoBehaviour
         }
 
         isColliderSwitching = false; // 콜라이더 전환 상태 해제
+    }
+
+    private void OnCollisionEnter2D(Collision2D otherCollision)
+    {
+        Debug.Log("접촉함");
     }
 
 }
