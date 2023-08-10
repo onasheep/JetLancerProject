@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class playerController : MonoBehaviour
 {
-    
+
     public float moveSpeed = 5f;
     public float rotationSpeed;
     public Transform wbottlePos;
@@ -15,10 +15,11 @@ public class playerController : MonoBehaviour
     public AudioClip fireClip;
     public Texture2D cursorIcon;
 
+    public float health = 3f;
     public float gas = 100f;
     private float bulletSpeed;
     private float shooTimer;
-   
+
     private Rigidbody2D myRigid;
     private Animator myAnimator;
     private AudioSource myAudio;
@@ -41,7 +42,7 @@ public class playerController : MonoBehaviour
         //isFire = false;
         isDead = false;
         shooTimer = Time.time + 0.1f;
-        
+
 
         bulletSpeed = 20f;
 
@@ -51,10 +52,12 @@ public class playerController : MonoBehaviour
         colliders = GetComponents<Collider2D>();
         myAnimator = GetComponent<Animator>();
         myAudio = GetComponent<AudioSource>();
+
+
     }
     private void FixedUpdate()
     {
-       
+
 
         if (isBoost && gas > 0f)
         {
@@ -71,7 +74,7 @@ public class playerController : MonoBehaviour
         }
 
 
-       
+
         //Debug.Log(gas);
     }
     private void Update()
@@ -87,7 +90,7 @@ public class playerController : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             ShotMinigun();
-            
+
         }
         if (Input.GetMouseButtonDown(1) && !isColliderSwitching)
         {
@@ -95,9 +98,12 @@ public class playerController : MonoBehaviour
             myAudio.clip = dodgeClip;
             myAudio.PlayOneShot(myAudio.clip);
             isColliderSwitching = true;
-            
+
         }
         myAnimator.SetBool("Dodged", isColliderSwitching);
+
+        myAnimator.SetFloat("Rotation", transform.rotation.z);
+
         //Debug.Log(myRigid.velocity.magnitude);
         //Debug.Log(transform.rotation.z.ToString("F3"));
     }
@@ -111,15 +117,31 @@ public class playerController : MonoBehaviour
             Vector3 moveDirection = (mousePosition - transform.position).normalized;
             //transform.position += moveDirection * moveSpeed * Time.deltaTime; //단순히 이동하는
             myRigid.AddForce(moveDirection *moveSpeed * Time.deltaTime, ForceMode2D.Impulse);
+            AliveChild("wBrnEffect");
             MakeCloud();
             LimitVelocity(6f);
-            
         }
-        
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            KillChild("wBrnEffect");
+
+        }
+
         if (Input.GetKey(KeyCode.Space))
         {
             isBoost = true;
             LimitVelocity(10f);
+            MakeCloud();
+
+            AliveChild("downSpaceEffect");
+            AliveChild("keepSpaceEffect");
+
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            KillChild("downSpaceEffect");
+            KillChild("keepSpaceEffect");
+            isBoost = false;
         }
     }
     private void BoostPlayer()
@@ -153,7 +175,7 @@ public class playerController : MonoBehaviour
 
     private void MakeCloud()
     {
-        Instantiate(wPrefab,wbottlePos.position,transform.rotation);
+        Instantiate(wPrefab, wbottlePos.position, transform.rotation);
     }
     private void ShotMinigun()
     {
@@ -198,6 +220,40 @@ public class playerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D otherCollision)
     {
         Debug.Log("접촉함");
+        DecreaseHp(0.5f);
+    }
+
+    private void DecreaseHp(float num)
+    {
+        health -= num;
+    }
+    //===================================================================== 이렇게 쓰는건지 의문
+    private void AliveChild(string child)
+    {
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Transform findChild = transform.GetChild(i);
+
+            if (findChild.name == child)
+            {
+                findChild.gameObject.SetActive(true);
+            }
+        }
+    }
+
+    private void KillChild(string child)
+    {
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Transform findChild = transform.GetChild(i);
+
+            if (findChild.name == child)
+            {
+                findChild.gameObject.SetActive(false);
+            }
+        }
     }
 
 }
