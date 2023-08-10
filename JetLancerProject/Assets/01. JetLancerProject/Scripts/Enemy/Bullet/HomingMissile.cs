@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
+using UnityEngine.UIElements;
 
 public class HomingMissile : MonoBehaviour
 {
@@ -21,8 +23,10 @@ public class HomingMissile : MonoBehaviour
         //dist = (target.position - transform.position).magnitude;
         //dir = target.position - transform.position;
 
-        speed = 10f;
+        // 매직넘버 10 딱 적당한것 같음
+        speed = 5f;
         rigid = GetComponent<Rigidbody2D>();
+        target = FindObjectOfType<playerController>().transform;
         //rigid.AddForce(5f * Time.deltaTime * dir, ForceMode2D.Impulse);
         //StartCoroutine(ChaseTarget(target));
     }
@@ -34,19 +38,25 @@ public class HomingMissile : MonoBehaviour
         dir = target.position - transform.position;
         dir.Normalize();
 
+        // 최대 속도 제한 + 속도가 시간지남에 따라 빨라짐
+        speed *= Time.time;
+        if(speed > 10f)
+        {
+            speed = 10f;
+        }
 
-        //rigid.AddTorque( this.transform.position.z * 100f * 30f,ForceMode2D.Impulse);
-        //else if(Mathf.Approximately)
+    
 
-        //rigid.AddForce(transform.up * Mathf.Cos(Time.time) * 0.1f, ForceMode2D.Impulse);
-        //this.transform.position = new Vector2(0f, Mathf.Sin(Time.time));
+
+
+
 
 
         // angularvelocity를 사용하여 따라가는 로직, 원하는 만큼 회전하며 따라가지만 
         // velocity를 건드린다는 문제가 있음.. 
         // 정 안되면 이 부분으로 가겠지만 , 한번 추가적으로 알아볼 필요가 있다.
         float rotateAmount = Vector3.Cross(dir, transform.right).z;
-        rigid.angularVelocity = -rotateAmount * 200f;
+        rigid.angularVelocity = -rotateAmount * 150f;
         rigid.velocity = transform.right * speed;
 
         // 해당 부분이 동작함 ! 

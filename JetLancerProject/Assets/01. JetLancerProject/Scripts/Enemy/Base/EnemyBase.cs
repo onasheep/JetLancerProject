@@ -22,7 +22,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected float maxSpeed = default;
 
     protected float bulletTimer = 0f;
-    protected float fireTime = 3f;
+    protected float fireTime = 2f;
     // Enemy 정보}
 
     // {Enemy 공격시 탐지 범위 및 각도
@@ -42,7 +42,6 @@ public abstract class EnemyBase : MonoBehaviour
 
     protected abstract void Init();
     protected abstract void SetTarget();
-
     protected abstract void CheckTarget();
 
     // 교수님이 예시용으로 짜주신거
