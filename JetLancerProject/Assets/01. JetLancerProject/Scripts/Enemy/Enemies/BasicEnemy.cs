@@ -37,8 +37,7 @@ public class BasicEnemy : EnemyBase, IDamageable
         damage = 1;
         speed = 5f;
         maxSpeed = 10f;
-        rigid = GetComponent<Rigidbody2D>();
-      
+        rigid = GetComponent<Rigidbody2D>();      
     }
     protected override void Move()
     {
