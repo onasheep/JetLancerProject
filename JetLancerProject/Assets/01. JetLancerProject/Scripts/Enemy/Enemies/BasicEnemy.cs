@@ -37,8 +37,7 @@ public class BasicEnemy : EnemyBase, IDamageable
         damage = 1;
         speed = 5f;
         maxSpeed = 10f;
-        rigid = GetComponent<Rigidbody2D>();
-      
+        rigid = GetComponent<Rigidbody2D>();      
     }
     protected override void Move()
     {
@@ -66,7 +65,6 @@ public class BasicEnemy : EnemyBase, IDamageable
         {
             // 탐지가 되는 동안만 발사 쿨타임이 돌도록 if문 안에 넣어둠
             bulletTimer += Time.deltaTime;
-
 
             Debug.LogFormat("bulletTimer : {0}", bulletTimer);
             // { 타겟과 적의 앞방향을 내적해서 각을 구함
@@ -98,13 +96,13 @@ public class BasicEnemy : EnemyBase, IDamageable
     {
         if (target.IsValid() == false)
         {
-            target = FindObjectOfType<Player>().gameObject;
-            targetPos = target.transform;
+            // TODO : Player 스크립트를 찾아오지만 통합하게 되면 다른 플레이어의 스크립트를 찾아오게 될것
+             target = FindObjectOfType<playerController>().gameObject;
         }       // if : 타겟이 null 이거나 default인 경우 타겟을 가져옴
         else
         {
-            Debug.LogWarning("Target is null.");
-        }       // else : 타겟이 없으면 경고문 출력
+            Debug.LogWarning("Target is already exist.");
+        }       // else : 타겟이 있으면 로그 출력
     }       // SetTarget()
 
     // 플레이어 포지션, 플레이어와의 거리, 방향벡터, 각들을 계산

@@ -4,11 +4,13 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class BigBulletEnemy : EnemyBase, IDamageable
+public class HomingEnemy : EnemyBase, IDamageable
 {
     // 임시 프리팹용 탄환 
     // 추후 리소스 매니저로 관리 할 것
     public GameObject bullet;
+    public GameObject missile;
+
     //
 
     private void Awake()
@@ -25,6 +27,14 @@ public class BigBulletEnemy : EnemyBase, IDamageable
     {
         CheckTarget();
         Move();
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            Debug.Log("tab");
+            FireMissile();
+
+        }
+
         FireBullet();
     }
 
@@ -38,7 +48,7 @@ public class BigBulletEnemy : EnemyBase, IDamageable
         speed = 5f;
         maxSpeed = 10f;
         rigid = GetComponent<Rigidbody2D>();
-      
+
     }
     protected override void Move()
     {
@@ -62,7 +72,7 @@ public class BigBulletEnemy : EnemyBase, IDamageable
         //Debug.DrawLine(this.transform.position, this.transform.position + new Vector3(6f, -1f, 0));
         //
 
-        if(distToTarget < detectRadius)
+        if (distToTarget < detectRadius)
         {
             // 탐지가 되는 동안만 발사 쿨타임이 돌도록 if문 안에 넣어둠
             bulletTimer += Time.deltaTime;
@@ -90,11 +100,14 @@ public class BigBulletEnemy : EnemyBase, IDamageable
 
         }       // if : 감지 범위안에 들어오면 탄환 발사
         else { /* Do noting */ }
-        
+
     }
 
     public void FireMissile()
     {
+        Debug.Log("create?");
+
+        GameObject missileObj = Instantiate(missile, this.transform.position, Quaternion.identity);
 
     }
 
@@ -103,13 +116,13 @@ public class BigBulletEnemy : EnemyBase, IDamageable
     {
         if (target.IsValid() == false)
         {
-            target = FindObjectOfType<Player>().gameObject;
+            target = FindObjectOfType<playerController>().gameObject;
             targetPos = target.transform;
         }       // if : 타겟이 null 이거나 default인 경우 타겟을 가져옴
         else
         {
-            Debug.LogWarning("Target is null.");
-        }       // else : 타겟이 없으면 경고문 출력
+            Debug.LogWarning("Target is already exist.");
+        }       // else : 타겟이 있으면 로그 출력
     }       // SetTarget()
 
     // 플레이어 포지션, 플레이어와의 거리, 방향벡터, 각들을 계산
@@ -131,7 +144,7 @@ public class BigBulletEnemy : EnemyBase, IDamageable
 
     public void OnDamage(int damage)
     {
-        if(hp > 0)
+        if (hp > 0)
         {
             base.hp -= damage;
         }       // if : 0보다 클때만 동작

@@ -26,6 +26,7 @@ public class GoldEnemy : EnemyBase, IDamageable
         CheckTarget();
         Move();
         FireBullet();
+        //Debug.LogFormat("{0}", rigid.velocity.magnitude);
     }
 
     // TODO : 추후 폴리싱 기간에 가능하다면 CSV 파일로 정보를 읽어와서 넣어주기
@@ -68,7 +69,6 @@ public class GoldEnemy : EnemyBase, IDamageable
             bulletTimer += Time.deltaTime;
 
 
-            Debug.LogFormat("bulletTimer : {0}", bulletTimer);
             // { 타겟과 적의 앞방향을 내적해서 각을 구함
             float dot = Vector2.Dot(dirToTarget, transform.right);
             float theta = Mathf.Acos(dot);
@@ -84,7 +84,7 @@ public class GoldEnemy : EnemyBase, IDamageable
                 Debug.LogFormat("fireTime after shot: {0}", fireTime);
                 GameObject bulletObj = Instantiate(bullet, this.transform.position, Quaternion.identity);
                 bulletObj.transform.right = dirToTarget;
-                bulletObj.GetComponent<Rigidbody2D>().AddForce(10f * rigid.velocity.magnitude * Time.deltaTime * dirToTarget, ForceMode2D.Impulse);
+                bulletObj.GetComponent<Rigidbody2D>().AddForce(20f * rigid.velocity.magnitude * Time.deltaTime * dirToTarget, ForceMode2D.Impulse);
             }       // if: 탐지각 안에 플레이어가 있고, 발사 쿨타임이 되면 총알을 발사하고 Timer를 0으로 초기화
             else { /* Do nothing */ }
 
@@ -98,13 +98,13 @@ public class GoldEnemy : EnemyBase, IDamageable
     {
         if (target.IsValid() == false)
         {
-            target = FindObjectOfType<Player>().gameObject;
+            target = FindObjectOfType<playerController>().gameObject;
             targetPos = target.transform;
         }       // if : 타겟이 null 이거나 default인 경우 타겟을 가져옴
         else
         {
-            Debug.LogWarning("Target is null.");
-        }       // else : 타겟이 없으면 경고문 출력
+            Debug.LogWarning("Target is already exist.");
+        }       // else : 타겟이 있으면 로그 출력
     }       // SetTarget()
 
     // 플레이어 포지션, 플레이어와의 거리, 방향벡터, 각들을 계산
@@ -136,4 +136,15 @@ public class GoldEnemy : EnemyBase, IDamageable
         }       // else : 0보다 작으면 Die() 함수 호출
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer.Equals("PlayerBullet"))
+        {
+            Debug.LogFormat("collision is null ? : {0}", collision == null);
+            playerController player = collision.GetComponent<playerController>();
+
+            OnDamage(10);
+            Debug.LogFormat("remain hp ? : {0}", hp);
+        }
+    }
 }
