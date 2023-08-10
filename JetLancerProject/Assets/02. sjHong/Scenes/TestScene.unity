@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 237676595}
   - component: {fileID: 237676598}
   - component: {fileID: 237676599}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: sp_jet_enemy11_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

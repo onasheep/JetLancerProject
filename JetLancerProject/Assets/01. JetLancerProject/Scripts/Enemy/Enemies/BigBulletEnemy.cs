@@ -124,16 +124,7 @@ public class BigBulletEnemy : EnemyBase, IDamageable
         // TODO : 파괴 기타 사항 추가 
     }
 
-    public void OnDamage(int damage)
-    {
-        if(hp > 0)
-        {
-            base.hp -= damage;
-        }       // if : 0보다 클때만 동작
-        else
-        {
-            Die();
-        }       // else : 0보다 작으면 Die() 함수 호출
-    }
+    
+ 
 
 }

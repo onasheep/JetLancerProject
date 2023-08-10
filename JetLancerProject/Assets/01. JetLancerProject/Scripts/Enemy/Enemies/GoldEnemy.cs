@@ -27,6 +27,7 @@ public class GoldEnemy : EnemyBase, IDamageable
         Move();
         FireBullet();
         //Debug.LogFormat("{0}", rigid.velocity.magnitude);
+        Debug.LogFormat("{0}", hp);
     }
 
     // TODO : 추후 폴리싱 기간에 가능하다면 CSV 파일로 정보를 읽어와서 넣어주기
@@ -124,17 +125,7 @@ public class GoldEnemy : EnemyBase, IDamageable
         // TODO : 파괴 기타 사항 추가 
     }
 
-    public void OnDamage(int damage)
-    {
-        if(hp > 0)
-        {
-            base.hp -= damage;
-        }       // if : 0보다 클때만 동작
-        else
-        {
-            Die();
-        }       // else : 0보다 작으면 Die() 함수 호출
-    }
+ 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

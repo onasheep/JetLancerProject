@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class EnemyBase : MonoBehaviour
+public abstract class EnemyBase : MonoBehaviour, IDamageable
 {
     // Enemy 타입
     protected enum TYPE
@@ -94,4 +94,22 @@ public abstract class EnemyBase : MonoBehaviour
 
         }       // else : 일정 거리 내에 들어갓을 때 할 행동   
     }       // DefaultMove()
+
+    // 탄환이 Layer를 검사해서 해당 함수를 호출할 것
+    public void OnDamage(int damage)
+    {
+        if (hp > 0)
+        {
+            hp -= damage;
+            Debug.LogFormat("{0}", hp);
+        }       // if : 0보다 클때만 동작
+        else
+        {
+            // TODO : 체력이 0이 되면 파괴되도록 함 (테스트 완료)
+            // 추후 오브젝트 풀이 추가되면 수정 예정
+            Destroy(this.gameObject);
+            Die();
+        }       // else : 0보다 작으면 Die() 함수 호출
+    }
+
 }

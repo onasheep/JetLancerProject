@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class playerController : MonoBehaviour
+public class playerController : MonoBehaviour, IDamageable
 {
 
     public float moveSpeed = 5f;
@@ -255,5 +255,21 @@ public class playerController : MonoBehaviour
             }
         }
     }
+
+    // SJ_ 
+    // Hp 깎는 함수 , IDamageable에서 가져옴
+    public void OnDamage(int damage)
+    {
+
+        //if (hp > 0)
+        //{
+        //    base.hp -= damage;
+        //}       // if : 0보다 클때만 동작
+        //else
+        //{
+        //    Die();
+        //}       // else : 0보다 작거나 같으면 Die() 함수 호출
+    }       // OnDamage()
+
 
 }
