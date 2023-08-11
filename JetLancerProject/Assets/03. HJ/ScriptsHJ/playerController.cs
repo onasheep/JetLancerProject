@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class playerController : MonoBehaviour
+public class playerController : MonoBehaviour, IDamageable
 {
 
     public float moveSpeed = 5f;
@@ -25,6 +25,10 @@ public class playerController : MonoBehaviour
     private AudioSource myAudio;
     private bool isBoost;
     private bool isDead;
+
+    // SJ_
+    // Damage 확인용
+    private int hp = 3;
 
 
     //private bool isFire;
@@ -255,5 +259,31 @@ public class playerController : MonoBehaviour
             }
         }
     }
+
+    private void Die()
+    {
+        // TODO : Die 함수 채우기 
+        // 여기에는 GameOver와 관련된 로직이 있으면 좋을 듯?
+        // + 죽음 이펙트 
+    }
+
+    // SJ_ 
+    // Hp 깎는 함수 , IDamageable에서 가져옴
+    public void OnDamage(int damage)
+    {
+
+        if (hp > damage)
+        {
+            hp -= damage;
+
+        }       // if : damage보다 클때만 동작
+        else
+        {
+            // TEST : 0되면 Destroy()
+            Destroy(this.gameObject);
+            Die();
+        }       // else : damage보다 작을 떄 Die() 함수 호출
+    }       // OnDamage()
+
 
 }
