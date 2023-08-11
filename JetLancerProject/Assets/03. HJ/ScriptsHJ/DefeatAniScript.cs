@@ -10,7 +10,7 @@ public class DefeatAniScript : MonoBehaviour
     private float moveSpeed;
     private float delayTime;
     private float setTime = 3f;
-    private Animator defeatAni;
+    //private Animator defeatAni;
 
     bool isMove = true;
     // Start is called before the first frame update
@@ -18,7 +18,7 @@ public class DefeatAniScript : MonoBehaviour
     {
         delayTime = 1.5f;
         moveSpeed = 0.8f;
-        
+        StartCoroutine(ActiveObj());
     }
 
     // Update is called once per frame
@@ -28,11 +28,11 @@ public class DefeatAniScript : MonoBehaviour
         {
             moveObject();
         }
-        if (setTime >= Time.deltaTime) 
-        {
-            setObject.SetActive(true);
-            //defeatAni.SetBool("isIng", isMove);
-        }
+        //if (setTime >= Time.deltaTime) 
+        //{
+        //    setObject.SetActive(true);
+        //    //defeatAni.SetBool("isIng", isMove);
+        //}
        
       
     }
@@ -42,4 +42,16 @@ public class DefeatAniScript : MonoBehaviour
         transform.position =  Vector2.Lerp(transform.position, targetPos.position, moveSpeed * Time.deltaTime);
 
     }
+
+    IEnumerator ActiveObj()
+    {
+        //yield return new WaitForSeconds(delayTime);
+
+        yield return new WaitForSeconds(3f);
+        setObject.SetActive(true);
+
+
+        //
+    }
+
 }
