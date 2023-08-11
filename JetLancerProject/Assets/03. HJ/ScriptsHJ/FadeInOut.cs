@@ -4,11 +4,15 @@ using UnityEngine.UI;
 
 public class FadeInOut : MonoBehaviour
 {
+    public GameObject deActiveObj;
+    public GameObject activeObj;
+
     public Image image1;
     public Image image2;
     public GameObject objectToDeactivate; // 비활성화할 게임 오브젝트 추가
     public float fadeDuration = 1.0f;
     public float displayDuration = 2.0f;
+    
 
     private bool hasStarted = false;
 
@@ -16,7 +20,14 @@ public class FadeInOut : MonoBehaviour
     {
         StartCoroutine(StartFadeInOut());
     }
-
+    private void Update()
+    {
+        if (Input.anyKeyDown)
+        {
+            deActiveObj.SetActive(false);  
+            activeObj.SetActive(true);
+        }
+    }
     private IEnumerator StartFadeInOut()
     {
         if (hasStarted)

@@ -6,6 +6,7 @@ public class PlayAudioTitle : MonoBehaviour
 {
     public AudioSource audioSource;
     public AudioClip musicClip;
+   
     
     public float delay = 4.0f;
 
@@ -22,6 +23,15 @@ public class PlayAudioTitle : MonoBehaviour
         {
             isPlay = true; // 음악이 한 번만 재생되도록 설정
             PlayMusic(); // 음악 재생 함수 호출
+        }
+        if (Input.anyKeyDown && isPlay != true)
+        {
+
+            isPlay = true;
+            audioSource.clip = musicClip;
+            audioSource.time = 10.2f;
+            audioSource.Play();
+       
         }
     }
 
