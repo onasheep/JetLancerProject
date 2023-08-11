@@ -26,6 +26,10 @@ public class playerController : MonoBehaviour, IDamageable
     private bool isBoost;
     private bool isDead;
 
+    // SJ_
+    // Damage 확인용
+    private int hp = 3;
+
 
     //private bool isFire;
 
@@ -79,6 +83,7 @@ public class playerController : MonoBehaviour, IDamageable
     }
     private void Update()
     {
+        Debug.LogFormat("{0}", hp);
         if (isDead)
         {
             //myAnimator.SetTrigger("Die", isDead);
@@ -256,19 +261,29 @@ public class playerController : MonoBehaviour, IDamageable
         }
     }
 
+    private void Die()
+    {
+        // TODO : Die 함수 채우기 
+        // 여기에는 GameOver와 관련된 로직이 있으면 좋을 듯?
+        // + 죽음 이펙트 
+    }
+
     // SJ_ 
     // Hp 깎는 함수 , IDamageable에서 가져옴
     public void OnDamage(int damage)
     {
 
-        //if (hp > 0)
-        //{
-        //    base.hp -= damage;
-        //}       // if : 0보다 클때만 동작
-        //else
-        //{
-        //    Die();
-        //}       // else : 0보다 작거나 같으면 Die() 함수 호출
+        if (hp > damage)
+        {
+            hp -= damage;
+
+        }       // if : damage보다 클때만 동작
+        else
+        {
+            // TEST : 0되면 Destroy()
+            Destroy(this.gameObject);
+            Die();
+        }       // else : damage보다 작을 떄 Die() 함수 호출
     }       // OnDamage()
 
 

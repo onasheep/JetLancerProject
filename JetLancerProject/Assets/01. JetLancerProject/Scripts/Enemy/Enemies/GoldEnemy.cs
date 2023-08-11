@@ -26,8 +26,6 @@ public class GoldEnemy : EnemyBase, IDamageable
         CheckTarget();
         Move();
         FireBullet();
-        //Debug.LogFormat("{0}", rigid.velocity.magnitude);
-        Debug.LogFormat("{0}", hp);
     }
 
     // TODO : 추후 폴리싱 기간에 가능하다면 CSV 파일로 정보를 읽어와서 넣어주기
@@ -127,15 +125,5 @@ public class GoldEnemy : EnemyBase, IDamageable
 
  
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer.Equals("PlayerBullet"))
-        {
-            Debug.LogFormat("collision is null ? : {0}", collision == null);
-            playerController player = collision.GetComponent<playerController>();
 
-            OnDamage(10);
-            Debug.LogFormat("remain hp ? : {0}", hp);
-        }
-    }
 }

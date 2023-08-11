@@ -24,16 +24,24 @@ public class deleteBullet : MonoBehaviour
     {
 
         // SJ_
-        //{ PlayerController에 있는 OnDamage() 를 호출함        
+        //{ EnemyBase 에 있는 OnDamage() 를 호출함        
+
+        // TODO : 추후 데미지 추가되면 임시변수가 아닌 가져와서 쓸것
+        int damge = 1;
+
         if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Enemy")))
         {
-            // TODO : 추후 데미지 추가되면 임시변수가 아닌 가져와서 쓸것
-            int damge = 10;
             collision.GetComponent<EnemyBase>().OnDamage(damge);
-        }       // if : layer를 통해서 playerController를 가져오고 데미지를 줌
+        }       // if : layer를 통해서 EnemyBase가 가지고 있는 OnDamage()를 호출
+        else if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Boss")))
+        {
+            // TEST : 임시로 해당 보스가 가지고 있는 스크립트를 가지고옴
+            // TODO : BossBase를 만들어서 IDamageable을 들고 있게 할것 
+            collision.GetComponent<Boss_Eye>().OnDamage(damge);
+        }       // if : layer를 통해서 Boss가 가지고 있는 OnDamage()를 호출
         else { /* Do Nothing */ }
-        // PlayerController에 있는 OnDamage() 를 호출함 }
 
+        // EnemyBase, Boss_Eye 에 있는 OnDamage() 를 호출함 }
 
         Destroy(gameObject);
 

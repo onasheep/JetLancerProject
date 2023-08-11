@@ -39,11 +39,12 @@ public class HomingMissile : MonoBehaviour
         dir.Normalize();
 
         // 최대 속도 제한 + 속도가 시간지남에 따라 빨라짐
-        speed *= Time.time;
+        speed = speed + Time.time;
         if(speed > 10f)
         {
             speed = 10f;
         }
+        Debug.LogFormat("missile speed = {0}", speed);
 
     
 
@@ -71,9 +72,21 @@ public class HomingMissile : MonoBehaviour
         }
     }
 
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.layer.Equals(LayerMask.NameToLayer("Player")))
+        {
+            int damage = 1;
+            collision.GetComponent<playerController>().OnDamage(damage);
+            // 데미지를 주고 나면 파괴
+            Destroy(this.gameObject);
+        }
+    }
+
     // 코루틴으로 구현하고 싶었지만 
     // 위에서 구현된 방법이 더 쉽고 , 빠름    
-    // 다만 물리 이동을 하지 않는다는 단점이 있음
+    // 다만 Velocity를 직접 건드린다는 단점이 있음
     IEnumerator ChaseTarget(Transform target)
     {
         while (chaseTime < maxChaseTime)

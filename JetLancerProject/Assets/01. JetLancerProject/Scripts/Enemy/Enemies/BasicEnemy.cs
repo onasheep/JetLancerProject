@@ -33,7 +33,7 @@ public class BasicEnemy : EnemyBase, IDamageable
     protected override void Init()
     {
         Type = TYPE.BASIC;
-        hp = 20;
+        hp = 10;
         damage = 1;
         speed = 5f;
         maxSpeed = 10f;
@@ -65,8 +65,9 @@ public class BasicEnemy : EnemyBase, IDamageable
         {
             // 탐지가 되는 동안만 발사 쿨타임이 돌도록 if문 안에 넣어둠
             bulletTimer += Time.deltaTime;
+            // 쿨타임 체크용 Debug
+            //Debug.LogFormat("bulletTimer : {0}", bulletTimer);
 
-            Debug.LogFormat("bulletTimer : {0}", bulletTimer);
             // { 타겟과 적의 앞방향을 내적해서 각을 구함
             float dot = Vector2.Dot(dirToTarget, transform.right);
             float theta = Mathf.Acos(dot);
@@ -77,7 +78,6 @@ public class BasicEnemy : EnemyBase, IDamageable
             {
                 // TODO : 탄환 발사 
                 // 추후 리소스 매니저와 오브젝트 풀을 추가하면 수정 예정
-                Debug.Log("탄환 발사!");
                 bulletTimer = 0f;
                 Debug.LogFormat("fireTime after shot: {0}", fireTime);
                 GameObject bulletObj = Instantiate(bullet, this.transform.position, Quaternion.identity);

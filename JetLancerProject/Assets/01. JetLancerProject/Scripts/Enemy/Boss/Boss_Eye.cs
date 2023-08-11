@@ -29,6 +29,9 @@ public class Boss_Eye : MonoBehaviour, IDamageable
     float playTime = 0f;
     float count = 0f;
 
+    float hp = 100f;
+    
+
     // 쏠 준비 탄환    
     float bulletFireTime = 3f;
     float time = 0f;
@@ -39,11 +42,10 @@ public class Boss_Eye : MonoBehaviour, IDamageable
     // target 확인용 임시 
     private GameObject target = default;
     Vector2 dirToTarget = default;
-    Vector3 firstDirToTarget = default;
     // Start is called before the first frame update
     void Start()
     {
-        myPattern = PATTERN.NONE;
+        myPattern = PATTERN.BULLET;
         SetTarget();
     }
 
@@ -58,7 +60,6 @@ public class Boss_Eye : MonoBehaviour, IDamageable
             case PATTERN.NONE:
                 playTime += Time.deltaTime;
                 isLaser = false;
-                laserBarrelPos.right = dirToTarget;
 
                 float pauseTime = 1f;
                 if (playTime > pauseTime)
@@ -261,7 +262,6 @@ public class Boss_Eye : MonoBehaviour, IDamageable
         {
             Debug.Log("Player가 오른쪽");
         }
-
     }       // RotateBerral()
 
     private void FireBullet()
@@ -272,11 +272,15 @@ public class Boss_Eye : MonoBehaviour, IDamageable
         // 총알 발사 로직 
 
         
-        GameObject bossBullet = Instantiate(bulletPrefabs, GunBarrel_Left.position, Quaternion.identity);
-        Rigidbody2D bulletRigid = bossBullet.GetComponent<Rigidbody2D>();
+        GameObject bossBullet = 
+            Instantiate(bulletPrefabs, GunBarrel_Left.position, Quaternion.identity);
+        Rigidbody2D bulletRigid =
+            bossBullet.GetComponent<Rigidbody2D>();
 
-        GameObject bossBullet1 = Instantiate(bulletPrefabs, GunBarrel_Right.position, Quaternion.identity);
-        Rigidbody2D bulletRigid1 = bossBullet1.GetComponent<Rigidbody2D>();
+        GameObject bossBullet1 = 
+            Instantiate(bulletPrefabs, GunBarrel_Right.position, Quaternion.identity);
+        Rigidbody2D bulletRigid1 =
+            bossBullet1.GetComponent<Rigidbody2D>();
 
         float bulletSpeed = 2f;
         bulletRigid.AddForce(barrel.transform.up * bulletSpeed, ForceMode2D.Impulse);
@@ -287,8 +291,25 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
     }
 
+    private void Die()
+    {
+
+
+    }
+
     public void OnDamage(int damage)
     {
-        // TODO : 죽었을 떄 할 무언가 
+        if (hp > damage)
+        {
+            hp -= damage;
+            Debug.LogFormat("{0}", hp);
+        }       // if : damage보다 클때만 동작
+        else
+        {
+            // TEST : OnDamge 테스트용
+            // 추후 오브젝트 풀이 추가되면 수정 예정
+            Destroy(this.gameObject);
+            Die();
+        }       // else : damage보다 작을 떄 Die() 함수 호출
     }
 }

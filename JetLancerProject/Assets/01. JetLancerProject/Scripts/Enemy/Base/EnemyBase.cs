@@ -98,18 +98,18 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     // 탄환이 Layer를 검사해서 해당 함수를 호출할 것
     public void OnDamage(int damage)
     {
-        if (hp > 0)
+        if (hp > damage)
         {
             hp -= damage;
             Debug.LogFormat("{0}", hp);
-        }       // if : 0보다 클때만 동작
+        }       // if : damage보다 클때만 동작
         else
         {
             // TODO : 체력이 0이 되면 파괴되도록 함 (테스트 완료)
             // 추후 오브젝트 풀이 추가되면 수정 예정
             Destroy(this.gameObject);
             Die();
-        }       // else : 0보다 작으면 Die() 함수 호출
+        }       // else : damage보다 작을 때 Die() 함수 호출
     }
 
 }

@@ -43,7 +43,7 @@ public class HomingEnemy : EnemyBase, IDamageable
     protected override void Init()
     {
         Type = TYPE.HOMING;
-        hp = 30;
+        hp = 10;
         damage = 1;
         speed = 5f;
         maxSpeed = 10f;
