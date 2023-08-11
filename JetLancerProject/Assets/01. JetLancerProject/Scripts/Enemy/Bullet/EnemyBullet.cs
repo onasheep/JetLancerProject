@@ -6,7 +6,6 @@ public class EnemyBullet : MonoBehaviour
 {
     // Start is called before the first frame update
     private Rigidbody2D rigid;
-    float bulletSpeed = 20.0f;
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();

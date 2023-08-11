@@ -12,6 +12,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     }   
     protected TYPE Type = TYPE.NONE;
     protected UnityAction moveFunc = default;
+    protected UnityAction fireFunc = default;
 
     // {Enemy 정보
     protected int hp = default;
@@ -44,7 +45,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     protected abstract void SetTarget();
     protected abstract void CheckTarget();
 
-    // 교수님이 예시용으로 짜주신거
+    // 교수님이 예시용으로 짜주신 Move Delegate 활용 
     protected virtual void Move()
     {
         if (moveFunc == default)
@@ -58,7 +59,54 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
 
     }       // Move()
 
-    protected abstract void FireBullet();
+    // 위에 배껴서 짠 Fire Delegate 활용
+    protected virtual void Fire(GameObject bulletPrefab_)
+    {
+        if(fireFunc == default)
+        {
+            // 3 way fire 구현할 떄 
+            // fireFunc에 DefaultFire를 3개 += 로 추가하되, 
+            // 나머지 두가지 Fire는 기본 dir 방향에서 angle 값을 + 세타, -세타 만큼 회전 시켜준 방향으로
+            // 발사 시키면 된다.
+            this.fireFunc = () => DefaultFire(bulletPrefab_);
+        }
+
+        // 여기 뭔가 재사용 가능한 움직임들
+        this.fireFunc.Invoke();
+        // 여기 뭔가 재사용 가능한 움직임들
+
+    }       // Fire()
+
+    private  void DefaultFire(GameObject bulletPrefab_)
+    {
+        if (distToTarget < detectRadius)
+        {
+            // 탐지가 되는 동안만 발사 쿨타임이 돌도록 if문 안에 넣어둠
+            bulletTimer += Time.deltaTime;
+            // 쿨타임 체크용 Debug
+            //Debug.LogFormat("bulletTimer : {0}", bulletTimer);
+
+            // { 타겟과 적의 앞방향을 내적해서 각을 구함
+            float dot = Vector2.Dot(dirToTarget, transform.right);
+            float theta = Mathf.Acos(dot);
+            float degree = theta * Mathf.Rad2Deg;
+            //  타겟과 적의 앞방향을 내적해서 각을 구함}
+
+            if (degree <= detectAngle / 2f && bulletTimer > fireTime)
+            {
+                // TODO : 탄환 발사 
+                // 추후 리소스 매니저와 오브젝트 풀을 추가하면 수정 예정
+                bulletTimer = 0f;
+                Debug.LogFormat("fireTime after shot: {0}", fireTime);
+                GameObject bulletObj = Instantiate(bulletPrefab_, this.transform.position, Quaternion.identity);
+                bulletObj.transform.right = dirToTarget;
+                bulletObj.GetComponent<Rigidbody2D>().AddForce(10f * rigid.velocity.magnitude * Time.deltaTime * dirToTarget, ForceMode2D.Impulse);
+            }       // if: 탐지각 안에 플레이어가 있고, 발사 쿨타임이 되면 총알을 발사하고 Timer를 0으로 초기화
+            else { /* Do nothing */ }
+
+        }       // if : 감지 범위안에 들어오면 탄환 발사
+        else { /* Do noting */ }
+    }       // DefaultFire()
 
     protected abstract void Die();
 

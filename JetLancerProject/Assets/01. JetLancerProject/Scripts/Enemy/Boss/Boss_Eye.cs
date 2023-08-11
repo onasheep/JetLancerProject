@@ -152,12 +152,12 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
         if (cross.z > 0)
         {
-            Debug.Log("Player가 왼쪽");
+            //Debug.Log("Player가 왼쪽");
         }
         else if (cross.z < 0)
         {
             angleToTarget = -angleToTarget;
-            Debug.Log("Player가 오른쪽");
+            //Debug.Log("Player가 오른쪽");
         }
 
         Quaternion targetRotation = Quaternion.AngleAxis(angleToTarget, Vector3.forward) * laserBarrelPos.rotation;
@@ -302,7 +302,6 @@ public class Boss_Eye : MonoBehaviour, IDamageable
         if (hp > damage)
         {
             hp -= damage;
-            Debug.LogFormat("{0}", hp);
         }       // if : damage보다 클때만 동작
         else
         {

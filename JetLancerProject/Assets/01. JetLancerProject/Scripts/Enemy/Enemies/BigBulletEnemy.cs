@@ -8,7 +8,7 @@ public class BigBulletEnemy : EnemyBase, IDamageable
 {
     // 임시 프리팹용 탄환 
     // 추후 리소스 매니저로 관리 할 것
-    public GameObject bullet;
+    public GameObject prejectile;
     //
 
     private void Awake()
@@ -25,7 +25,7 @@ public class BigBulletEnemy : EnemyBase, IDamageable
     {
         CheckTarget();
         Move();
-        FireBullet();
+        Fire(prejectile);
     }
 
     // TODO : 추후 폴리싱 기간에 가능하다면 CSV 파일로 정보를 읽어와서 넣어주기
@@ -55,42 +55,50 @@ public class BigBulletEnemy : EnemyBase, IDamageable
         base.Move();
     }       // Move()
 
-    protected override void FireBullet()
+    protected override void Fire(GameObject bulletPrefab)
     {
-        //// 공격 범위 체크용 Debug Line
-        //Debug.DrawLine(this.transform.position, this.transform.position + new Vector3(6f, 1f, 0));
-        //Debug.DrawLine(this.transform.position, this.transform.position + new Vector3(6f, -1f, 0));
-        //
-
-        if(distToTarget < detectRadius)
+        this.fireFunc = () =>
         {
-            // 탐지가 되는 동안만 발사 쿨타임이 돌도록 if문 안에 넣어둠
-            bulletTimer += Time.deltaTime;
+            // TODO : 특정 공격 방식을 구현한다면, 여기에다가 추가
+        };
 
+        this.fireFunc = default;
 
-            Debug.LogFormat("bulletTimer : {0}", bulletTimer);
-            // { 타겟과 적의 앞방향을 내적해서 각을 구함
-            float dot = Vector2.Dot(dirToTarget, transform.right);
-            float theta = Mathf.Acos(dot);
-            float degree = theta * Mathf.Rad2Deg;
-            //  타겟과 적의 앞방향을 내적해서 각을 구함}
+        base.Fire(bulletPrefab);
 
-            if (degree <= detectAngle / 2f && bulletTimer > fireTime)
-            {
-                // TODO : 탄환 발사 
-                // 추후 리소스 매니저와 오브젝트 풀을 추가하면 수정 예정
-                Debug.Log("탄환 발사!");
-                bulletTimer = 0f;
-                Debug.LogFormat("fireTime after shot: {0}", fireTime);
-                GameObject bulletObj = Instantiate(bullet, this.transform.position, Quaternion.identity);
-                bulletObj.transform.right = dirToTarget;
-                bulletObj.GetComponent<Rigidbody2D>().AddForce(10f * rigid.velocity.magnitude * Time.deltaTime * dirToTarget, ForceMode2D.Impulse);
-            }       // if: 탐지각 안에 플레이어가 있고, 발사 쿨타임이 되면 총알을 발사하고 Timer를 0으로 초기화
-            else { /* Do nothing */ }
+        // LEGACY : 델리게이터 사용 이전 코드
+        ////// 공격 범위 체크용 Debug Line
+        ////Debug.DrawLine(this.transform.position, this.transform.position + new Vector3(6f, 1f, 0));
+        ////Debug.DrawLine(this.transform.position, this.transform.position + new Vector3(6f, -1f, 0));
+        ////
+        //if(distToTarget < detectRadius)
+        //{
+        //    // 탐지가 되는 동안만 발사 쿨타임이 돌도록 if문 안에 넣어둠
+        //    bulletTimer += Time.deltaTime;
+        //    // 쿨타임 체크용 Debug
+        //    //Debug.LogFormat("bulletTimer : {0}", bulletTimer);
 
-        }       // if : 감지 범위안에 들어오면 탄환 발사
-        else { /* Do noting */ }
-        
+        //    // { 타겟과 적의 앞방향을 내적해서 각을 구함
+        //    float dot = Vector2.Dot(dirToTarget, transform.right);
+        //    float theta = Mathf.Acos(dot);
+        //    float degree = theta * Mathf.Rad2Deg;
+        //    //  타겟과 적의 앞방향을 내적해서 각을 구함}
+
+        //    if (degree <= detectAngle / 2f && bulletTimer > fireTime)
+        //    {
+        //        // TODO : 탄환 발사 
+        //        // 추후 리소스 매니저와 오브젝트 풀을 추가하면 수정 예정
+        //        bulletTimer = 0f;
+        //        Debug.LogFormat("fireTime after shot: {0}", fireTime);
+        //        GameObject bulletObj = Instantiate(bullet, this.transform.position, Quaternion.identity);
+        //        bulletObj.transform.right = dirToTarget;
+        //        bulletObj.GetComponent<Rigidbody2D>().AddForce(10f * rigid.velocity.magnitude * Time.deltaTime * dirToTarget, ForceMode2D.Impulse);
+        //    }       // if: 탐지각 안에 플레이어가 있고, 발사 쿨타임이 되면 총알을 발사하고 Timer를 0으로 초기화
+        //    else { /* Do nothing */ }
+
+        //}       // if : 감지 범위안에 들어오면 탄환 발사
+        //else { /* Do noting */ }
+
 
     }
 

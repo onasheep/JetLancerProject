@@ -31,13 +31,13 @@ public class deleteBullet : MonoBehaviour
 
         if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Enemy")))
         {
-            collision.GetComponent<EnemyBase>().OnDamage(damge);
+            collision.GetComponent<IDamageable>().OnDamage(damge);
         }       // if : layer를 통해서 EnemyBase가 가지고 있는 OnDamage()를 호출
         else if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Boss")))
         {
             // TEST : 임시로 해당 보스가 가지고 있는 스크립트를 가지고옴
             // TODO : BossBase를 만들어서 IDamageable을 들고 있게 할것 
-            collision.GetComponent<Boss_Eye>().OnDamage(damge);
+            collision.GetComponent<IDamageable>().OnDamage(damge);
         }       // if : layer를 통해서 Boss가 가지고 있는 OnDamage()를 호출
         else { /* Do Nothing */ }
 

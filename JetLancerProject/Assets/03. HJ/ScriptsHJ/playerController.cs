@@ -83,7 +83,6 @@ public class playerController : MonoBehaviour, IDamageable
     }
     private void Update()
     {
-        Debug.LogFormat("{0}", hp);
         if (isDead)
         {
             //myAnimator.SetTrigger("Die", isDead);
