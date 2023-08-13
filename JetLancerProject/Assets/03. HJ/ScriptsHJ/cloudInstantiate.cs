@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cloudInstantiate : MonoBehaviour
+public class CloudInstantiate : MonoBehaviour
 {
     public GameObject[] cloudPrefab;
     public Transform cloudPos;

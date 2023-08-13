@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class backGroundLoop : MonoBehaviour
+public class BackGroundLoop : MonoBehaviour
 {
     public Transform targetPos;
     private float distance;

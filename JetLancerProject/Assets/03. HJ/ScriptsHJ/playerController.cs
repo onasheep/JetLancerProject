@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class playerController : MonoBehaviour, IDamageable
+public class PlayerController : MonoBehaviour, IDamageable
 {
 
     public float moveSpeed = 5f;

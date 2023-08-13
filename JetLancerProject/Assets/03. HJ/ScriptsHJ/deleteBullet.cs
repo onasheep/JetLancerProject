@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class deleteBullet : MonoBehaviour
+public class DeleteBullet : MonoBehaviour
 {
     private float deleteTimer;
     // Start is called before the first frame update

@@ -12,7 +12,7 @@ public class OffPlayOnResult : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerHp = GameObject.Find("Player").GetComponent<playerController>().health;
+        playerHp = GameObject.Find("Player").GetComponent<PlayerController>().health;
 
     }
 
@@ -20,7 +20,7 @@ public class OffPlayOnResult : MonoBehaviour
     void Update()
     {
 
-        playerHp = GameObject.Find("Player").GetComponent<playerController>().health;
+        playerHp = GameObject.Find("Player").GetComponent<PlayerController>().health;
         if (playerHp <= 0)
         {
             // Player 오브젝트 비활성화

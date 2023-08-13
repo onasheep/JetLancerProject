@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class deleteWbottle : MonoBehaviour
+public class DeleteWbottle : MonoBehaviour
 {
     private float deleteTimer;
     // Start is called before the first frame update

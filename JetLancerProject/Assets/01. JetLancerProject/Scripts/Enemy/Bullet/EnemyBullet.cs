@@ -20,7 +20,7 @@ public class EnemyBullet : MonoBehaviour
         if(collision.gameObject.layer.Equals(LayerMask.NameToLayer("Player")))
         {
             int damage = 1;
-            collision.GetComponent<playerController>().OnDamage(damage);
+            collision.GetComponent<PlayerController>().OnDamage(damage);
         }
     }
 }

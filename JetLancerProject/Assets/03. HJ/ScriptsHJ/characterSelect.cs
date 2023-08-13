@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class characterSelect : MonoBehaviour
+public class CharacterSelect : MonoBehaviour
 {
     public SpriteRenderer[] spritePos;
     public Transform btnSprite;

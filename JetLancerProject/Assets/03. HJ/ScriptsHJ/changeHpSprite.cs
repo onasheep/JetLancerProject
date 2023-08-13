@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class changeHpSprite : MonoBehaviour
+public class ChangeHpSprite : MonoBehaviour
 {
     public Sprite[] sprites; // 스프라이트 이미지 배열
 
@@ -14,18 +14,18 @@ public class changeHpSprite : MonoBehaviour
     {
         mySprite = GetComponent<SpriteRenderer>();
         DetectSpriteError(mySprite);
-        playerHp = GameObject.Find("Player").GetComponent<playerController>().health;
+        playerHp = GameObject.Find("Player").GetComponent<PlayerController>().health;
     }
 
     // Update is called once per frame
     void Update()
     {
-        ChangeHpSprite();
+        ChangeHPSprite();
     }
 
-    void ChangeHpSprite()
+    void ChangeHPSprite()
     {
-        playerHp = GameObject.Find("Player").GetComponent<playerController>().health;
+        playerHp = GameObject.Find("Player").GetComponent<PlayerController>().health;
         if (playerHp < 0.5f)
         {
             mySprite.sprite = sprites[0];

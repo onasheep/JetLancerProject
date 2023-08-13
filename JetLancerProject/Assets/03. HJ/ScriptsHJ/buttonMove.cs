@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class buttonMove : MonoBehaviour
+public class ButtonMove : MonoBehaviour
 {
     public Text[] buttonText;
     public Transform btnSprite;

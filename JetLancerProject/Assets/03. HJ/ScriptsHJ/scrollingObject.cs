@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class scrollingObject : MonoBehaviour
+public class ScrollingObject : MonoBehaviour
 {
     public Transform targetPos; //이동할 위치입니다.
 

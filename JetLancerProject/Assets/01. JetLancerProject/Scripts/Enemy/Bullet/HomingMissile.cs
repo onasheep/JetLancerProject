@@ -24,7 +24,7 @@ public class HomingMissile : MonoBehaviour, IDamageable
         speed = 1f;
         // 매직넘버 10 딱 적당한것 같음
         rigid = GetComponent<Rigidbody2D>();
-        target = FindObjectOfType<playerController>().transform;
+        target = FindObjectOfType<PlayerController>().transform;
         rigid.velocity = Vector3.zero;
         //rigid.AddForce(5f * Time.deltaTime * dir, ForceMode2D.Impulse);
         //StartCoroutine(ChaseTarget(target));
@@ -93,7 +93,7 @@ public class HomingMissile : MonoBehaviour, IDamageable
         if(collision.gameObject.layer.Equals(LayerMask.NameToLayer("Player")))
         {
             int damage = 1;
-            collision.GetComponent<playerController>().OnDamage(damage);
+            collision.GetComponent<PlayerController>().OnDamage(damage);
             // 데미지를 주고 나면 파괴
             Destroy(this.gameObject);
         }

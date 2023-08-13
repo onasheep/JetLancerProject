@@ -106,7 +106,7 @@ public class BasicEnemy : EnemyBase, IDamageable
         if (target.IsValid() == false)
         {
             // TODO : Player 스크립트를 찾아오지만 통합하게 되면 다른 플레이어의 스크립트를 찾아오게 될것
-             target = FindObjectOfType<playerController>().gameObject;
+             target = FindObjectOfType<PlayerController>().gameObject;
         }       // if : 타겟이 null 이거나 default인 경우 타겟을 가져옴
         else
         {

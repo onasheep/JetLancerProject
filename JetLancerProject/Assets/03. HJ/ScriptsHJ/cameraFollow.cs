@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cameraFollow : MonoBehaviour
+public class CameraFollow : MonoBehaviour
 {
-    public playerController playercontroller;
+    public PlayerController playercontroller;
     //TODO 각 콜라이더 위치 받아와서 카메라 이동 범위 제한해줘야 합니다.
     //public float offsetX = 10;
     //public float offsetY = 10;

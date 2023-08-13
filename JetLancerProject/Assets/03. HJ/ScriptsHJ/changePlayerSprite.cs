@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class changePlayerSprite : MonoBehaviour
+public class ChangePlayerSprite : MonoBehaviour
 {
     public Sprite[] sprites; // 스프라이트 이미지 배열
 
@@ -16,7 +16,7 @@ public class changePlayerSprite : MonoBehaviour
         mySprite = GetComponent<SpriteRenderer>();
         DetectSpriteError(mySprite);
 
-        gasGauge = GameObject.Find("Player").GetComponent<playerController>().gas;
+        gasGauge = GameObject.Find("Player").GetComponent<PlayerController>().gas;
 
     }
 
@@ -30,7 +30,7 @@ public class changePlayerSprite : MonoBehaviour
 
     void ChangeBoosterGauge()
     {
-        gasGauge = GameObject.Find("Player").GetComponent<playerController>().gas;
+        gasGauge = GameObject.Find("Player").GetComponent<PlayerController>().gas;
 
 
         // 값을 기준으로 어떤 스프라이트 이미지를 보여줄지 결정
