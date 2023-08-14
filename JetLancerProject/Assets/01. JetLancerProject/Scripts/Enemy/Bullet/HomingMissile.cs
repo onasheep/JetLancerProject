@@ -5,46 +5,48 @@ using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.UIElements;
 
-public class HomingMissile : MonoBehaviour, IDamageable
+public class HomingMissile : MonoBehaviour, IDamageable, IDeactive
 {
-    public Transform target;
+    private Transform target;
     private Rigidbody2D rigid;
     private Vector2 dir;
 
     private int hp = default;
     private float speed = default;
-    private float chaseTime = default;
     private float maxChaseTime = default;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        //Init();
 
+
+    private void OnEnable()
+    {
+        Init();
+        Invoke("Deactive", maxChaseTime);
+    }
+
+    private void Init()
+    {
+        hp = 3;
         speed = 1f;
+        maxChaseTime = 12f;
+
         // 매직넘버 10 딱 적당한것 같음
         rigid = GetComponent<Rigidbody2D>();
         target = FindObjectOfType<PlayerController>().transform;
         rigid.velocity = Vector3.zero;
-        //rigid.AddForce(5f * Time.deltaTime * dir, ForceMode2D.Impulse);
-        //StartCoroutine(ChaseTarget(target));
     }
-
+   
     // Update is called once per frame
     void Update()
     {
-        //dist = (target.position - transform.position).magnitude;
         dir = target.position - transform.position;
         dir.Normalize();
 
         // 최대 속도 제한 + 속도가 시간지남에 따라 빨라짐
-        speed = speed + Time.deltaTime;
-        if(speed > 10f)
+        speed += Time.deltaTime;
+        if(speed > 9f)
         {
-            speed = 10f;
+            speed = 9f;
         }
-
-
 
         // angularvelocity를 사용하여 따라가는 로직, 원하는 만큼 회전하며 따라가지만 
         // velocity를 건드린다는 문제가 있음.. 
@@ -52,27 +54,16 @@ public class HomingMissile : MonoBehaviour, IDamageable
         float rotateAmount = Vector3.Cross(dir, transform.right).z;
         rigid.angularVelocity = -rotateAmount * 200;
         rigid.velocity = transform.right * speed;
-        Debug.LogFormat("rigid.velocity : {0}", rigid.velocity);
 
         // 해당 부분이 동작함 ! 
 
         // 파도 웨이브 
         //rigid.rotation = Mathf.Sin(Time.time) * 0.5f * Mathf.Rad2Deg;
 
-        // 위 부분으로 동작할 경우 필요 없는 부분 
-        if (rigid.velocity.magnitude > 10f)
-        {
-            rigid.velocity = rigid.velocity.normalized * 10f;
-        }
+
     }
 
-    private void Init()
-    {
-        hp = 3;
-        speed = 1f;
-        chaseTime = 0f;
-        maxChaseTime = 20f;
-    }
+
 
     public void OnDamage(int damage)
     {
@@ -98,6 +89,11 @@ public class HomingMissile : MonoBehaviour, IDamageable
             Destroy(this.gameObject);
         }
     }
-        
-   
+    public void Deactive()
+    {
+        // Interface 내용
+        this.gameObject.SetActive(false);
+
+    }       // Deactive()
+
 }

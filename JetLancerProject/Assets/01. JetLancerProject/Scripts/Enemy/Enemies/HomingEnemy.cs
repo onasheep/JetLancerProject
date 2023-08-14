@@ -75,7 +75,7 @@ public class HomingEnemy : EnemyBase, IDamageable
             {
                 fireMTime += Time.deltaTime;
 
-                if (fireMTime > 2f)
+                if (fireMTime > maxfireTime)
                 {
                     fireMTime = 0f;
 
@@ -127,8 +127,8 @@ public class HomingEnemy : EnemyBase, IDamageable
 
     public void FireMissile()
     {
-
-        GameObject missileObj = Instantiate(missile, this.transform.position, Quaternion.identity);
+        GameManager.Instance.poolManager.
+            SpawnFromPool(RDefine.ENEMY_ROCKET, this.transform.position, Quaternion.identity);
 
     }
 

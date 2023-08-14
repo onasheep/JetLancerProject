@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class Boss_Eye : MonoBehaviour, IDamageable
@@ -42,9 +43,15 @@ public class Boss_Eye : MonoBehaviour, IDamageable
     // target 확인용 임시 
     private GameObject target = default;
     Vector2 dirToTarget = default;
+
+    // PoolManger
+    PoolManager poolmanager;
+    
     // Start is called before the first frame update
     void Start()
     {
+
+        poolmanager = GameManager.Instance.poolManager;
         myPattern = PATTERN.BULLET;
         SetTarget();
     }
@@ -52,7 +59,6 @@ public class Boss_Eye : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
-
         CheckTarget();
 
         switch (myPattern)
@@ -256,29 +262,39 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
         if (cross.z > 0)
         {
-            Debug.Log("Player가 왼쪽");
+            //Debug.Log("Player가 왼쪽");
         }
         else if (cross.z < 0)
         {
-            Debug.Log("Player가 오른쪽");
+            //Debug.Log("Player가 오른쪽");
         }
     }       // RotateBerral()
 
     private void FireBullet()
     {
         // 포문 두개 
-        
+
 
         // 총알 발사 로직 
 
-        
-        GameObject bossBullet = 
-            Instantiate(bulletPrefabs, GunBarrel_Left.position, Quaternion.identity);
+
+        //GameObject bossBullet = 
+        //    Instantiate(bulletPrefabs, GunBarrel_Left.position, Quaternion.identity);
+        //Rigidbody2D bulletRigid =
+        //    bossBullet.GetComponent<Rigidbody2D>();
+
+        //GameObject bossBullet1 = 
+        //    Instantiate(bulletPrefabs, GunBarrel_Right.position, Quaternion.identity);
+        //Rigidbody2D bulletRigid1 =
+        //    bossBullet1.GetComponent<Rigidbody2D>();
+
+
+        GameObject bossBullet = poolmanager.
+            SpawnFromPool(RDefine.BOSS_BULLET, GunBarrel_Left.position, Quaternion.identity);
         Rigidbody2D bulletRigid =
             bossBullet.GetComponent<Rigidbody2D>();
-
-        GameObject bossBullet1 = 
-            Instantiate(bulletPrefabs, GunBarrel_Right.position, Quaternion.identity);
+        GameObject bossBullet1 = poolmanager.
+            SpawnFromPool(RDefine.BOSS_BULLET, GunBarrel_Right.position, Quaternion.identity);
         Rigidbody2D bulletRigid1 =
             bossBullet1.GetComponent<Rigidbody2D>();
 
@@ -287,6 +303,9 @@ public class Boss_Eye : MonoBehaviour, IDamageable
         bulletRigid.transform.right = barrel.transform.up;
         bulletRigid1.AddForce(barrel.transform.up * bulletSpeed, ForceMode2D.Impulse);
         bulletRigid1.transform.right = barrel.transform.up;
+
+        //Invoke(GameManager.Instance.poolManager.DeactiveObj(bossBullet), 5);
+        //Invoke(GameManager.Instance.poolManager.DeactiveObj(bossBullet1), 5);
 
 
     }

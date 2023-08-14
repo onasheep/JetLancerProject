@@ -26,6 +26,8 @@ public class EnemySpawner : MonoBehaviour
 
     void Start()
     {
+        
+
         target = FindObjectOfType<PlayerController>().transform;
         waveQue = new Queue();
     }

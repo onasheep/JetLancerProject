@@ -2,18 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBullet : MonoBehaviour
+public class EnemyBullet : MonoBehaviour, IDeactive
 {
     // Start is called before the first frame update
     private Rigidbody2D rigid;
+    private float existTime = 15f;
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
     }
-    void Start()
-    {
 
+    private void OnEnable()
+    {
+        Invoke("Deactive", existTime);
     }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -23,4 +26,10 @@ public class EnemyBullet : MonoBehaviour
             collision.GetComponent<PlayerController>().OnDamage(damage);
         }
     }
+
+
+    public void Deactive()
+    {
+        this.gameObject.SetActive(false);
+    }       // Deactive()
 }

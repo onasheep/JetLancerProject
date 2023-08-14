@@ -8,9 +8,8 @@ public class BasicEnemy : EnemyBase, IDamageable
 {
     // 임시 프리팹용 탄환 
     // 추후 리소스 매니저로 관리 할 것
-    public GameObject prejectile;
+    private GameObject prejectile;
     //
-
     private void Awake()
     {
         Init();
@@ -37,7 +36,8 @@ public class BasicEnemy : EnemyBase, IDamageable
         damage = 1;
         speed = 5f;
         maxSpeed = 10f;
-        rigid = GetComponent<Rigidbody2D>();      
+        rigid = GetComponent<Rigidbody2D>();
+      
     }
     protected override void Move()
     {

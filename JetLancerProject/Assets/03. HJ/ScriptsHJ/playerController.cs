@@ -120,9 +120,20 @@ public class PlayerController : MonoBehaviour, IDamageable
             mousePosition.z = transform.position.z;
             Vector3 moveDirection = (mousePosition - transform.position).normalized;
             //transform.position += moveDirection * moveSpeed * Time.deltaTime; //단순히 이동하는
-            myRigid.AddForce(moveDirection *moveSpeed * Time.deltaTime, ForceMode2D.Impulse);
+            myRigid.AddForce(moveDirection * moveSpeed * Time.deltaTime, ForceMode2D.Impulse);
             AliveChild("wBrnEffect");
-            MakeCloud();
+            // SJ_ Wbottle 생성 딜레이;
+            float pressTime = 0f;
+            pressTime += Time.time;
+            if (pressTime > 2.5f)
+            {
+                pressTime = 0f;
+                MakeCloud();
+
+            }
+
+            //
+
             LimitVelocity(6f);
         }
         if (Input.GetKeyUp(KeyCode.W))
@@ -176,16 +187,19 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     }
 
-
+    // ObjectPool 형태로 변경
     private void MakeCloud()
     {
-        Instantiate(wPrefab, wbottlePos.position, transform.rotation);
+        GameManager.Instance.poolManager.SpawnFromPool(RDefine.PLAYER_WBOTTLE, wbottlePos.position, Quaternion.identity);
+        //Instantiate(wPrefab, wbottlePos.position, transform.rotation);
     }
     private void ShotMinigun()
     {
         if (shooTimer < Time.time)
         {
-            GameObject bullet = Instantiate(bulletPrefab, bulletPos.position, transform.rotation);
+            //GameObject bullet = Instantiate(bulletPrefab, bulletPos.position, transform.rotation);
+            GameObject bullet = GameManager.Instance.poolManager.
+                SpawnFromPool(RDefine.PLAYER_BULLET, bulletPos.position, transform.rotation );
             bullet.GetComponent<Rigidbody2D>().AddForce(this.transform.right * bulletSpeed, ForceMode2D.Impulse);
             shooTimer = Time.time + 0.11f;
             myAudio.clip = fireClip;
@@ -224,14 +238,11 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void OnCollisionEnter2D(Collision2D otherCollision)
     {
         Debug.Log("접촉함");
-        DecreaseHp(0.5f);
+        // Damage : 1 
+        OnDamage(1);
     }
-
-    private void DecreaseHp(float num)
-    {
-        health -= num;
-    }
-    //===================================================================== 이렇게 쓰는건지 의문
+    
+    
     private void AliveChild(string child)
     {
 

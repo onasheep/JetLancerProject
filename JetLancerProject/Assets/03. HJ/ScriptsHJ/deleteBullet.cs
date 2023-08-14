@@ -2,23 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeleteBullet : MonoBehaviour
+public class DeleteBullet : MonoBehaviour, IDeactive
 {
-    private float deleteTimer;
+    // 이름 변경 deleteTimer => existTime
+    private float existTime = 12f;
     // Start is called before the first frame update
-    void Start()
+
+    private void OnEnable()
     {
-        deleteTimer = Time.time + 3f;
+        Invoke("Deactive", existTime);
+    }
+  
+    private void OnDisable()
+    {
+            
     }
 
     // Update is called once per frame
-    void Update()
+
+    public void Deactive()
     {
-        if (deleteTimer < Time.time)
-        {
-            Destroy(gameObject);
-        }
-    }
+        // Interface 내용
+        this.gameObject.SetActive(false);
+
+    }       // Deactive()
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -43,7 +50,8 @@ public class DeleteBullet : MonoBehaviour
 
         // EnemyBase, Boss_Eye 에 있는 OnDamage() 를 호출함 }
 
-        Destroy(gameObject);
+        // Destroy() => Deactive 로 변경
+        Deactive();
 
     }
 }

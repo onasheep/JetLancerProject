@@ -10,6 +10,11 @@ public class CameraFollow : MonoBehaviour
     //public float offsetY = 10;
     //public float offsetZ = -10;
     // Start is called before the first frame update
+
+
+    // SJ_
+    // 플레이어를 찾음
+ 
     void Start()
     {
         

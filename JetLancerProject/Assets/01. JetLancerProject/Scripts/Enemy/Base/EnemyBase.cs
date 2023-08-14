@@ -98,9 +98,11 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
                 // 추후 리소스 매니저와 오브젝트 풀을 추가하면 수정 예정
                 bulletTimer = 0f;
                 Debug.LogFormat("fireTime after shot: {0}", fireTime);
-                GameObject bulletObj = Instantiate(bulletPrefab_, this.transform.position, Quaternion.identity);
+                //GameObject bulletObj = Instantiate(bulletPrefab_, this.transform.position, Quaternion.identity);
+                GameObject bulletObj = GameManager.Instance.poolManager.
+                    SpawnFromPool(RDefine.ENEMY_BULLET, this.transform.position, Quaternion.identity);
                 bulletObj.transform.right = dirToTarget;
-                bulletObj.GetComponent<Rigidbody2D>().AddForce(10f * rigid.velocity.magnitude * Time.deltaTime * dirToTarget, ForceMode2D.Impulse);
+                bulletObj.GetComponent<Rigidbody2D>().AddForce(10f * rigid.velocity.magnitude * dirToTarget, ForceMode2D.Impulse);
             }       // if: 탐지각 안에 플레이어가 있고, 발사 쿨타임이 되면 총알을 발사하고 Timer를 0으로 초기화
             else { /* Do nothing */ }
 

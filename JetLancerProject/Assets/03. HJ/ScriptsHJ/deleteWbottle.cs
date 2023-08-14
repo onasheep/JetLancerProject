@@ -2,21 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeleteWbottle : MonoBehaviour
+public class DeleteWbottle : MonoBehaviour, IDeactive
 {
-    private float deleteTimer;
+    // 이름 변경 deleteTimer => existTime;
+    private float existTime = 3f;
     // Start is called before the first frame update
-    void Start()
-    {
-        deleteTimer = Time.time + 0.5f;
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (deleteTimer < Time.time)
-        {
-            Destroy(gameObject);
-        }
+    private void OnEnable()
+    {        
+        Invoke("Deactive", existTime);
     }
+    // Update is called once per frame
+
+    public void Deactive()
+    {
+        // Interface 내용
+        this.gameObject.SetActive(false);
+
+    }       // Deactive()
+
 }
