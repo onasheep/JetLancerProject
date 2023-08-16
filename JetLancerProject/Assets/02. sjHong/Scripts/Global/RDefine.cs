@@ -10,4 +10,7 @@ public static class RDefine
     public const string PLAYER_BULLET = "player_bullet";
     public const string PLAYER_WBOTTLE = "wbottle";
 
+    public const string PLAYER_CANVAS = "playCanvas";
+    public const string PLAYER = "Player";
+
 }

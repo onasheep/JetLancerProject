@@ -7,8 +7,8 @@ public class ButtonMove : MonoBehaviour
     public Text[] buttonText;
     public Transform btnSprite;
     private int btnChoice;
-    public AudioSource soundEffect;
-    public AudioSource enterSoundEffect;
+    //public AudioSource soundEffect;
+    //public AudioSource enterSoundEffect;
 
     private void Start()
     {
@@ -24,7 +24,8 @@ public class ButtonMove : MonoBehaviour
 
         // Enter 키 입력을 처리합니다.
         if (Input.GetKeyDown(KeyCode.Return))
-            EnterKey();
+            Invoke("EnterKey", 0.7f);
+                //EnterKey();
     }
 
     // 버튼 입력 처리 함수
@@ -35,7 +36,7 @@ public class ButtonMove : MonoBehaviour
         {
             btnChoice += change; // 버튼 선택을 변경합니다.
             UpdateButtonPosition(); // 버튼 스프라이트 위치를 업데이트합니다.
-            PlaySoundEffect(soundEffect); // 효과음을 재생합니다.
+            //PlaySoundEffect(soundEffect); // 효과음을 재생합니다.
         }
     }
 
@@ -50,7 +51,7 @@ public class ButtonMove : MonoBehaviour
     {
         if (btnChoice == 0)
         {
-            PlaySoundEffect(enterSoundEffect); // Enter 효과음을 재생합니다.
+            //PlaySoundEffect(enterSoundEffect); // Enter 효과음을 재생합니다.
            
             SceneManager.LoadScene("CharacterSelect");
         }
@@ -62,9 +63,9 @@ public class ButtonMove : MonoBehaviour
     }
 
     // 효과음을 재생하는 함수
-    private void PlaySoundEffect(AudioSource audioSource)
-    {
-        if (audioSource != null)
-            audioSource.Play();
-    }
+    //private void PlaySoundEffect(AudioSource audioSource)
+    //{
+    //    if (audioSource != null)
+    //        audioSource.Play();
+    //}
 }

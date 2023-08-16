@@ -26,7 +26,17 @@ public class CharacterSelect : MonoBehaviour
         {
             SceneManager.LoadScene("PlayScene");
         }
+        
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Invoke("LoadTitle", 0.7f);
+        }
 
 
+    }
+
+    void LoadTitle()
+    {
+        SceneManager.LoadScene("TitleScene");
     }
 }
