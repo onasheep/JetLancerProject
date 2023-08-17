@@ -29,9 +29,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     // SJ_
     // Damage 확인용
     private int hp = 3;
+    private float pressTime = 0f;
 
-
-    //private bool isFire;
 
 
     private float colliderSwitchDuration; // 콜라이더 전환 지속 시간
@@ -122,17 +121,9 @@ public class PlayerController : MonoBehaviour, IDamageable
             //transform.position += moveDirection * moveSpeed * Time.deltaTime; //단순히 이동하는
             myRigid.AddForce(moveDirection * moveSpeed * Time.deltaTime, ForceMode2D.Impulse);
             AliveChild("wBrnEffect");
-            // SJ_ Wbottle 생성 딜레이;
-            float pressTime = 0f;
-            pressTime += Time.time;
-            if (pressTime > 2.5f)
-            {
-                pressTime = 0f;
-                MakeCloud();
 
-            }
 
-            //
+            MakeCloud();
 
             LimitVelocity(6f);
         }
@@ -146,7 +137,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             isBoost = true;
             LimitVelocity(10f);
+
             MakeCloud();
+
 
             AliveChild("downSpaceEffect");
             AliveChild("keepSpaceEffect");
@@ -187,12 +180,21 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     }
 
-    // ObjectPool 형태로 변경
     private void MakeCloud()
     {
-        GameManager.Instance.poolManager.SpawnFromPool(RDefine.PLAYER_WBOTTLE, wbottlePos.position, Quaternion.identity);
-        //Instantiate(wPrefab, wbottlePos.position, transform.rotation);
+
+        //SJ_ 
+
+        GameObject player_trail = GameManager.Instance.poolManager.
+            SpawnFromPool(RDefine.PLAYER_WBOTTLE, wbottlePos.position, Quaternion.identity);
+        // { player_trail scale 변동 
+        float randScale = Random.Range(0.1f, 0.4f);
+        player_trail.transform.localScale =
+            new Vector3(randScale, randScale);
+        //  player_trail scale 변동 }
+
     }
+
     private void ShotMinigun()
     {
         if (shooTimer < Time.time)

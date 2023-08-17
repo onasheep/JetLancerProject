@@ -66,6 +66,7 @@ public class Boss_Eye : MonoBehaviour, IDamageable
             case PATTERN.NONE:
                 playTime += Time.deltaTime;
                 isLaser = false;
+                laser_Hitbox.SetActive(false);
 
                 float pauseTime = 1f;
                 if (playTime > pauseTime)
@@ -110,6 +111,9 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
     private void CheckTarget()
     {
+        // 없으면 return
+        if (target.IsValid() == false) { return; }
+        
         Transform targetPos = target.transform;
 
         distToTarget = (targetPos.position - this.transform.position).magnitude;
@@ -132,9 +136,6 @@ public class Boss_Eye : MonoBehaviour, IDamageable
             laser_Hitbox.SetActive(false);
         }
 
-
-        // Laser 방향 체크용 Debug 선
-        Debug.DrawLine(this.transform.position, dirToTarget * 1000f, Color.red);
         
         if (isLaser == false)
         {
@@ -280,12 +281,12 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
         //GameObject bossBullet = 
         //    Instantiate(bulletPrefabs, GunBarrel_Left.position, Quaternion.identity);
-        //Rigidbody2D bulletRigid =
+        //Rigidbody2D bulletRigid = 
         //    bossBullet.GetComponent<Rigidbody2D>();
 
         //GameObject bossBullet1 = 
         //    Instantiate(bulletPrefabs, GunBarrel_Right.position, Quaternion.identity);
-        //Rigidbody2D bulletRigid1 =
+        //Rigidbody2D bulletRigid1 = 
         //    bossBullet1.GetComponent<Rigidbody2D>();
 
 
@@ -297,6 +298,7 @@ public class Boss_Eye : MonoBehaviour, IDamageable
             SpawnFromPool(RDefine.BOSS_BULLET, GunBarrel_Right.position, Quaternion.identity);
         Rigidbody2D bulletRigid1 =
             bossBullet1.GetComponent<Rigidbody2D>();
+
 
         float bulletSpeed = 2f;
         bulletRigid.AddForce(barrel.transform.up * bulletSpeed, ForceMode2D.Impulse);
@@ -312,7 +314,6 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
     private void Die()
     {
-
 
     }
 

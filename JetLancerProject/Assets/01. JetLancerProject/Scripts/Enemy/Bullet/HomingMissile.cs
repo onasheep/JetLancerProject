@@ -26,8 +26,8 @@ public class HomingMissile : MonoBehaviour, IDamageable, IDeactive
     private void Init()
     {
         hp = 3;
-        speed = 1f;
-        maxChaseTime = 12f;
+        speed = 5f;
+        maxChaseTime = 15f;
 
         // 매직넘버 10 딱 적당한것 같음
         rigid = GetComponent<Rigidbody2D>();
@@ -52,15 +52,10 @@ public class HomingMissile : MonoBehaviour, IDamageable, IDeactive
         // velocity를 건드린다는 문제가 있음.. 
         // 정 안되면 이 부분으로 가겠지만 , 한번 추가적으로 알아볼 필요가 있다.
         float rotateAmount = Vector3.Cross(dir, transform.right).z;
-        rigid.angularVelocity = -rotateAmount * 200;
+        rigid.angularVelocity = -rotateAmount * 150f;
         rigid.velocity = transform.right * speed;
 
-        // 해당 부분이 동작함 ! 
-
-        // 파도 웨이브 
-        //rigid.rotation = Mathf.Sin(Time.time) * 0.5f * Mathf.Rad2Deg;
-
-
+ 
     }
 
 

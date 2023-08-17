@@ -17,6 +17,10 @@ public class EnemyBullet : MonoBehaviour, IDeactive
         Invoke("Deactive", existTime);
     }
 
+    private void OnDisable()
+    {
+        rigid.velocity = Vector3.zero;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

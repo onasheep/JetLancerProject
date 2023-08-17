@@ -2878,6 +2878,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &936501117
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 936501118}
+  m_Layer: 0
+  m_Name: WaveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &936501118
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 936501117}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.62175924, y: -0.41767892, z: 0.0110019175}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &956436723
 GameObject:
   m_ObjectHideFlags: 0
@@ -7540,7 +7571,7 @@ MonoBehaviour:
     prefabs: {fileID: 8098807017904546944, guid: 2eef4e15f49293e42aff267134008bd6, type: 3}
     size: 100
   - tag: wbottle
-    prefabs: {fileID: 8876460059861823225, guid: 0add18809b569f749b81388b9d394a9e, type: 3}
+    prefabs: {fileID: 6656175029883589751, guid: d81ed78c1f3cf994eb2b7928ad52e55c, type: 3}
     size: 1000
 --- !u!4 &1899723972
 Transform:
@@ -8003,7 +8034,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8845478400659217832, guid: 8b7cab72e56ced641a69f587e0ff63ee, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b7cab72e56ced641a69f587e0ff63ee, type: 3}
@@ -8995,15 +9026,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1962357367174617909, guid: 81ad66d3aa5036343b33b2f836a06f77, type: 3}
       propertyPath: m_LocalScale.x
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1962357367174617909, guid: 81ad66d3aa5036343b33b2f836a06f77, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1962357367174617909, guid: 81ad66d3aa5036343b33b2f836a06f77, type: 3}
       propertyPath: m_LocalScale.z
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1962357367174617909, guid: 81ad66d3aa5036343b33b2f836a06f77, type: 3}
       propertyPath: m_LocalPosition.x
