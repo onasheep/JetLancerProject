@@ -12,9 +12,11 @@ public class TransitionScript : MonoBehaviour
     public GameObject burnStart;
     public GameObject countdown;
 
+
     private Rigidbody2D playerRigid;
     private void Start()
     {
+        
         playCanvas = GFunc.GetRootObj(RDefine.PLAYER_CANVAS);
         player = GFunc.GetRootObj(RDefine.PLAYER);
         playerRigid = player.GetComponent<Rigidbody2D>();
@@ -23,10 +25,14 @@ public class TransitionScript : MonoBehaviour
             StartCoroutine(AliveObj());
             StopCoroutine(AliveObj());
         }
+       
+
     }
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Return) && SceneManager.GetActiveScene().buildIndex == 0) // Title씬일때만 활성화
+       
+        
+        if(Input.GetKeyDown(KeyCode.Return) && SceneManager.GetActiveScene().buildIndex == 0 ) // Title씬일때만 활성화
         {
             ani1.SetActive(true);
         }

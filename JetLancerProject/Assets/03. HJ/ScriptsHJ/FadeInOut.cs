@@ -13,7 +13,7 @@ public class FadeInOut : MonoBehaviour
 
     private RectTransform rectTransform; // UI 이미지의 RectTransform
     private float startTime; // 애니메이션 시작 시간
-    private bool animationStarted = false; // 애니메이션이 시작되었는지 여부
+    public bool animationStarted = false; // 애니메이션이 시작되었는지 여부
 
     //public GameObject unlockSound;
     

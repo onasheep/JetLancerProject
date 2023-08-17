@@ -12,5 +12,4 @@ public static class RDefine
 
     public const string PLAYER_CANVAS = "playCanvas";
     public const string PLAYER = "Player";
-
 }

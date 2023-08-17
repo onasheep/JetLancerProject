@@ -28,11 +28,14 @@ public class GameManager : GSingleton<GameManager>
 
 
 
-    public override void Awake()
+
+
+    public override void Start()
     {
         isGameOver = false;
-        Init();
+        //Init();
     }
+
 
     private void Init()
     {

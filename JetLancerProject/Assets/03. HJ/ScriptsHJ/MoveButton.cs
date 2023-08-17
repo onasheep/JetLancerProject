@@ -3,8 +3,11 @@ using UnityEngine.SceneManagement;
 //using UnityEngine.UI;
 using TMPro;
 
-public class ButtonMove : MonoBehaviour
+public class MoveButton : MonoBehaviour
 {
+    public GameObject escObj;
+    private bool isPaused;
+
     public TMP_Text[] buttonText;
     public Transform btnSprite;
     private int btnChoice;
@@ -23,10 +26,21 @@ public class ButtonMove : MonoBehaviour
         HandleButtonInput(KeyCode.S, 1); // S 키를 눌렀을 때 버튼 선택을 1 증가시킵니다.
         HandleButtonInput(KeyCode.W, -1); // W 키를 눌렀을 때 버튼 선택을 1 감소시킵니다.
 
-        // Enter 키 입력을 처리합니다.
-        if (Input.GetKeyDown(KeyCode.Return))
-            Invoke("EnterKey", 0.7f);
-                //EnterKey();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Return))//&& SceneManager.GetActiveScene().buildIndex == 2)
+        {
+            PlayEnterKey();
+        }
     }
 
     // 버튼 입력 처리 함수
@@ -47,18 +61,38 @@ public class ButtonMove : MonoBehaviour
         btnSprite.transform.position = Vector3.MoveTowards(btnSprite.transform.position, buttonText[btnChoice].transform.position, 1);
     }
 
+    void PauseGame()
+    {
+        escObj.SetActive(true);
+        Time.timeScale = 0f;
+        isPaused = true;
+    }
+
+    void ResumeGame()
+    {
+        escObj.SetActive(false);
+        Time.timeScale = 1f;
+        isPaused = false;
+    }
+
     // Enter 키를 처리하는 함수
-    private void EnterKey()
+    private void PlayEnterKey()
     {
         if (btnChoice == 0)
         {
             //PlaySoundEffect(enterSoundEffect); // Enter 효과음을 재생합니다.
-           
-            SceneManager.LoadScene("CharacterSelect");
+            ResumeGame();
+            escObj.SetActive(false);
+        }
+        else if (btnChoice == 1)
+        {
+            ResumeGame();
+            SceneManager.LoadScene("PlayScene");
+
         }
         else if (btnChoice == 2)
         {
-            UnityEditor.EditorApplication.isPlaying = false; // 플레이 모드 종료
+            SceneManager.LoadScene("TitleScene");
             // Application.Quit(); // 어플 종료
         }
     }
