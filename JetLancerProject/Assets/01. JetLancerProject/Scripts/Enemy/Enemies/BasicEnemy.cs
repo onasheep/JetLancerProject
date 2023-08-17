@@ -6,10 +6,7 @@ using UnityEngine.Events;
 
 public class BasicEnemy : EnemyBase, IDamageable
 {
-    // 임시 프리팹용 탄환 
-    // 추후 리소스 매니저로 관리 할 것
-    private GameObject prejectile;
-    //
+   
     private void Awake()
     {
         Init();
@@ -24,7 +21,7 @@ public class BasicEnemy : EnemyBase, IDamageable
     {
         CheckTarget();
         Move();
-        Fire(prejectile);
+        Fire();
     }
 
     // TODO : 추후 폴리싱 기간에 가능하다면 CSV 파일로 정보를 읽어와서 넣어주기
@@ -32,7 +29,7 @@ public class BasicEnemy : EnemyBase, IDamageable
     protected override void Init()
     {
         Type = TYPE.BASIC;
-        hp = 10;
+        hp = 5;
         damage = 1;
         speed = 5f;
         maxSpeed = 10f;
@@ -54,16 +51,16 @@ public class BasicEnemy : EnemyBase, IDamageable
         base.Move();
     }       // Move()
 
-    protected override void Fire(GameObject bulletPrefab)
+    protected override void Fire()
     {
-        this.fireFunc = () =>
-        {
-            // TODO : 특정 공격 방식을 구현한다면, 여기에다가 추가
-        };
+        //this.fireFunc = () =>
+        //{
+        //    // TODO : 특정 공격 방식을 구현한다면, 여기에다가 추가
+        //};
 
         this.fireFunc = default;
 
-        base.Fire(bulletPrefab);
+        base.Fire();
 
         // LEGACY : 델리게이터 사용 이전 코드
         ////// 공격 범위 체크용 Debug Line
@@ -117,6 +114,9 @@ public class BasicEnemy : EnemyBase, IDamageable
     // 플레이어 포지션, 플레이어와의 거리, 방향벡터, 각들을 계산
     protected override void CheckTarget()
     {
+        // 없으면 return
+        if (target.IsValid() == false) { return; }
+
         // { 타겟, 거리, 방향 정보값, 발사에 필요한 정보가 담겨 있으므로, 위치가 변경 될 수 있음
         Transform targetPos = target.transform;
         distToTarget = (targetPos.position - this.transform.position).magnitude;

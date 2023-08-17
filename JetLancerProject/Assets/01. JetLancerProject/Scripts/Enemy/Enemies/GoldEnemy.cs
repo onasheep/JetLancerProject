@@ -1,15 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class GoldEnemy : EnemyBase, IDamageable
 {
-    // 임시 프리팹용 탄환 
-    // 추후 리소스 매니저로 관리 할 것
-    public GameObject prejectile;
-    //
+  
 
     private void Awake()
     {
@@ -25,7 +23,7 @@ public class GoldEnemy : EnemyBase, IDamageable
     {
         CheckTarget();
         Move();
-        Fire(prejectile);
+        Fire();
     }
 
     // TODO : 추후 폴리싱 기간에 가능하다면 CSV 파일로 정보를 읽어와서 넣어주기
@@ -33,7 +31,7 @@ public class GoldEnemy : EnemyBase, IDamageable
     protected override void Init()
     {
         Type = TYPE.GOLD;
-        hp = 30;
+        hp = 1;
         damage = 1;
         speed = 5f;
         maxSpeed = 10f;
@@ -55,7 +53,7 @@ public class GoldEnemy : EnemyBase, IDamageable
         base.Move();
     }       // Move()
 
-    protected override void Fire(GameObject bulletPrefab)
+    protected override void Fire()
     {
         this.fireFunc = () =>
         {
@@ -64,41 +62,7 @@ public class GoldEnemy : EnemyBase, IDamageable
 
         this.fireFunc = default;
 
-        base.Fire(bulletPrefab);
-
-        // LEGACY : 델리게이터 사용 이전 코드
-        ////// 공격 범위 체크용 Debug Line
-        ////Debug.DrawLine(this.transform.position, this.transform.position + new Vector3(6f, 1f, 0));
-        ////Debug.DrawLine(this.transform.position, this.transform.position + new Vector3(6f, -1f, 0));
-        ////
-        //if(distToTarget < detectRadius)
-        //{
-        //    // 탐지가 되는 동안만 발사 쿨타임이 돌도록 if문 안에 넣어둠
-        //    bulletTimer += Time.deltaTime;
-        //    // 쿨타임 체크용 Debug
-        //    //Debug.LogFormat("bulletTimer : {0}", bulletTimer);
-
-        //    // { 타겟과 적의 앞방향을 내적해서 각을 구함
-        //    float dot = Vector2.Dot(dirToTarget, transform.right);
-        //    float theta = Mathf.Acos(dot);
-        //    float degree = theta * Mathf.Rad2Deg;
-        //    //  타겟과 적의 앞방향을 내적해서 각을 구함}
-
-        //    if (degree <= detectAngle / 2f && bulletTimer > fireTime)
-        //    {
-        //        // TODO : 탄환 발사 
-        //        // 추후 리소스 매니저와 오브젝트 풀을 추가하면 수정 예정
-        //        bulletTimer = 0f;
-        //        Debug.LogFormat("fireTime after shot: {0}", fireTime);
-        //        GameObject bulletObj = Instantiate(bullet, this.transform.position, Quaternion.identity);
-        //        bulletObj.transform.right = dirToTarget;
-        //        bulletObj.GetComponent<Rigidbody2D>().AddForce(10f * rigid.velocity.magnitude * Time.deltaTime * dirToTarget, ForceMode2D.Impulse);
-        //    }       // if: 탐지각 안에 플레이어가 있고, 발사 쿨타임이 되면 총알을 발사하고 Timer를 0으로 초기화
-        //    else { /* Do nothing */ }
-
-        //}       // if : 감지 범위안에 들어오면 탄환 발사
-        //else { /* Do noting */ }
-
+        base.Fire();
 
     }
 
@@ -115,6 +79,7 @@ public class GoldEnemy : EnemyBase, IDamageable
         }       // else : 타겟이 있으면 로그 출력
     }       // SetTarget()
 
+
     // 플레이어 포지션, 플레이어와의 거리, 방향벡터, 각들을 계산
     protected override void CheckTarget()
     {
@@ -129,10 +94,30 @@ public class GoldEnemy : EnemyBase, IDamageable
 
     protected override void Die()
     {
+        SpawnDieBullet();
         // TODO : 파괴 기타 사항 추가 
     }
 
- 
+    // 죽을 떄 8방향으로 탄환을 뿌리는 함수
+    private void SpawnDieBullet()
+    {
+        // 탄환 한개당 회전할 각도 
+        float angle = 45f;
+
+        // 탄환이 8개 이므로 8번 돌아가는 for문 
+        for(int i = 0; i < 8; i++)
+        {
+            Quaternion quaternion = Quaternion.AngleAxis(angle * i, this.transform.forward);
+            Vector3 dirBullet = quaternion * this.transform.right;
+            GameObject bullet = GameManager.Instance.poolManager.
+                SpawnFromPool(RDefine.ENEMY_BULLET, this.transform.position, Quaternion.identity);
+            bullet.transform.right = dirBullet;
+            bullet.GetComponent<Rigidbody2D>().
+                AddForce(200f * Time.deltaTime * dirBullet, ForceMode2D.Impulse);
+        }   // loop : 8개의 탄환을 가져온 뒤, 각각의 총알 방향을 지정해준뒤 쏴줌
+
+    }       // SpawnDieBullet()
+
 
 
 }

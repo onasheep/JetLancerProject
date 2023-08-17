@@ -15,6 +15,10 @@ public class PoolManager : MonoBehaviour
     public List<Pool> pools;
     public Dictionary<string, Queue<GameObject>> poolDictinoary;
 
+    private void Awake()
+    {
+        GameManager.Instance.poolManager = this;
+    }
     void Start()
     {
         poolDictinoary = new Dictionary<string, Queue<GameObject>>();
@@ -43,13 +47,20 @@ public class PoolManager : MonoBehaviour
             Debug.LogWarning("Pool with tag " + tag + "doesn't exist.");
             return null;
         }
-
+        
+        
         GameObject objectToSpawn = poolDictinoary[tag].Dequeue();
 
+        
+        
+        
         objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;
 
+
+        
+        
         poolDictinoary[tag].Enqueue(objectToSpawn);
 
         return objectToSpawn;

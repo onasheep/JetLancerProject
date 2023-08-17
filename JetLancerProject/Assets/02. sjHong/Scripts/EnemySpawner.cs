@@ -46,10 +46,11 @@ public class EnemySpawner : MonoBehaviour
     {
 
 
+        // TODO : 생성위치 관련해서 플레이어 위치 또는 카메라 범위 밖에서 생성되도록 
         spawnTime += Time.deltaTime;
         if (spawnTime > spwanMinTime)
         {
-            float randPosY = Random.Range(15f, 30f);
+            float randPosY = Random.Range(-15f, 15f);
             float randPosX = Random.Range(15f, 30f);
             Vector3 randPos = new Vector3(randPosX, randPosY);
             spawnTime = 0f;

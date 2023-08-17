@@ -36,7 +36,8 @@ public class GameManager : GSingleton<GameManager>
 
     private void Init()
     {
-        poolManager = GFunc.GetRootObj("PoolManager").GetComponent<PoolManager>();        
+        if (GFunc.GetRootObj("PoolManager").IsValid() == false) { return; }
+        poolManager = GFunc.GetRootObj("PoolManager").GetComponent<PoolManager>();
     }
 
 
