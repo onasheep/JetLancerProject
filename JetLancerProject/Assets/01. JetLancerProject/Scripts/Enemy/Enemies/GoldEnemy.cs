@@ -7,8 +7,6 @@ using UnityEngine.Events;
 
 public class GoldEnemy : EnemyBase, IDamageable
 {
-  
-
     private void Awake()
     {
         Init();
@@ -31,7 +29,7 @@ public class GoldEnemy : EnemyBase, IDamageable
     protected override void Init()
     {
         Type = TYPE.GOLD;
-        hp = 1;
+        hp = 10;
         damage = 1;
         speed = 5f;
         maxSpeed = 10f;
@@ -95,6 +93,7 @@ public class GoldEnemy : EnemyBase, IDamageable
     protected override void Die()
     {
         SpawnDieBullet();
+        GameManager.Instance.poolManager.SpawnFromPool(RDefine.ENEMY_EXPLOSION, this.transform.position, Quaternion.identity);
         // TODO : 파괴 기타 사항 추가 
     }
 

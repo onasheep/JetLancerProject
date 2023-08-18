@@ -6,7 +6,7 @@ public class EnemyBullet : MonoBehaviour, IDeactive
 {
     // Start is called before the first frame update
     private Rigidbody2D rigid;
-    private float existTime = 15f;
+    private float existTime = 10f;
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -17,10 +17,6 @@ public class EnemyBullet : MonoBehaviour, IDeactive
         Invoke("Deactive", existTime);
     }
 
-    private void OnDisable()
-    {
-        rigid.velocity = Vector3.zero;
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

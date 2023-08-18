@@ -30,7 +30,7 @@ public class Boss_Eye : MonoBehaviour, IDamageable
     float playTime = 0f;
     float count = 0f;
 
-    float hp = 100f;
+    float hp = 1f;
     
 
     // 쏠 준비 탄환    
@@ -39,6 +39,8 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
     // 쏠 준비 레이저
     bool isLaser = false;
+    float track_StartTime = 3f;
+    float rotationSpeed = 0f;
 
     // target 확인용 임시 
     private GameObject target = default;
@@ -50,9 +52,12 @@ public class Boss_Eye : MonoBehaviour, IDamageable
     // Start is called before the first frame update
     void Start()
     {
+        // TEST GPT
+        initialRotationSpeed = rotationSpeed;
+        //
 
         poolmanager = GameManager.Instance.poolManager;
-        myPattern = PATTERN.BULLET;
+        myPattern = PATTERN.LASER;
         SetTarget();
     }
 
@@ -68,7 +73,7 @@ public class Boss_Eye : MonoBehaviour, IDamageable
                 isLaser = false;
                 laser_Hitbox.SetActive(false);
 
-                float pauseTime = 1f;
+                float pauseTime = 3f;
                 if (playTime > pauseTime)
                 {
                     // 패턴은 추후 상세히 구현 
@@ -123,111 +128,99 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
 
    
-
-    private void FireLaser()
+    private IEnumerator PrepareLaser()
     {
-        time += Time.deltaTime;
+        float time = 0f;
+        float chaseAcu = 1f;
+        laserBarrelPos.transform.right = dirToTarget;
+        laser_Hitbox.transform.localScale = new Vector3(10f, 0.1f,0f);
+
+        while (time < 3f)
+        {
+
+            time += Time.deltaTime;
+            chaseAcu -= 0.001f ;
+            laserBarrelPos.transform.right = Vector3.Slerp(laserBarrelPos.transform.right, dirToTarget, Mathf.Clamp(chaseAcu,0f,1f)* Time.deltaTime);
+            laser_Hitbox.transform.localScale = new Vector3(10f, Mathf.Clamp(0f + time / 2f,0f,1.5f) , 0f);
+            yield return null;
+        }
+
+        laser_Hitbox.GetComponent<Collider2D>().enabled = true;
+
+    }
+
+    // TEST
+    private bool laserTrackingStarted = false;
+    private float initialRotationSpeed;
+    private float trackingStartTime;
+    private void FireLaser()
+    {    
+
+        if (!laserTrackingStarted)
+        {
+            laser_Start.SetActive(true);
+            laser_Start.transform.DOPunchScale(new Vector3(1f, 1f), 10f, 10, 0.5f);
+            
+            laser_Hitbox.GetComponent<Collider2D>().enabled = false;  
+            laser_Hitbox.SetActive(true);
+            StartCoroutine(PrepareLaser());
+            laserTrackingStarted = true;
+            trackingStartTime = Time.time;
+        }
+
+
+        float elapsedTime = Time.time - trackingStartTime;
 
         float laserTime = 10f;
-        if(time > laserTime)
+        if (elapsedTime > laserTime)
         {
-            
-            myPattern = PATTERN.NONE;
+
+            // Reset laser tracking settings
             laser_Hitbox.SetActive(false);
+            laserBarrelPos.GetComponentInChildren<Animator>().SetTrigger("IsCool");
+            
+            Debug.LogFormat("{0}", laserBarrelPos.GetComponentInChildren<Animator>() == null);
+            laserTrackingStarted = false;
+            rotationSpeed = initialRotationSpeed;
+            myPattern = PATTERN.NONE;
+            laser_Start.SetActive(false);
+            isLaser = false;
         }
-
-        
-        if (isLaser == false)
+        else
         {
 
-            // TODO : Test용 생성 파괴 로직 추후 수정
-            // 생성 
-            //GameObject laser = Instantiate(laser_Hitbox, laserBarrelPos.transform);
-            laser_Hitbox.SetActive(true);
-            laser_Hitbox.transform.DOPunchScale(new Vector3(0, 1f), 5f,7, 1f);
-            //파괴 
-            isLaser = true;
+            float normalizedTime = elapsedTime / laserTime;
+
+            // Gradually speed up the tracking speed
+            float currentRotationSpeed = 0.4f;
+            rotationSpeed = currentRotationSpeed;
+
+            // Calculate target direction
+            Vector3 dirToTarget = target.transform.position - laserBarrelPos.position;
+            dirToTarget.Normalize();
+
+            float theta = Vector3.Dot(laserBarrelPos.transform.right, dirToTarget);
+            float angleToTarget = Mathf.Acos(theta) * Mathf.Rad2Deg;
+
+            Vector3 cross = Vector3.Cross(laserBarrelPos.transform.right, dirToTarget);
+
+            if (cross.z < 0)
+            {
+                angleToTarget = -angleToTarget;
+            }
+
+            Quaternion targetRotation = laserBarrelPos.rotation * Quaternion.AngleAxis(angleToTarget, transform.forward);
+
+            // Gradually adjust the laser barrel's rotation
+            laserBarrelPos.rotation = Quaternion.Slerp(laserBarrelPos.rotation, targetRotation, currentRotationSpeed * normalizedTime * Time.deltaTime);
+
+            // Additional code for laser_Start animation and isLaser logic
+            if (!isLaser)
+            {
+                isLaser = true;
+            }
         }
-
-
-        // { Chat Gpt 잘 동작한다
-        // 내가 짠 원본 코드와 다른점은 AngleAxis 사용 부분과 회전 값을 변수로 만들어서 줬다는 점, 외적 사용 조건시 -1을 처리해주는 부분
-        float theta = Vector3.Dot(laserBarrelPos.right, dirToTarget);
-        float angleToTarget = Mathf.Acos(theta) * Mathf.Rad2Deg;
-
-        Vector3 cross = Vector3.Cross(laserBarrelPos.transform.right, dirToTarget);
-
-        if (cross.z > 0)
-        {
-            //Debug.Log("Player가 왼쪽");
-        }
-        else if (cross.z < 0)
-        {
-            angleToTarget = -angleToTarget;
-            //Debug.Log("Player가 오른쪽");
-        }
-
-        Quaternion targetRotation = Quaternion.AngleAxis(angleToTarget, Vector3.forward) * laserBarrelPos.rotation;
-
-        float rotationSpeed = 2.0f; // Adjust this as needed
-        laserBarrelPos.rotation = Quaternion.Slerp(laserBarrelPos.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        // } Chat Gpt
-
-      
-        // { LEGACY : 작동 불안하던 코드 
-        //float theta = Vector3.Dot(laserBarrelPos.right, dirToTarget);
-        //float angleToTarget = Mathf.Acos(theta) * Mathf.Rad2Deg;
-
-
-        //Vector3 cross = Vector3.Cross(laserBarrelPos.transform.right, dirToTarget);
-
-        //if (cross.z > 0)
-        //{
-        //    //angleToTarget = theta * Mathf.Rad2Deg;
-
-        //    Debug.Log("Player가 왼쪽");
-        //}
-        //else if (cross.z < 0)
-        //{
-        //    //angleToTarget = -theta * Mathf.Rad2Deg;
-        //    Debug.Log("Player가 오른쪽");
-        //}
-
-        //laserBarrelPos.rotation = Quaternion.AngleAxis(angleToTarget, Vector3.forward) * laserBarrelPos.right;
-        //laserBarrelPos.rotation = Quaternion.Slerp(laserBarrelPos.rotation, targetRot, 0.5f * Time.time);
-
-        // { LEGACY : 작동 불안하던 코드 
-
-        //laserBarrelPos.rotation = Quaternion.Slerp(laserBarrelPos.rotation, laserBarrelPos.rotation, Time.time * 0.1f);
-        //    time += Time.deltaTime;
-        //}
-        // 최초 조준
-        //if (Input.GetKeyDown(KeyCode.KeypadEnter))
-        //{
-        //    Debug.Log("들어옴?1");
-        //    Vector3 firstDirToTarget = dirToTarget;
-        //    laser_Hitbox.transform.right = firstDirToTarget;
-        //    while (spendTime < 10f)
-        //    {
-        //        spendTime += Time.deltaTime;
-        //        Debug.Log("들어옴?1");
-        //    }
-
-        //    spendTime = 0f;
-        //}
-        //// 데미지 발사 레이저 
-        //laser_Hitbox.transform.right =
-        //    Vector3.Slerp(firstDirToTarget, dirToTarget, 0.1f * Time.deltaTime);
-
-        // 레이저 쏘기 전 사전 단계
-        // TODO : 폴리싱 때 추가 예정
-        //if (Input.GetKeyDown(KeyCode.Z))
-        //{
-        //    GameObject laser = Instantiate(laser_Start, headPos.position, Quaternion.identity);
-        //    float punchTime = 5f;
-
-        //    laser.transform.DOPunchScale(new Vector3(-2f, -2f, 0f), punchTime, 5, 0.3f);
-
+    
     }       // FireLaser()
 
 
@@ -278,27 +271,23 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
         // 총알 발사 로직 
 
-
-        //GameObject bossBullet = 
-        //    Instantiate(bulletPrefabs, GunBarrel_Left.position, Quaternion.identity);
-        //Rigidbody2D bulletRigid = 
-        //    bossBullet.GetComponent<Rigidbody2D>();
-
-        //GameObject bossBullet1 = 
-        //    Instantiate(bulletPrefabs, GunBarrel_Right.position, Quaternion.identity);
-        //Rigidbody2D bulletRigid1 = 
-        //    bossBullet1.GetComponent<Rigidbody2D>();
-
-
+        // { 왼쪽 포문
         GameObject bossBullet = poolmanager.
             SpawnFromPool(RDefine.BOSS_BULLET, GunBarrel_Left.position, Quaternion.identity);
         Rigidbody2D bulletRigid =
             bossBullet.GetComponent<Rigidbody2D>();
+
+        bossBullet.transform.localScale *= 2f;
+        //  왼쪽 포문 }
+
+        // { 오른쪽 포문
         GameObject bossBullet1 = poolmanager.
             SpawnFromPool(RDefine.BOSS_BULLET, GunBarrel_Right.position, Quaternion.identity);
         Rigidbody2D bulletRigid1 =
             bossBullet1.GetComponent<Rigidbody2D>();
 
+        bossBullet1.transform.localScale *= 2f;
+        //  오른쪽 포문 }
 
         float bulletSpeed = 2f;
         bulletRigid.AddForce(barrel.transform.up * bulletSpeed, ForceMode2D.Impulse);
@@ -314,7 +303,9 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
     private void Die()
     {
-
+        GameManager.Instance.poolManager.
+            SpawnFromPool(RDefine.ENEMY_EXPLOSION, this.transform.position , Quaternion.identity)
+            .transform.localScale *= 2f;
     }
 
     public void OnDamage(int damage)

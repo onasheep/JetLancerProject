@@ -186,7 +186,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         //SJ_ 
 
         GameObject player_trail = GameManager.Instance.poolManager.
-            SpawnFromPool(RDefine.PLAYER_WBOTTLE, wbottlePos.position, Quaternion.identity);
+            SpawnFromPool(RDefine.PLAYER_TRAIL, wbottlePos.position, Quaternion.identity);
         // { player_trail scale 변동 
         float randScale = Random.Range(0.1f, 0.4f);
         player_trail.transform.localScale =
@@ -278,6 +278,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         // TODO : Die 함수 채우기 
         // 여기에는 GameOver와 관련된 로직이 있으면 좋을 듯?
         // + 죽음 이펙트 
+        // 죽음 이펙트
+        GameManager.Instance.poolManager.SpawnFromPool(RDefine.ENEMY_EXPLOSION, this.transform.position, Quaternion.identity);
+
     }
 
     // SJ_ 
@@ -288,7 +291,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (hp > damage)
         {
             hp -= damage;
-
+            Debug.LogFormat("hp  : {0}", hp);
         }       // if : damage보다 클때만 동작
         else
         {

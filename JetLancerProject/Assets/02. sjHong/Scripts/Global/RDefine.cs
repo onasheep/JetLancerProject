@@ -6,9 +6,14 @@ public static class RDefine
 {
     public const string ENEMY_BULLET = "enemy_bullet";
     public const string ENEMY_ROCKET = "enemy_rocket";
+
     public const string BOSS_BULLET = "boss_bullet";
+
     public const string PLAYER_BULLET = "player_bullet";
-    public const string PLAYER_WBOTTLE = "wbottle";
+    public const string PLAYER_TRAIL = "player_trail";
+
+    public const string ENEMY_EXPLOSION = "enemy_explosion";
+    public const string MISSILE_EXPLOSION = "missile_explosion";
 
     public const string PLAYER_CANVAS = "playCanvas";
     public const string PLAYER = "Player";

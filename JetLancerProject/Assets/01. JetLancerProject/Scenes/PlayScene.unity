@@ -5136,7 +5136,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7791812155604940402, guid: 648271b33bc642d4d840ed50a08a34b3, type: 3}
       propertyPath: m_Name
-      value: GameManger
+      value: GameManager
       objectReference: {fileID: 0}
     - target: {fileID: 7791812155604940402, guid: 648271b33bc642d4d840ed50a08a34b3, type: 3}
       propertyPath: m_IsActive
@@ -5144,7 +5144,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7791812155604940404, guid: 648271b33bc642d4d840ed50a08a34b3, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 7791812155604940404, guid: 648271b33bc642d4d840ed50a08a34b3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7570,7 +7570,7 @@ MonoBehaviour:
   - tag: player_bullet
     prefabs: {fileID: 8098807017904546944, guid: 2eef4e15f49293e42aff267134008bd6, type: 3}
     size: 100
-  - tag: wbottle
+  - tag: player_trail
     prefabs: {fileID: 6656175029883589751, guid: d81ed78c1f3cf994eb2b7928ad52e55c, type: 3}
     size: 1000
 --- !u!4 &1899723972
@@ -7586,7 +7586,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1928379434
 GameObject:
@@ -8380,7 +8380,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5188538507626479975, guid: 13190cdd770c531419d79dad11448e43, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 5188538507626479975, guid: 13190cdd770c531419d79dad11448e43, type: 3}
       propertyPath: m_LocalPosition.x
