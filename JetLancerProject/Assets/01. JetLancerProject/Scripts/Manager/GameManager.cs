@@ -8,7 +8,7 @@ public class GameManager : GSingleton<GameManager>
 {
     public PoolManager poolManager = default;
     
-    // 
+    
     private bool isGameOver = default;
 
     // ≈ÿΩ∫∆Æ
@@ -30,10 +30,10 @@ public class GameManager : GSingleton<GameManager>
 
 
 
-    public override void Start()
+    public override void Awake()
     {
         isGameOver = false;
-        //Init();
+        Init();
     }
 
 

@@ -9,35 +9,30 @@ public class HomingMissile : MonoBehaviour, IDamageable, IDeactive
 {
     private Transform target;
     private Rigidbody2D rigid;
+    private Animator overlayAnim;
     private Vector2 dir;
+    
+    private int hp = 2;
+    private float speed = 5f;
+    private float maxChaseTime = 15f;
 
-    private int hp = default;
-    private float speed = default;
-    private float maxChaseTime = default;
-
-
+    private void Awake()
+    {
+        target = FindObjectOfType<PlayerController>().transform;
+        overlayAnim = GetComponentInChildren<Animator>();      
+        rigid = GetComponent<Rigidbody2D>();
+    }
 
     private void OnEnable()
     {
-        Init();
-        Invoke("Deactive", maxChaseTime);
-    }
-
-    private void Init()
-    {
-        hp = 3;
-        speed = 5f;
-        maxChaseTime = 15f;
-
-        // 매직넘버 10 딱 적당한것 같음
-        rigid = GetComponent<Rigidbody2D>();
-        target = FindObjectOfType<PlayerController>().transform;
-        rigid.velocity = Vector3.zero;
+        overlayAnim.SetTrigger("isOverlay");
+        Invoke("Deactive", maxChaseTime);   
     }
    
     // Update is called once per frame
     void Update()
     {
+
         dir = target.position - transform.position;
         dir.Normalize();
 
@@ -52,13 +47,11 @@ public class HomingMissile : MonoBehaviour, IDamageable, IDeactive
         // velocity를 건드린다는 문제가 있음.. 
         // 정 안되면 이 부분으로 가겠지만 , 한번 추가적으로 알아볼 필요가 있다.
         float rotateAmount = Vector3.Cross(dir, transform.right).z;
-        rigid.angularVelocity = -rotateAmount * 150f;
+        rigid.angularVelocity = -rotateAmount * 200f;
         rigid.velocity = transform.right * speed;
 
  
     }
-
-
 
     public void OnDamage(int damage)
     {
@@ -69,26 +62,31 @@ public class HomingMissile : MonoBehaviour, IDamageable, IDeactive
         }
         else
         {
-            // TODO : 오브젝트 풀 시 수정
-            Destroy(this.gameObject);
+            GameObject missile_explosion = GameManager.Instance.poolManager.SpawnFromPool(RDefine.MISSILE_EXPLOSION, this.transform.position, Quaternion.identity);
+            missile_explosion.transform.localScale *= 0.5f;
+
+            Deactive();
         }
     }
-
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.layer.Equals(LayerMask.NameToLayer("Player")))
         {
             int damage = 1;
             collision.GetComponent<PlayerController>().OnDamage(damage);
-            // 데미지를 주고 나면 파괴
-            Destroy(this.gameObject);
+
+            GameObject missile_explosion = GameManager.Instance.poolManager.SpawnFromPool(RDefine.MISSILE_EXPLOSION, this.transform.position, Quaternion.identity);
+            missile_explosion.transform.localScale *= 0.5f;
+
+            Deactive();
         }
     }
     public void Deactive()
     {
         // Interface 내용
+       
         this.gameObject.SetActive(false);
-
     }       // Deactive()
 
 }

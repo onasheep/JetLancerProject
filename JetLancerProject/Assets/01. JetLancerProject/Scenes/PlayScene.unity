@@ -14084,7 +14084,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7791812155604940402, guid: 648271b33bc642d4d840ed50a08a34b3, type: 3}
       propertyPath: m_Name
-      value: GameManger
+      value: GameManager
       objectReference: {fileID: 0}
     - target: {fileID: 7791812155604940402, guid: 648271b33bc642d4d840ed50a08a34b3, type: 3}
       propertyPath: m_IsActive
@@ -20840,7 +20840,7 @@ MonoBehaviour:
   - tag: player_bullet
     prefabs: {fileID: 8098807017904546944, guid: 2eef4e15f49293e42aff267134008bd6, type: 3}
     size: 100
-  - tag: wbottle
+  - tag: player_trail
     prefabs: {fileID: 6656175029883589751, guid: d81ed78c1f3cf994eb2b7928ad52e55c, type: 3}
     size: 1000
 --- !u!4 &1899723972

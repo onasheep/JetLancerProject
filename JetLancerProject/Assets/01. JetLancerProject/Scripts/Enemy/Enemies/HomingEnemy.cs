@@ -61,7 +61,7 @@ public class HomingEnemy : EnemyBase, IDamageable
     protected override void Fire()
     {
       
-        if (distToTarget < 10f)
+        if (distToTarget < 30f)
         {
             fireMTime += Time.deltaTime;
 
@@ -113,6 +113,7 @@ public class HomingEnemy : EnemyBase, IDamageable
 
     protected override void Die()
     {
+        GameManager.Instance.poolManager.SpawnFromPool(RDefine.ENEMY_EXPLOSION, this.transform.position, Quaternion.identity);
         // TODO : 파괴 기타 사항 추가 
     }
 

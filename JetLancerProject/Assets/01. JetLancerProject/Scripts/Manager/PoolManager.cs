@@ -52,15 +52,22 @@ public class PoolManager : MonoBehaviour
         GameObject objectToSpawn = poolDictinoary[tag].Dequeue();
 
         
-        
+        if (objectToSpawn.GetComponent<Rigidbody2D>() != null)
+        {
+            objectToSpawn.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+        }       // if : rigidBody를 가지고 있는 객체의 속도 초기화
+
+        if(objectToSpawn.GetComponent<Animator>() != null)
+        {
+            objectToSpawn.GetComponent<Animator>().enabled = true;
+        }
+
         
         objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;
+        objectToSpawn.transform.localScale = Vector3.one;
 
-
-        
-        
         poolDictinoary[tag].Enqueue(objectToSpawn);
 
         return objectToSpawn;

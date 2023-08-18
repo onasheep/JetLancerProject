@@ -91,10 +91,11 @@ public class ThreeBulletEnemy : EnemyBase, IDamageable
 
     protected override void Die()
     {
+        GameManager.Instance.poolManager.SpawnFromPool(RDefine.ENEMY_EXPLOSION, this.transform.position, Quaternion.identity);
         // TODO : 파괴 기타 사항 추가 
     }
 
-    
- 
+
+
 
 }
