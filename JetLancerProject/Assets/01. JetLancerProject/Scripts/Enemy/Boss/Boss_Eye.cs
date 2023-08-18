@@ -248,8 +248,7 @@ public class Boss_Eye : MonoBehaviour, IDamageable
         {
             time = 0;
             FireBullet();
-            count++;
-          
+            count++;          
         }
 
         Vector3 cross = Vector3.Cross(barrel.transform.up, dirToTarget);
@@ -268,7 +267,6 @@ public class Boss_Eye : MonoBehaviour, IDamageable
     {
         // 포문 두개 
 
-
         // 총알 발사 로직 
 
         // { 왼쪽 포문
@@ -276,7 +274,7 @@ public class Boss_Eye : MonoBehaviour, IDamageable
             SpawnFromPool(RDefine.BOSS_BULLET, GunBarrel_Left.position, Quaternion.identity);
         Rigidbody2D bulletRigid =
             bossBullet.GetComponent<Rigidbody2D>();
-
+         
         bossBullet.transform.localScale *= 2f;
         //  왼쪽 포문 }
 

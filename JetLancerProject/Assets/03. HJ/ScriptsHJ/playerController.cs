@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IDamageable
@@ -26,6 +27,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     private bool isBoost;
     private bool isDead;
 
+
+
     // SJ_
     // Damage 확인용
     private int hp = 3;
@@ -49,7 +52,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         bulletSpeed = 20f;
 
-        colliderSwitchDuration = 0.5f;
+        colliderSwitchDuration = 2.0f; // 0.5f
 
         // 콜라이더 컴포넌트들을 모두 가져와서 배열에 저장
         colliders = GetComponents<Collider2D>();
@@ -93,11 +96,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (Input.GetMouseButton(0))
         {
             ShotMinigun();
-
         }
         if (Input.GetMouseButtonDown(1) && !isColliderSwitching)
         {
             StartCoroutine(SwitchCollidersCoroutine());
+            
             myAudio.clip = dodgeClip;
             myAudio.PlayOneShot(myAudio.clip);
             isColliderSwitching = true;
@@ -182,9 +185,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void MakeCloud()
     {
-
         //SJ_ 
-
         GameObject player_trail = GameManager.Instance.poolManager.
             SpawnFromPool(RDefine.PLAYER_TRAIL, wbottlePos.position, Quaternion.identity);
         // { player_trail scale 변동 
@@ -192,7 +193,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         player_trail.transform.localScale =
             new Vector3(randScale, randScale);
         //  player_trail scale 변동 }
-
     }
 
     private void ShotMinigun()
@@ -218,7 +218,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         myRigid.velocity = clampedVelocity;
     }
 
-    private System.Collections.IEnumerator SwitchCollidersCoroutine()
+    private IEnumerator SwitchCollidersCoroutine()
     {
         // 모든 콜라이더 컴포넌트의 활성/비활성 전환
         foreach (Collider2D collider in colliders)

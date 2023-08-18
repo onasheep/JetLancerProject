@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Explosion : MonoBehaviour, IDeactive
-{
-    // Start is called before the first frame update
+{    
+    
+        
     // TODO : 추후 animation time 끝날 떄 디엑티브 하고 싶음
     private float existTime = 1.0f;
     private Animator anim;

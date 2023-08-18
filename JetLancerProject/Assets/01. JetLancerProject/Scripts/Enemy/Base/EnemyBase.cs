@@ -93,7 +93,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
         while (evadeTime < time)
         {
             time = 0f;
-            float randomRot = Random.Range(50f, 250f);
+            float randomRot = Random.Range(200f, 350f);
             rigid.angularVelocity = rotateAmount * randomRot;
             rigid.velocity = transform.right * speed;
             yield return null;  
