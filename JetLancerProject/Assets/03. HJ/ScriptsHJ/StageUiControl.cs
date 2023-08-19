@@ -39,6 +39,8 @@ public class StageUiControl : MonoBehaviour
     private bool isRewardAnimation;
     private bool isUpgradeComplete;
 
+    private bool isWaveClear; //웨이브 클리어 UI 애니메이션 관리하기위한 값입니다.
+
     private int choiceNum;
     // Start is called before the first frame update
     void Start()
@@ -62,15 +64,19 @@ public class StageUiControl : MonoBehaviour
             isClear = false;
             stageNum +=1;
             waveClearUi.SetActive(true);
+            isWaveClear = true;
+            waveClearUi.GetComponent<Animator>().SetBool("WaveUi", isWaveClear);
+            //스테이지 별로 애니메이션을 다르게 출력할 생각입니다.
+            //TODO 스테이지 별로 다른 애니메이션 출력되게끔
+            ChangeWaveAni();
             //waveClearUi.GetComponent<Animator>().enabled = false;
 
         }
 
         if (isUpgradeComplete != true && isRewardAnimation )
         {
-            
             SelectMoveCard();
-            if(choiceNum == 0 && isRewardUi)
+            if (choiceNum == 0 && isRewardUi)
             {
                 secondArrowBlur.SetActive(false);
                 thirdArrowBlur.SetActive(false);
@@ -92,10 +98,14 @@ public class StageUiControl : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.Return))
                 {
-                    Debug.Log("첫번째 카드 선택");
+                    StartCoroutine(SelectCardAndSetOff(normalCard)); //카드 올려주고 reward ui 꺼주는 코루틴입니다.
+                    StopCoroutine(SelectCardAndSetOff(normalCard));
+                    //TODO 카드들 꺼줘야합니다.
+
+
                 }
             }
-            if(choiceNum == 1 && isRewardUi) 
+            else if (choiceNum == 1 && isRewardUi)
             {
                 firstArrowBlur.SetActive(false);
                 thirdArrowBlur.SetActive(false);
@@ -115,14 +125,17 @@ public class StageUiControl : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.Return))
                 {
-                    Debug.Log("두번째 카드 선택");
+                    StartCoroutine(SelectCardAndSetOff(rareCard)); //카드 올려주고 reward ui 꺼주는 코루틴입니다.
+                    StopCoroutine(SelectCardAndSetOff(rareCard));
+                    //TODO 카드들 꺼줘야합니다.
+
                 }
             }
-            if (choiceNum == 2 && isRewardUi)
+            else if (choiceNum == 2 && isRewardUi)
             {
                 firstArrowBlur.SetActive(false);
                 secondArrowBlur.SetActive(false);
-                thirdArrowBlur.SetActive(true) ;
+                thirdArrowBlur.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
                 {
                     firstArrow.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 0f);
@@ -137,13 +150,17 @@ public class StageUiControl : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.Return))
                 {
-                    Debug.Log("세번째 카드 선택");
+                    StartCoroutine(SelectCardAndSetOff(uncommonCard)); //카드 올려주고 reward ui 꺼주는 코루틴입니다.
+                    StopCoroutine(SelectCardAndSetOff(uncommonCard));
+                    //TODO 카드들 꺼줘야합니다.
+
                 }
             }
-            else
-            {
-                //DO NOTHING
-            }
+            else { } //DO NOTHING
+        }
+        else
+        {
+            
         }
     }
     //TODO : 싹다 바꿔야함 
@@ -151,20 +168,22 @@ public class StageUiControl : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         isClear = true;
-        yield return new WaitForSeconds(1.5f);
-        waveClearUi.GetComponent<Animator>().enabled = false;
-        yield return new WaitForSeconds(0.5f);
-        MoveAllIcon();
+        yield return new WaitForSeconds(1f);
+        //waveClearUi.GetComponent<Animator>().enabled = false; //이게 웨이브 클리어시 나오는 애니메이션
+        //yield return new WaitForSeconds(0.5f);
+        MoveAllIcon();   //TODO: 실질적으로 그 아이콘까지 이동하는걸 하고 싶었는데 그냥 애니메이션으로 할까합니다.
         yield return new WaitForSeconds(1.5f);
         rewardTransition.SetActive(true);
         yield return new WaitForSeconds(1f);
         if (stageNum == 2 || stageNum == 3 || stageNum == 4 || stageNum == 7 || stageNum == 9)
         {
             isRewardUi = true;
+            rewardUi.SetActive(true);
         }
+        //waveClearUi.SetActive(false);   //애니메이션으로 바꿔줘야하기에 끄지 않을려고합니다.
+        isWaveClear = false; //waveClearUI 애니메이션 관리합니다. 결국 스테이지 클리어 전까지는 투명상태를 유지하기위해
+        waveClearUi.GetComponent<Animator>().SetBool("WaveUi", isWaveClear);
 
-        rewardUi.SetActive(true);
-        waveClearUi.SetActive(false);
         StartCoroutine(OpenCard());
         StopCoroutine(OpenCard());
         //=======================================================
@@ -299,5 +318,61 @@ public class StageUiControl : MonoBehaviour
         }
     }
 
+    IEnumerator SelectCardAndSetOff(GameObject card)
+    {
+        float max = 1500;
+        float height = card.GetComponent<RectTransform>().anchoredPosition.y;
+        for (int i = 0; i < 20; i++)
+        {
+            if (height>=max) yield break;
+
+            height += 32f;
+            card.GetComponent<RectTransform>().anchoredPosition = new Vector2(card.GetComponent<RectTransform>().anchoredPosition.x, height);
+            yield return new WaitForSeconds(0.01f);
+        }
+        yield return new WaitForSeconds(0.5f);
+        rewardUi.SetActive(false);
+        rewardTransition.GetComponent<Animator>().SetTrigger("OffCicle");
+        yield return new WaitForSeconds(1f);
+        rewardTransition.SetActive(false);
+        
+    }
+
+    void ChangeWaveAni()
+    {
+        switch (stageNum)
+        {
+            case 3:
+                waveClearUi.GetComponent<Animator>().SetTrigger("WaveTwoClear");
+                break;
+
+            case 4:
+                waveClearUi.GetComponent<Animator>().SetTrigger("WaveThreeClear");
+                break;
+
+            case 5:
+                waveClearUi.GetComponent<Animator>().SetTrigger("WaveFourClear");
+                break;
+
+            case 6:
+                waveClearUi.GetComponent<Animator>().SetTrigger("WaveFiveClear");
+                break;
+            case 7:
+                waveClearUi.GetComponent<Animator>().SetTrigger("WaveSixClear");
+                break;
+            case 8:
+                waveClearUi.GetComponent<Animator>().SetTrigger("WaveSevenClear");
+                break;
+            case 9:
+                waveClearUi.GetComponent<Animator>().SetTrigger("WaveEightClear");
+                break;
+            case 10:
+                waveClearUi.GetComponent<Animator>().SetTrigger("WaveNineClear");
+                break;
+            case 11:
+
+                break;
+        }
+    }
 
 }
