@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class FadeInOut : MonoBehaviour
@@ -38,13 +39,18 @@ public class FadeInOut : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.anyKeyDown)
+        if (SceneManager.GetActiveScene().buildIndex == 0 )
         {
-            deActiveObj.SetActive(false);  
-            activeObj.SetActive(true);  //TODO public 으로 받아오는거 스크립트로 받아오게 바꿔야함
-
+            if (Input.anyKeyDown && !animationStarted)
+            {
+                deActiveObj.SetActive(false);
+                activeObj.SetActive(true);  //TODO public 으로 받아오는거 스크립트로 받아오게 바꿔야함
+            }
         }
-        MiddleMove();
+        if (SceneManager.GetActiveScene().buildIndex == 0 )
+        {
+            MiddleMove();
+        }
     }
    
     private IEnumerator StartFadeInOut()

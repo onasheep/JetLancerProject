@@ -1300,13 +1300,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 692b252c7eedf7d4bb058d2ea8c764fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cloudPrefab:
-  - {fileID: 3216243698747390906, guid: 64e4117ee08640f4084caf1e3f02620a, type: 3}
-  - {fileID: 2919160297481130184, guid: 6233a12a783719b4da5fd9f45dab468a, type: 3}
-  - {fileID: 5971646825809554966, guid: 8d6bcb3520fbddf4983d32fc909ee84d, type: 3}
-  - {fileID: 1960593192147904615, guid: 1684425e4dad8984aaff0d3e30099943, type: 3}
-  - {fileID: 4473094521528683854, guid: 146c2b420c8bfb24fa9e0d9d590b545c, type: 3}
-  cloudPos: {fileID: 1093150108}
+  cloudPrefab: []
+  cloudPos: {fileID: 0}
 --- !u!1 &1148645365
 GameObject:
   m_ObjectHideFlags: 0

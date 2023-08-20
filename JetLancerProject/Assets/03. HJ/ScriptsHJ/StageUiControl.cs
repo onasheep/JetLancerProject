@@ -22,6 +22,7 @@ public class StageUiControl : MonoBehaviour
     public GameObject uncommonCard;
     public GameObject rareCard;
     public GameObject legendaryCard;
+    public GameObject[] rewardCardPool; 
 
     [Header("This is card Arrow")]
     public GameObject firstArrowBlur;
@@ -48,6 +49,13 @@ public class StageUiControl : MonoBehaviour
         stageNum = 1;
         choiceNum = 1;
         isRewardAnimation = false;
+
+        //if( GameObject.Find("waveCanvas").transform.Find("waveTransition").gameObject.transform.Find("CicleTransition").gameObject.transform.
+        //    Find("UpgradeBg").gameObject.transform.Find("CardPool").gameObject.transform.Find("CardDeck").;
+        //TODO: 카드를 업데이트에서 오브젝트 받아오게 바꿔줘야합니다.
+        //normalCard = rewardCardPool[Random.Range(0, rewardCardPool.Length)];
+        
+
     }
 
     // Update is called once per frame
@@ -70,7 +78,9 @@ public class StageUiControl : MonoBehaviour
             //TODO 스테이지 별로 다른 애니메이션 출력되게끔
             ChangeWaveAni();
             //waveClearUi.GetComponent<Animator>().enabled = false;
-
+            normalCard = rewardCardPool[Random.Range(0, rewardCardPool.Length)];
+            uncommonCard = rewardCardPool[Random.Range(0, rewardCardPool.Length)];
+            rareCard = rewardCardPool[Random.Range(0, rewardCardPool.Length)];
         }
 
         if (isUpgradeComplete != true && isRewardAnimation )
@@ -101,7 +111,9 @@ public class StageUiControl : MonoBehaviour
                     StartCoroutine(SelectCardAndSetOff(normalCard)); //카드 올려주고 reward ui 꺼주는 코루틴입니다.
                     StopCoroutine(SelectCardAndSetOff(normalCard));
                     //TODO 카드들 꺼줘야합니다.
-
+                    //normalCard.SetActive(false);
+                    uncommonCard.GetComponent<RectTransform>().anchoredPosition = new Vector2(-9999f, -9999f);
+                    rareCard.GetComponent<RectTransform>().anchoredPosition = new Vector2(-9999f, -9999f);
 
                 }
             }
@@ -128,6 +140,8 @@ public class StageUiControl : MonoBehaviour
                     StartCoroutine(SelectCardAndSetOff(rareCard)); //카드 올려주고 reward ui 꺼주는 코루틴입니다.
                     StopCoroutine(SelectCardAndSetOff(rareCard));
                     //TODO 카드들 꺼줘야합니다.
+                    normalCard.GetComponent<RectTransform>().anchoredPosition = new Vector2(-9999f, -9999f);
+                    uncommonCard.GetComponent<RectTransform>().anchoredPosition = new Vector2(-9999f, -9999f);
 
                 }
             }
@@ -153,6 +167,8 @@ public class StageUiControl : MonoBehaviour
                     StartCoroutine(SelectCardAndSetOff(uncommonCard)); //카드 올려주고 reward ui 꺼주는 코루틴입니다.
                     StopCoroutine(SelectCardAndSetOff(uncommonCard));
                     //TODO 카드들 꺼줘야합니다.
+                    normalCard.GetComponent<RectTransform>().anchoredPosition = new Vector2(-9999f, -9999f);
+                    rareCard.GetComponent<RectTransform>().anchoredPosition = new Vector2(-9999f, -9999f);
 
                 }
             }
@@ -160,7 +176,7 @@ public class StageUiControl : MonoBehaviour
         }
         else
         {
-            
+           
         }
     }
     //TODO : 싹다 바꿔야함 
@@ -173,12 +189,17 @@ public class StageUiControl : MonoBehaviour
         //yield return new WaitForSeconds(0.5f);
         MoveAllIcon();   //TODO: 실질적으로 그 아이콘까지 이동하는걸 하고 싶었는데 그냥 애니메이션으로 할까합니다.
         yield return new WaitForSeconds(1.5f);
-        rewardTransition.SetActive(true);
-        yield return new WaitForSeconds(1f);
         if (stageNum == 2 || stageNum == 3 || stageNum == 4 || stageNum == 7 || stageNum == 9)
         {
+            rewardTransition.SetActive(true);
+            yield return new WaitForSeconds(1f);
             isRewardUi = true;
+            choiceNum = 1;
             rewardUi.SetActive(true);
+        }
+        else
+        { 
+            yield return new WaitForSeconds(1f);
         }
         //waveClearUi.SetActive(false);   //애니메이션으로 바꿔줘야하기에 끄지 않을려고합니다.
         isWaveClear = false; //waveClearUI 애니메이션 관리합니다. 결국 스테이지 클리어 전까지는 투명상태를 유지하기위해
@@ -262,14 +283,35 @@ public class StageUiControl : MonoBehaviour
     void MoveFirstCard()
     {
         normalCard.transform.position = firstCardPos.transform.position;
+        if (normalCard.activeSelf == false)
+        {
+            while (normalCard.activeSelf == false)
+            {
+                normalCard = rewardCardPool[Random.Range(0, rewardCardPool.Length)];
+            }
+        }
     }
     void MoveSecondCard()
     {
         rareCard.transform.position = secondCardPos.transform.position;
+        if (rareCard.activeSelf == false)
+        {
+            while (rareCard.activeSelf == false)
+            {
+                rareCard = rewardCardPool[Random.Range(0, rewardCardPool.Length)];
+            }
+        }
     }
     void MoveThirdCard()
     {
         uncommonCard.transform.position = thirdCardPos.transform.position;
+        if (uncommonCard.activeSelf == false)
+        {
+            while (uncommonCard.activeSelf == false )
+            {
+                uncommonCard = rewardCardPool[Random.Range(0, rewardCardPool.Length)];
+            }
+        }
     }
 
 
@@ -331,11 +373,11 @@ public class StageUiControl : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
         }
         yield return new WaitForSeconds(0.5f);
+        card.SetActive(false);
         rewardUi.SetActive(false);
         rewardTransition.GetComponent<Animator>().SetTrigger("OffCicle");
         yield return new WaitForSeconds(1f);
         rewardTransition.SetActive(false);
-        
     }
 
     void ChangeWaveAni()
