@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public float health = 3f;
     public float gas = 100f;
-    private float bulletSpeed;
+    public float bulletSpeed;
     private float shooTimer;
 
     private Rigidbody2D myRigid;
