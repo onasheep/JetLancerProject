@@ -57,10 +57,11 @@ public class PoolManager : MonoBehaviour
             objectToSpawn.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
         }       // if : rigidBody를 가지고 있는 객체의 속도 초기화
 
+        // TODO : 필요성 확인 후 삭제 
         if(objectToSpawn.GetComponent<Animator>() != null)
         {
             objectToSpawn.GetComponent<Animator>().enabled = true;
-        }
+        }       // if : Animator를 가지고 있는 객체의 애니메이터 초기화
 
         
         objectToSpawn.SetActive(true);

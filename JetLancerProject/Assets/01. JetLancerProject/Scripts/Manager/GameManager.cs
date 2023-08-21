@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : GSingleton<GameManager>
 {
     public PoolManager poolManager = default;
-    
+    public WaveManager waveManager = default;
     
     private bool isGameOver = default;
 
@@ -41,6 +42,8 @@ public class GameManager : GSingleton<GameManager>
     {
         if (GFunc.GetRootObj("PoolManager").IsValid() == false) { return; }
         poolManager = GFunc.GetRootObj("PoolManager").GetComponent<PoolManager>();
+        if (GFunc.GetRootObj("WaveManager").IsValid() == false) { return; }
+        waveManager = GFunc.GetRootObj("WaveManager").GetComponent<WaveManager>();
     }
 
 

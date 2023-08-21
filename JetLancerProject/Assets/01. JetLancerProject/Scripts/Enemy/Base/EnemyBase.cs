@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Events;
+
 
 public abstract class EnemyBase : MonoBehaviour, IDeactive
 {
@@ -84,22 +87,33 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
     {
         float rotateAmount = Vector3.Cross(dirToTarget ,transform.right ).z;
 
-
-
         if (rigid.velocity.magnitude > maxSpeed)
         {
             rigid.velocity = rigid.velocity.normalized * maxSpeed;
         }       // if : 속도가 최대 속도를 넘어가면 최대속도로 고정
 
-        // 임시 움직임 제한 거리값 5f 
-        if (distToTarget > 4f)
+        if(rotateAmount == Mathf.Epsilon)
+        {            
+            rigid.angularVelocity *= - 1f;
+        }
+
+
+        if ((CheckIsOverlap().transform.position - this.transform.position).magnitude < 2f)
         {
-            rigid.angularVelocity = -rotateAmount * 100;
+            Vector2 dir = (CheckIsOverlap().transform.position - this.transform.position).normalized;
+            float rotate = Vector3.Cross(this.transform.right , - dir ).z;
+            StartCoroutine(EvadeOverlap(rotate));
+        }
+
+
+        if (distToTarget > 3f)
+        {            
+            rigid.angularVelocity = -rotateAmount * 150f;
             rigid.velocity = transform.right * speed;
         }       // if : 일정 거리까지 플레이어를 향해 이동
         else
         {
-            // TODO : 탄환 발사 혹은 회피기동 구현하기
+            // 회피기동 구현
             StartCoroutine(EvadeMotion(rotateAmount));
         }       // else : 일정 거리 내에 들어갓을 때 할 행동   
     }       // DefaultMove()
@@ -110,8 +124,8 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
         float time = Time.time;
         while (evadeTime < time)
         {
-            time = 0f;
-            float randomRot = Random.Range(200f, 350f);
+            time = 0f;            
+            float randomRot = UnityEngine.Random.Range(200f, 300f);
             rigid.angularVelocity = rotateAmount_ * randomRot;
             rigid.velocity = transform.right * speed;
             yield return null;  
@@ -119,17 +133,47 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
     }       // EvadeMotion()
 
 
+    private GameObject CheckIsOverlap()
+    {
+        List<GameObject> overlapCheck = GameManager.Instance.waveManager.enemyList;
+        float minDist = float.MaxValue;
+        int index = 0;
+        for (int i = 0; i < overlapCheck.Count; i++)
+        {
+            float dist = (this.transform.position - overlapCheck[i].transform.position).magnitude;
+            if (dist < minDist && dist != Mathf.Epsilon)
+            {
+                minDist = dist;
+                index = i;
+            }
+        }
+        return overlapCheck[index];
+
+
+
+
+    }
+
+    IEnumerator EvadeOverlap(float rotatetAmount_)
+    {
+        float evadeTime = 3f;
+        float time = Time.time;
+        while (evadeTime < time)
+        {
+            time = 0f;
+            rigid.angularVelocity = rotatetAmount_ * 200f;
+            rigid.velocity = transform.right * speed;
+            yield return null;
+        }
+    }
+
 
     // 위에 배껴서 짠 Fire Delegate 활용
     protected virtual void Fire()
     {
         if (fireFunc == default)
         {
-            
-            // 3 way fire 구현할 떄 
-            // fireFunc에 DefaultFire를 3개 += 로 추가하되, 
-            // 나머지 두가지 Fire는 기본 dir 방향에서 angle 값을 + 세타, -세타 만큼 회전 시켜준 방향으로
-            // 발사 시키면 된다.
+         
             this.fireFunc = () => DefaultFire(0f);
         }
 

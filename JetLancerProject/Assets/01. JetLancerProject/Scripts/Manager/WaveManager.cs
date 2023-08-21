@@ -13,8 +13,8 @@ public class WaveManager : MonoBehaviour
     private int enem_4_Num;
 
     [SerializeField]
-    private List<GameObject> enemyList;
-    
+    public List<GameObject> enemyList;
+    [SerializeField]
     private int curWave = 1;
     [SerializeField]
     private int remainToSpawn = default;
@@ -22,6 +22,7 @@ public class WaveManager : MonoBehaviour
     private float maxSpawnTime = 5f;
 
     private bool isSpawn = default;
+    [SerializeField]
     private bool isClear = default;
     
     private PoolManager pool;
@@ -34,57 +35,55 @@ public class WaveManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch (curWave)
+        
+
+        if (isSpawn == false && isClear == false)
         {
-            case 1:
+            isSpawn = true;
+            SetWave(curWave);
 
-                if (isSpawn == false && isClear == false)
-                {
-                    isSpawn = true;
-                    SetWave(curWave);
-
-                    StartCoroutine(SpawnEnemy());
-                }
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-            case 6:
-                break;
-            case 7:
-                break;
-            case 8:
-                break;
-            case 9:
-                break;
-            case 10:
-                break;
+            StartCoroutine(SpawnEnemy());
         }
+
+
+        if (CheckActive() == false)
+        {
+            enemyList.Clear();            
+            isClear = false;
+            curWave += 1;
+        }
+
+
     }
     void SetWave(int waveIdx)
     {
-        waveCount = waves[waveIdx].waveCount;
-        enem_1_Num = waves[waveIdx].enem_1_Num;
-        enem_2_Num = waves[waveIdx].enem_2_Num;
-        enem_3_Num = waves[waveIdx].enem_3_Num;
-        enem_4_Num = waves[waveIdx].enem_4_Num;
+        waveCount = waves[waveIdx - 1].waveCount;
+        enem_1_Num = waves[waveIdx - 1].enem_1_Num;
+        enem_2_Num = waves[waveIdx - 1].enem_2_Num;
+        enem_3_Num = waves[waveIdx - 1].enem_3_Num;
+        enem_4_Num = waves[waveIdx - 1].enem_4_Num;
 
         remainToSpawn = enem_1_Num + enem_2_Num + enem_3_Num + enem_4_Num;
     }
 
-    
+    bool CheckActive()
+    {
+        for (int i = 0; i < enemyList.Count; i++)
+        {
+            if (enemyList[i].gameObject.activeSelf == true)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     IEnumerator SpawnEnemy()
     {
         // 구조 이상 변경 필요
         float spawnTime = default;
         while (isSpawn == true)
         {
-            if(remainToSpawn <= 0)
+            if (remainToSpawn <= 0)
             {
                 Debug.LogFormat("before : {0}", isClear);
                 isClear = true;
@@ -111,6 +110,8 @@ public class WaveManager : MonoBehaviour
                     break;
             }
             remainToSpawn--;
+
+
             yield return new WaitForSeconds(spawnTime);
         }
     }

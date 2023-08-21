@@ -206,7 +206,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             GameObject bullet = GameManager.Instance.poolManager.
                 SpawnFromPool(RDefine.PLAYER_BULLET, bulletPos.position, transform.rotation );
             bullet.GetComponent<Rigidbody2D>().AddForce(this.transform.right * bulletSpeed, ForceMode2D.Impulse);
-            shooTimer = Time.time + 0.11f;
+            shooTimer = Time.time + 0.11f; 
             myAudio.clip = fireClip;
             myAudio.PlayOneShot(myAudio.clip);
 
