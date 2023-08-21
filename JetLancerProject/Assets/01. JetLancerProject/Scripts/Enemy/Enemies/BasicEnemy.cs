@@ -28,12 +28,13 @@ public class BasicEnemy : EnemyBase, IDamageable
     // 해당 초기화 값은 임시값 
     protected override void Init()
     {
+        base.Init();
+
         Type = TYPE.BASIC;
         hp = 5;
         damage = 1;
         speed = 5f;
         maxSpeed = 10f;
-        rigid = GetComponent<Rigidbody2D>();
       
     }
     protected override void Move()

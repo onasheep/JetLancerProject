@@ -72,13 +72,21 @@ public class HomingMissile : MonoBehaviour, IDamageable, IDeactive
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.layer.Equals(LayerMask.NameToLayer("Player")))
-        {
+        {            
             int damage = 1;
-            collision.GetComponent<PlayerController>().OnDamage(damage);
+            PlayerController player = collision.GetComponent<PlayerController>();
+            
+            player.OnDamage(damage);
+
+
+            // TODO : 플레이어가 회피 했을 때 , 일정시간 후 자동으로 터지는 유도탄
+            if (player.isDodge == true)
+            {
+                
+            }
 
             GameObject missile_explosion = GameManager.Instance.poolManager.SpawnFromPool(RDefine.MISSILE_EXPLOSION, this.transform.position, Quaternion.identity);
             missile_explosion.transform.localScale *= 0.5f;
-
             Deactive();
         }
     }

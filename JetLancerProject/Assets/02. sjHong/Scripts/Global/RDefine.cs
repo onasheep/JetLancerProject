@@ -17,4 +17,9 @@ public static class RDefine
 
     public const string PLAYER_CANVAS = "playCanvas";
     public const string PLAYER = "Player";
+
+    public const string ENEMY_JET_01 = "enemy_jet_01";
+    public const string ENEMY_JET_02 = "enemy_jet_02";
+    public const string ENEMY_JET_03 = "enemy_jet_03";
+    public const string ENEMY_JET_04 = "enemy_jet_04";
 }

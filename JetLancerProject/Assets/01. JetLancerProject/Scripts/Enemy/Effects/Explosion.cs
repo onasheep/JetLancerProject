@@ -7,7 +7,7 @@ public class Explosion : MonoBehaviour, IDeactive
     
         
     // TODO : 추후 animation time 끝날 떄 디엑티브 하고 싶음
-    private float existTime = 1.0f;
+    private float existTime = 0.8f;
     private Animator anim;
     private void Awake()
     {

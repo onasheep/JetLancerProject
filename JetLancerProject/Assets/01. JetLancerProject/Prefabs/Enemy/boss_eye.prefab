@@ -383,8 +383,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3796296043483502717}
   - component: {fileID: 3796296043483502716}
-  - component: {fileID: 3796296043483502719}
   - component: {fileID: 3796296043483502718}
+  - component: {fileID: 3796296043483502719}
+  - component: {fileID: 1931260235}
   m_Layer: 10
   m_Name: boss_eye
   m_TagString: Untagged
@@ -463,26 +464,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3796296043483502719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3796296043483502690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83196c2f48cef3a4b873777ed4d51410, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myPattern: 0
-  barrel: {fileID: 3796296044279174001}
-  laser_Start: {fileID: 3340525329609248878}
-  laser_Hitbox: {fileID: 1320089418225705994}
-  laserBarrelPos: {fileID: 3796296042283058724}
-  bulletPrefabs: {fileID: 6178346429773594223, guid: cfe7ba95f7c35c44991b9e2b662f8ba5, type: 3}
-  GunBarrel_Left: {fileID: 3796296043530382264}
-  GunBarrel_Right: {fileID: 3796296043138153546}
 --- !u!61 &3796296043483502718
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -509,6 +490,125 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.27, y: 1.6}
   m_EdgeRadius: 0
+--- !u!114 &3796296043483502719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3796296043483502690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83196c2f48cef3a4b873777ed4d51410, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myPattern: 0
+  barrel: {fileID: 3796296044279174001}
+  laser_Start: {fileID: 3340525329609248878}
+  laser_Hitbox: {fileID: 1320089418225705994}
+  laserBarrelPos: {fileID: 3796296042283058724}
+  GunBarrel_Left: {fileID: 3796296043530382264}
+  GunBarrel_Right: {fileID: 3796296043138153546}
+  fireClip: {fileID: 8300000, guid: 172eaf5901904484880240c7ec3dad70, type: 3}
+  laserPrepClip: {fileID: 8300000, guid: 6552845a946edd84184458be13ec0c22, type: 3}
+  laserFireClip: {fileID: 8300000, guid: a42e58db93ae80346869cae931631fcf, type: 3}
+  laserAfterClip: {fileID: 8300000, guid: e2946efc3c2c8714296a347ade70d014, type: 3}
+--- !u!82 &1931260235
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3796296043483502690}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &3796296043493579735
 GameObject:
   m_ObjectHideFlags: 0
@@ -1189,6 +1289,10 @@ PrefabInstance:
     - target: {fileID: 2809895937381102656, guid: 3f728e0aa9e62604b9a9a91e8b68fe04, type: 3}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2809895937381102656, guid: 3f728e0aa9e62604b9a9a91e8b68fe04, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2809895937381102656, guid: 3f728e0aa9e62604b9a9a91e8b68fe04, type: 3}
       propertyPath: m_LocalScale.y

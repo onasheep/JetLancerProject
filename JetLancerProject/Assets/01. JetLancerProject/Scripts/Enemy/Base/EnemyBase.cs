@@ -4,9 +4,9 @@ using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class EnemyBase : MonoBehaviour, IDamageable
+public abstract class EnemyBase : MonoBehaviour, IDeactive
 {
-    // Enemy Å¸ÀÔ
+    // Enemy íƒ€ì…
     protected enum TYPE
     {
         NONE = -1, BASIC, GOLD, HOMING, BIGBULLET
@@ -16,7 +16,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     protected UnityAction moveFunc = default;
     protected UnityAction fireFunc = default;
 
-    // {Enemy Á¤º¸
+    // {Enemy ì •ë³´
     protected int hp = default;
     protected int damage = default;
     protected int score = default;    
@@ -24,32 +24,49 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     protected float speed = default;
     protected float maxSpeed = default;
 
-    // Test
     float bulletTimer = 0f;
 
     protected float fireTime = 5f;
-    // Enemy Á¤º¸}
+    // Enemy ì •ë³´}
 
-    // {Enemy °ø°İ½Ã Å½Áö ¹üÀ§ ¹× °¢µµ
+    // {Enemy ê³µê²©ì‹œ íƒì§€ ë²”ìœ„ ë° ê°ë„
     protected float detectAngle = 35f;
     protected float detectRadius = 10f;
     protected float distToTarget = default;
     protected Vector2 dirToTarget = default;
     protected Vector2 dirToShoot = default;
     protected Transform targetPos = default;
-    protected float targetAngle = default; 
-    // Enemy °ø°İ½Ã Å½Áö ¹üÀ§ ¹× °¢µµ}
+    protected float targetAngle = default;
+    // Enemy ê³µê²©ì‹œ íƒì§€ ë²”ìœ„ ë° ê°ë„}
+
+
 
     protected Rigidbody2D rigid = default;
+    protected Animator anim = default;
 
-    // Target Á¤º¸
+    protected AudioSource audioSource = default;
+
+    public AudioClip fireClip = default;
+
+    // Target ì •ë³´
     protected GameObject target = default;
 
-    protected abstract void Init();
+    protected virtual void Init()
+    {
+        rigid = GetComponent<Rigidbody2D>();
+        if (anim.IsValid() == true)
+        {
+            anim = GetComponent<Animator>();
+
+        }
+        audioSource = GetComponent<AudioSource>();
+    }
     protected abstract void SetTarget();
     protected abstract void CheckTarget();
 
-    // ±³¼ö´ÔÀÌ ¿¹½Ã¿ëÀ¸·Î Â¥ÁÖ½Å Move Delegate È°¿ë 
+
+
+    // êµìˆ˜ë‹˜ì´ ì˜ˆì‹œìš©ìœ¼ë¡œ ì§œì£¼ì‹  Move Delegate í™œìš© 
     protected virtual void Move()
     {
         if (moveFunc == default)
@@ -57,90 +74,93 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
             this.moveFunc = () => DefaultMove();
         }
 
-        // ¿©±â ¹º°¡ Àç»ç¿ë °¡´ÉÇÑ ¿òÁ÷ÀÓµé
+        // ì—¬ê¸° ë­”ê°€ ì¬ì‚¬ìš© ê°€ëŠ¥í•œ ì›€ì§ì„ë“¤
         this.moveFunc.Invoke();
-        // ¿©±â ¹º°¡ Àç»ç¿ë °¡´ÉÇÑ ¿òÁ÷ÀÓµé
+        // ì—¬ê¸° ë­”ê°€ ì¬ì‚¬ìš© ê°€ëŠ¥í•œ ì›€ì§ì„ë“¤
 
     }       // Move()
 
     private void DefaultMove()
     {
+        float rotateAmount = Vector3.Cross(dirToTarget ,transform.right ).z;
+
+
 
         if (rigid.velocity.magnitude > maxSpeed)
         {
             rigid.velocity = rigid.velocity.normalized * maxSpeed;
-        }       // if : ¼Óµµ°¡ ÃÖ´ë ¼Óµµ¸¦ ³Ñ¾î°¡¸é ÃÖ´ë¼Óµµ·Î °íÁ¤
+        }       // if : ì†ë„ê°€ ìµœëŒ€ ì†ë„ë¥¼ ë„˜ì–´ê°€ë©´ ìµœëŒ€ì†ë„ë¡œ ê³ ì •
 
-        // ÀÓ½Ã ¿òÁ÷ÀÓ Á¦ÇÑ °Å¸®°ª 5f 
+        // ì„ì‹œ ì›€ì§ì„ ì œí•œ ê±°ë¦¬ê°’ 5f 
         if (distToTarget > 4f)
         {
-            float rotateAmount = Vector3.Cross(dirToTarget, transform.right).z;            
             rigid.angularVelocity = -rotateAmount * 100;
             rigid.velocity = transform.right * speed;
-        }       // if : ÀÏÁ¤ °Å¸®±îÁö ÇÃ·¹ÀÌ¾î¸¦ ÇâÇØ ÀÌµ¿
+        }       // if : ì¼ì • ê±°ë¦¬ê¹Œì§€ í”Œë ˆì´ì–´ë¥¼ í–¥í•´ ì´ë™
         else
         {
-            // TODO : ÅºÈ¯ ¹ß»ç È¤Àº È¸ÇÇ±âµ¿ ±¸ÇöÇÏ±â
-            StartCoroutine(EvadeMotion());
-        }       // else : ÀÏÁ¤ °Å¸® ³»¿¡ µé¾î°«À» ¶§ ÇÒ Çàµ¿   
+            // TODO : íƒ„í™˜ ë°œì‚¬ í˜¹ì€ íšŒí”¼ê¸°ë™ êµ¬í˜„í•˜ê¸°
+            StartCoroutine(EvadeMotion(rotateAmount));
+        }       // else : ì¼ì • ê±°ë¦¬ ë‚´ì— ë“¤ì–´ê°“ì„ ë•Œ í•  í–‰ë™   
     }       // DefaultMove()
 
-    IEnumerator EvadeMotion()
+    IEnumerator EvadeMotion(float rotateAmount_)
     {
         float evadeTime = 3f;
         float time = Time.time;
-        float rotateAmount = Vector3.Cross(dirToTarget, transform.right).z;
         while (evadeTime < time)
         {
             time = 0f;
             float randomRot = Random.Range(200f, 350f);
-            rigid.angularVelocity = rotateAmount * randomRot;
+            rigid.angularVelocity = rotateAmount_ * randomRot;
             rigid.velocity = transform.right * speed;
             yield return null;  
         }
     }       // EvadeMotion()
 
-    // À§¿¡ ¹è²¸¼­ Â§ Fire Delegate È°¿ë
+
+
+    // ìœ„ì— ë°°ê»´ì„œ ì§  Fire Delegate í™œìš©
     protected virtual void Fire()
     {
         if (fireFunc == default)
         {
             
-            // 3 way fire ±¸ÇöÇÒ ‹š 
-            // fireFunc¿¡ DefaultFire¸¦ 3°³ += ·Î Ãß°¡ÇÏµÇ, 
-            // ³ª¸ÓÁö µÎ°¡Áö Fire´Â ±âº» dir ¹æÇâ¿¡¼­ angle °ªÀ» + ¼¼Å¸, -¼¼Å¸ ¸¸Å­ È¸Àü ½ÃÄÑÁØ ¹æÇâÀ¸·Î
-            // ¹ß»ç ½ÃÅ°¸é µÈ´Ù.
+            // 3 way fire êµ¬í˜„í•  ë–„ 
+            // fireFuncì— DefaultFireë¥¼ 3ê°œ += ë¡œ ì¶”ê°€í•˜ë˜, 
+            // ë‚˜ë¨¸ì§€ ë‘ê°€ì§€ FireëŠ” ê¸°ë³¸ dir ë°©í–¥ì—ì„œ angle ê°’ì„ + ì„¸íƒ€, -ì„¸íƒ€ ë§Œí¼ íšŒì „ ì‹œì¼œì¤€ ë°©í–¥ìœ¼ë¡œ
+            // ë°œì‚¬ ì‹œí‚¤ë©´ ëœë‹¤.
             this.fireFunc = () => DefaultFire(0f);
         }
 
         if (distToTarget < detectRadius)
         {
-            // Å½Áö°¡ µÇ´Â µ¿¾È¸¸ ¹ß»ç ÄğÅ¸ÀÓÀÌ µ¹µµ·Ï if¹® ¾È¿¡ ³Ö¾îµÒ            
+            // íƒì§€ê°€ ë˜ëŠ” ë™ì•ˆë§Œ ë°œì‚¬ ì¿¨íƒ€ì„ì´ ëŒë„ë¡ ifë¬¸ ì•ˆì— ë„£ì–´ë‘             
             bulletTimer += Time.deltaTime;
-            // ÄğÅ¸ÀÓ Ã¼Å©¿ë Debug
+            // ì¿¨íƒ€ì„ ì²´í¬ìš© Debug
 
-            // { Å¸°Ù°ú ÀûÀÇ ¾Õ¹æÇâÀ» ³»ÀûÇØ¼­ °¢À» ±¸ÇÔ
+            // { íƒ€ê²Ÿê³¼ ì ì˜ ì•ë°©í–¥ì„ ë‚´ì í•´ì„œ ê°ì„ êµ¬í•¨
             float dot = Vector2.Dot(dirToTarget, transform.right);
             float theta = Mathf.Acos(dot);
             float degree = theta * Mathf.Rad2Deg;
-            //  Å¸°Ù°ú ÀûÀÇ ¾Õ¹æÇâÀ» ³»ÀûÇØ¼­ °¢À» ±¸ÇÔ}
+            //  íƒ€ê²Ÿê³¼ ì ì˜ ì•ë°©í–¥ì„ ë‚´ì í•´ì„œ ê°ì„ êµ¬í•¨}
 
             if (degree <= (detectAngle / 2f) && bulletTimer > fireTime)
             {
                 this.fireFunc.Invoke();
+                audioSource.PlayOneShot(fireClip);
+            }       // if: íƒì§€ê° ì•ˆì— í”Œë ˆì´ì–´ê°€ ìˆê³ , ë°œì‚¬ ì¿¨íƒ€ì„ì´ ë˜ë©´ ì´ì•Œì„ ë°œì‚¬
+            else { /* Do nothing */ } 
 
-            }       // if: Å½Áö°¢ ¾È¿¡ ÇÃ·¹ÀÌ¾î°¡ ÀÖ°í, ¹ß»ç ÄğÅ¸ÀÓÀÌ µÇ¸é ÃÑ¾ËÀ» ¹ß»ç
-            else { /* Do nothing */ }
-
-        }       // if : °¨Áö ¹üÀ§¾È¿¡ µé¾î¿À¸é ÅºÈ¯ ¹ß»ç
+        }       // if : ê°ì§€ ë²”ìœ„ì•ˆì— ë“¤ì–´ì˜¤ë©´ íƒ„í™˜ ë°œì‚¬
         else { /* Do noting */ }
     }       // Fire()
 
     protected void DefaultFire(float angle)
     {
 
-        // TODO : ÅºÈ¯ ¹ß»ç 
-        // ÃßÈÄ ¸®¼Ò½º ¸Å´ÏÀú¿Í ¿ÀºêÁ§Æ® Ç®À» Ãß°¡ÇÏ¸é ¼öÁ¤ ¿¹Á¤
+        // TODO : íƒ„í™˜ ë°œì‚¬ 
+        // ì¶”í›„ ë¦¬ì†ŒìŠ¤ ë§¤ë‹ˆì €ì™€ ì˜¤ë¸Œì íŠ¸ í’€ì„ ì¶”ê°€í•˜ë©´ ìˆ˜ì • ì˜ˆì •
         bulletTimer = 0f;
         GameObject bulletObj = GameManager.Instance.poolManager.
             SpawnFromPool(RDefine.ENEMY_BULLET, this.transform.position, Quaternion.identity);
@@ -156,27 +176,30 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
 
     }       // DefaultFire()
 
-    // ÅºÈ¯ÀÌ Layer¸¦ °Ë»çÇØ¼­ ÇØ´ç ÇÔ¼ö¸¦ È£ÃâÇÒ °Í
+    // íƒ„í™˜ì´ Layerë¥¼ ê²€ì‚¬í•´ì„œ í•´ë‹¹ í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•  ê²ƒ
     public void OnDamage(int damage)
     {
         if (hp > damage)
         {
             hp -= damage;
             Debug.LogFormat("{0}", hp);
-        }       // if : damageº¸´Ù Å¬¶§¸¸ µ¿ÀÛ
+        }       // if : damageë³´ë‹¤ í´ë•Œë§Œ ë™ì‘
         else
         {
-            // TODO : Ã¼·ÂÀÌ 0ÀÌ µÇ¸é ÆÄ±«µÇµµ·Ï ÇÔ (Å×½ºÆ® ¿Ï·á)
-            // ÃßÈÄ ¿ÀºêÁ§Æ® Ç®ÀÌ Ãß°¡µÇ¸é ¼öÁ¤ ¿¹Á¤
-            Destroy(this.gameObject);
+            // TODO : ì²´ë ¥ì´ 0ì´ ë˜ë©´ íŒŒê´´ë˜ë„ë¡ í•¨ (í…ŒìŠ¤íŠ¸ ì™„ë£Œ)
+            // ì¶”í›„ ì˜¤ë¸Œì íŠ¸ í’€ì´ ì¶”ê°€ë˜ë©´ ìˆ˜ì • ì˜ˆì •
+            Deactive();
             Die();
-        }       // else : damageº¸´Ù ÀÛÀ» ¶§ Die() ÇÔ¼ö È£Ãâ
+        }       // else : damageë³´ë‹¤ ì‘ì„ ë•Œ Die() í•¨ìˆ˜ í˜¸ì¶œ
     }
     protected abstract void Die();
-    
-   
 
+    public void Deactive()
+    {
+        // Interface ë‚´ìš©
+        this.gameObject.SetActive(false);
 
+    }       // Deactive()
 
 
 

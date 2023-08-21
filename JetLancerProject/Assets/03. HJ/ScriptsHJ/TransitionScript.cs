@@ -16,10 +16,16 @@ public class TransitionScript : MonoBehaviour
     private Rigidbody2D playerRigid;
     private void Start()
     {
-        
-        playCanvas = GFunc.GetRootObj(RDefine.PLAYER_CANVAS);
         player = GFunc.GetRootObj(RDefine.PLAYER);
-        playerRigid = player.GetComponent<Rigidbody2D>();
+        playCanvas = GFunc.GetRootObj(RDefine.PLAYER_CANVAS);
+
+        if (player.IsValid() == true)
+        {
+            playerRigid = player.GetComponent<Rigidbody2D>();
+        }       // if : Play Scene 이외에서 rigidBody를 찾지 않도록 
+
+
+
         if (SceneManager.GetActiveScene().buildIndex == 2)
         {
             StartCoroutine(AliveObj());

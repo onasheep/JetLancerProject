@@ -15,40 +15,47 @@ public class Boss_Eye : MonoBehaviour, IDamageable
     [SerializeField]
     PATTERN myPattern = default;
 
+        
     // TEST : test를 위한 바인딩들 
     // TODO : 추후 찾아와서 가져올 오브젝트들
     public GameObject barrel = default;
     public GameObject laser_Start = default;
     public GameObject laser_Hitbox = default;
     public Transform laserBarrelPos = default;    
-    public GameObject bulletPrefabs = default;
     public Transform GunBarrel_Left = default;
     public Transform GunBarrel_Right = default;
 
-    float distToTarget = default;
-    float targetAngle = default;
-    float playTime = 0f;
-    float count = 0f;
+    private float distToTarget = default;
+    private float targetAngle = default;
+    private float playTime = 0f;
+    private float count = 0f;
 
-    float hp = 1f;
-    
+    private float hp = 1f;
+
 
     // 쏠 준비 탄환    
-    float bulletFireTime = 3f;
-    float time = 0f;
+    private float bulletFireTime = 3f;
+    private float time = 0f;
 
     // 쏠 준비 레이저
-    bool isLaser = false;
-    float track_StartTime = 3f;
-    float rotationSpeed = 0f;
+    private bool isLaser = false;
+    private float track_StartTime = 3f;
+    private float rotationSpeed = 0f;
 
     // target 확인용 임시 
     private GameObject target = default;
-    Vector2 dirToTarget = default;
+    private Vector2 dirToTarget = default;
 
     // PoolManger
-    PoolManager poolmanager;
-    
+    private PoolManager poolmanager;
+
+    // AudioSourece
+    private AudioSource audioSource;
+    public AudioClip fireClip;
+    public AudioClip laserPrepClip;
+    public AudioClip laserFireClip;
+    public AudioClip laserAfterClip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,6 +64,8 @@ public class Boss_Eye : MonoBehaviour, IDamageable
         //
 
         poolmanager = GameManager.Instance.poolManager;
+        audioSource = GetComponent<AudioSource>();
+
         myPattern = PATTERN.LASER;
         SetTarget();
     }
@@ -135,17 +144,20 @@ public class Boss_Eye : MonoBehaviour, IDamageable
         laserBarrelPos.transform.right = dirToTarget;
         laser_Hitbox.transform.localScale = new Vector3(10f, 0.1f,0f);
 
+        audioSource.PlayOneShot(laserPrepClip);
+
         while (time < 3f)
         {
-
             time += Time.deltaTime;
             chaseAcu -= 0.001f ;
             laserBarrelPos.transform.right = Vector3.Slerp(laserBarrelPos.transform.right, dirToTarget, Mathf.Clamp(chaseAcu,0f,1f)* Time.deltaTime);
-            laser_Hitbox.transform.localScale = new Vector3(10f, Mathf.Clamp(0f + time / 2f,0f,1.5f) , 0f);
+            laser_Hitbox.transform.localScale = new Vector3(10f, Mathf.Clamp(0f + time / 2f,0f,2.0f) , 0f);
             yield return null;
         }
 
+        laser_Hitbox.transform.DOPunchScale(new Vector3(0.5f, 0.5f), 1, 1, 5f);
         laser_Hitbox.GetComponent<Collider2D>().enabled = true;
+        audioSource.PlayOneShot(laserFireClip);
 
     }
 
@@ -158,6 +170,7 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
         if (!laserTrackingStarted)
         {
+            audioSource.PlayOneShot(laserPrepClip);
             laser_Start.SetActive(true);
             laser_Start.transform.DOPunchScale(new Vector3(1f, 1f), 10f, 10, 0.5f);
             
@@ -177,9 +190,10 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
             // Reset laser tracking settings
             laser_Hitbox.SetActive(false);
+
+            audioSource.PlayOneShot(laserAfterClip);
             laserBarrelPos.GetComponentInChildren<Animator>().SetTrigger("IsCool");
-            
-            Debug.LogFormat("{0}", laserBarrelPos.GetComponentInChildren<Animator>() == null);
+
             laserTrackingStarted = false;
             rotationSpeed = initialRotationSpeed;
             myPattern = PATTERN.NONE;
@@ -247,6 +261,9 @@ public class Boss_Eye : MonoBehaviour, IDamageable
         if (time > bulletFireTime)
         {
             time = 0;
+
+            audioSource.PlayOneShot(fireClip);
+
             FireBullet();
             count++;          
         }
@@ -265,7 +282,7 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
     private void FireBullet()
     {
-        // 포문 두개 
+
 
         // 총알 발사 로직 
 
@@ -287,11 +304,14 @@ public class Boss_Eye : MonoBehaviour, IDamageable
         bossBullet1.transform.localScale *= 2f;
         //  오른쪽 포문 }
 
+        // 탄환 재생
+
         float bulletSpeed = 2f;
         bulletRigid.AddForce(barrel.transform.up * bulletSpeed, ForceMode2D.Impulse);
         bulletRigid.transform.right = barrel.transform.up;
         bulletRigid1.AddForce(barrel.transform.up * bulletSpeed, ForceMode2D.Impulse);
         bulletRigid1.transform.right = barrel.transform.up;
+
 
         //Invoke(GameManager.Instance.poolManager.DeactiveObj(bossBullet), 5);
         //Invoke(GameManager.Instance.poolManager.DeactiveObj(bossBullet1), 5);
