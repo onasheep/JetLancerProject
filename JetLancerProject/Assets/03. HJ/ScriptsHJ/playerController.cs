@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public float health = 3f;
     public float gas = 100f;
+    private float maxGas = 100f;
     public float bulletSpeed;
     private float shooTimer;
 
@@ -25,9 +26,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     private Animator myAnimator;
     private AudioSource myAudio;
     private bool isBoost;
+    public bool isOverhitBoost;
     private bool isDead;
 
-
+    
 
     // SJ_
     // Damage 확인용
@@ -46,7 +48,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         Cursor.SetCursor(cursorIcon, Vector2.zero, CursorMode.Auto);
         myRigid = GetComponent<Rigidbody2D>();
-
+        
+        isOverhitBoost = false; 
         isBoost = false;
         //isFire = false;
         isDead = false;
@@ -68,19 +71,23 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
 
 
-        if (isBoost && gas > 0f)
-        {
-            gas -= 0.5f;
-            BoostPlayer();
-        }
-        else
-        {
-            if (gas < 100f)
-            {
-                gas += 0.5f;
-            }
-            isBoost = false;
-        }
+        //if (isBoost && gas > 0f)
+        //{
+        //    gas -= 0.5f;
+        //    BoostPlayer();
+        //}
+        //else if(gas <= 0)
+        //{
+        //    isOverhitBoost =true;
+        //}
+        //else
+        //{
+        //    if (gas < 100f)
+        //    {
+        //        gas += 0.5f *Time.deltaTime;
+        //    }
+           
+        //}
 
 
 
@@ -97,6 +104,27 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         MoveCharacter();
         RotateCharacter();
+        //부스터 게이지 관련 시작입니다
+        if (isBoost && gas > 0f && isOverhitBoost != true)
+        {
+            gas -= 20f * Time.deltaTime;
+            BoostPlayer();
+            LimitVelocity(10f);
+        }
+        else
+        {
+            if (gas < maxGas)
+            {
+                gas += 20f * Time.deltaTime;
+            }
+        }
+        if (gas >= maxGas)
+        {
+            isOverhitBoost = false;
+        }
+
+        
+        //부스터 게이지 관련 끝입니다
 
         if (Input.GetMouseButton(0))
         {
@@ -138,20 +166,23 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (Input.GetKeyUp(KeyCode.W))
         {
             KillChild("wBrnEffect");
-
         }
 
         if (Input.GetKey(KeyCode.Space))
         {
-            isBoost = true;
-            LimitVelocity(10f);
-
-            MakeCloud();
-
-            AliveChild("downSpaceEffect");
-            AliveChild("keepSpaceEffect");
-
+            if (gas <= 0)
+            {
+                isOverhitBoost = true;
+            }
+            if (isOverhitBoost != true)
+            {
+                isBoost = true;
+                AliveChild("downSpaceEffect");
+                AliveChild("keepSpaceEffect");
+                MakeCloud();
+            }
         }
+        
         if (Input.GetKeyUp(KeyCode.Space))
         {
             KillChild("downSpaceEffect");

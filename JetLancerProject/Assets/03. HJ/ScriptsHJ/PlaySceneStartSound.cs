@@ -35,10 +35,10 @@ public class PlaySceneStartSound : MonoBehaviour
         myAudio.PlayOneShot(oneTwoCountSound);
         yield return new WaitForSeconds(1f);
         myAudio.PlayOneShot(engaugeSound);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         myAudio.clip = backGroundSound;
         myAudio.Play();
-        myAudio.volume = 0.5f;
+        myAudio.volume = 0.4f;
     }
 
 }
