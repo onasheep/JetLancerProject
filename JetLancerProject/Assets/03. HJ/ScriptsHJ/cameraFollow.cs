@@ -6,7 +6,7 @@ public class CameraFollow : MonoBehaviour
 {
     public PlayerController playercontroller;
     //TODO 각 콜라이더 위치 받아와서 카메라 이동 범위 제한해줘야 합니다.
-    public float offsetX = 10;
+    
 
     private float minOffsetX;
     private float minOffsetY;  
@@ -15,7 +15,7 @@ public class CameraFollow : MonoBehaviour
 
 
   
-    public float offsetZ = -10;
+    private float offsetZ = -10;
     // Start is called before the first frame update
 
 

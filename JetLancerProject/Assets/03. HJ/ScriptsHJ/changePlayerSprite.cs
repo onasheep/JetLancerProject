@@ -34,59 +34,59 @@ public class ChangePlayerSprite : MonoBehaviour
 
 
         // 값을 기준으로 어떤 스프라이트 이미지를 보여줄지 결정
-        if (gasGauge >= 0f && gasGauge < 7f)
+        if (gasGauge >= 0f && gasGauge < 4f)
         {
             mySprite.sprite = sprites[14];
         }
-        else if (gasGauge >= 7f && gasGauge < 14f)
+        else if (gasGauge >= 4f && gasGauge < 10f)
         {
             mySprite.sprite = sprites[13];
         }
-        else if (gasGauge >= 14f && gasGauge < 21f)
+        else if (gasGauge >= 10f && gasGauge < 16f)
         {
             mySprite.sprite = sprites[12];
         }
-        else if (gasGauge >= 21f && gasGauge < 28f)
+        else if (gasGauge >= 16f && gasGauge < 21f)
         {
             mySprite.sprite = sprites[11];
         }
-        else if (gasGauge >= 28f && gasGauge < 35f)
+        else if (gasGauge >= 21f && gasGauge < 28f)
         {
             mySprite.sprite = sprites[10];
         }
-        else if (gasGauge >= 35f && gasGauge < 42f)
+        else if (gasGauge >= 28f && gasGauge < 36f)
         {
             mySprite.sprite = sprites[9];
         }
-        else if (gasGauge >= 42f && gasGauge < 49f)
+        else if (gasGauge >= 36f && gasGauge < 44f)
         {
             mySprite.sprite = sprites[8];
         }
-        else if (gasGauge >= 49f && gasGauge < 56f)
+        else if (gasGauge >= 44f && gasGauge < 51f)
         {
             mySprite.sprite = sprites[7];
         }
-        else if (gasGauge >= 56f && gasGauge < 63f)
+        else if (gasGauge >= 51f && gasGauge < 58f)
         {
             mySprite.sprite = sprites[6];
         }
-        else if (gasGauge >= 63f && gasGauge < 70f)
+        else if (gasGauge >= 58f && gasGauge < 65f)
         {
             mySprite.sprite = sprites[5];
         }
-        else if (gasGauge >= 70f && gasGauge < 77f)
+        else if (gasGauge >= 65f && gasGauge < 72f)
         {
             mySprite.sprite = sprites[4];
         }
-        else if (gasGauge >= 77f && gasGauge < 84f)
+        else if (gasGauge >= 72f && gasGauge < 79f)
         {
             mySprite.sprite = sprites[3];
         }
-        else if (gasGauge >= 84f && gasGauge < 91f)
+        else if (gasGauge >= 79f && gasGauge < 86f)
         {
             mySprite.sprite = sprites[2];
         }
-        else if (gasGauge >= 91f && gasGauge < 98f)
+        else if (gasGauge >= 86f && gasGauge < 93f)
         {
             mySprite.sprite = sprites[1];
         }

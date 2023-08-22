@@ -9,10 +9,13 @@ public class PlayerUiController : MonoBehaviour
     //private 
     public WaitForSeconds waitDotOneSec = new WaitForSeconds(0.1f);
     //켜줬다 꺼줄 오브젝트
-    public GameObject hpBarRed;
-    public GameObject leftFlipRed;
-    public GameObject rightFlitRed;
+    private GameObject hpBarRed;
+    private GameObject leftFlipRed;
+    private GameObject rightFlitRed;
 
+    private GameObject ohObj;  //오버히트 오브젝트입니다.
+    private GameObject ohFlipRedLeft;
+    private GameObject ohFlipRedRight;
     //참조할 부스터 게이지 오브젝트
     public GameObject player;
 
@@ -24,9 +27,15 @@ public class PlayerUiController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
+        //TODO 플레이어도 스크립트로 가져오게끔 바꿔줘야합니다.
+        //transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject;
+        hpBarRed = transform.GetChild(0).gameObject.transform.GetChild(3).gameObject;
+        leftFlipRed = transform.GetChild(0).gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject;
+        rightFlitRed = transform.GetChild(0).gameObject.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject;
+        ohObj = transform.GetChild(0).gameObject.transform.GetChild(1).gameObject.transform.GetChild(2).gameObject;
+        ohFlipRedLeft = transform.GetChild(0).gameObject.transform.GetChild(1).gameObject.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject;
+        ohFlipRedRight = transform.GetChild(0).gameObject.transform.GetChild(1).gameObject.transform.GetChild(2).gameObject.transform.GetChild(3).gameObject;
         playerGas = player.GetComponent<PlayerController>().gas;
-        //StartCoroutine(ActiveDie());
 
     }
 
@@ -37,8 +46,12 @@ public class PlayerUiController : MonoBehaviour
         if (isPlayerOverhit && isHit == false)
         {
             isHit = true;
+            ohObj.SetActive(true);
             StartCoroutine(ActiveDie());
             StopCoroutine(ActiveDie());
+        }
+        else
+        { 
         }
     }
     IEnumerator ActiveDie()
@@ -49,14 +62,21 @@ public class PlayerUiController : MonoBehaviour
             hpBarRed.SetActive(true);
             rightFlitRed.SetActive(true);
             leftFlipRed.SetActive(true);
+            ohFlipRedLeft.SetActive(true);
+            ohFlipRedRight.SetActive(true);
             yield return waitDotOneSec;
             hpBarRed.SetActive(false);
             rightFlitRed.SetActive(false);
             leftFlipRed.SetActive(false);
+            ohFlipRedLeft.SetActive(false);
+            ohFlipRedRight.SetActive(false);
         }
         isHit = false;
-        if(!isPlayerOverhit)
+        if (!isPlayerOverhit)
+        {
+            ohObj.SetActive(false);
             yield break;
+        }
     }
     void CheckGasMoveFlip()
     {

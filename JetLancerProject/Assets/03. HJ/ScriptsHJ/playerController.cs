@@ -67,32 +67,6 @@ public class PlayerController : MonoBehaviour, IDamageable
 
 
     }
-    private void FixedUpdate()
-    {
-
-
-        //if (isBoost && gas > 0f)
-        //{
-        //    gas -= 0.5f;
-        //    BoostPlayer();
-        //}
-        //else if(gas <= 0)
-        //{
-        //    isOverhitBoost =true;
-        //}
-        //else
-        //{
-        //    if (gas < 100f)
-        //    {
-        //        gas += 0.5f *Time.deltaTime;
-        //    }
-           
-        //}
-
-
-
-        //Debug.Log(gas);
-    }
 
     // TODO : Collider 변경점 
     private void Update()
@@ -107,7 +81,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         //부스터 게이지 관련 시작입니다
         if (isBoost && gas > 0f && isOverhitBoost != true)
         {
-            gas -= 20f * Time.deltaTime;
+            gas -= 28f * Time.deltaTime;
             BoostPlayer();
             LimitVelocity(10f);
         }
@@ -115,7 +89,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             if (gas < maxGas)
             {
-                gas += 20f * Time.deltaTime;
+                gas += 33f * Time.deltaTime;
             }
         }
         if (gas >= maxGas)
