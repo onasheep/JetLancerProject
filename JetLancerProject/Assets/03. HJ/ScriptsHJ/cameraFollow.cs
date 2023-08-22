@@ -6,9 +6,16 @@ public class CameraFollow : MonoBehaviour
 {
     public PlayerController playercontroller;
     //TODO 각 콜라이더 위치 받아와서 카메라 이동 범위 제한해줘야 합니다.
-    //public float offsetX = 10;
-    //public float offsetY = 10;
-    //public float offsetZ = -10;
+    public float offsetX = 10;
+
+    private float minOffsetX;
+    private float minOffsetY;  
+    private float maxOffsetX;
+    private float maxOffsetY;
+
+
+  
+    public float offsetZ = -10;
     // Start is called before the first frame update
 
 
@@ -16,7 +23,10 @@ public class CameraFollow : MonoBehaviour
     // 플레이어를 찾음
     void Start()
     {
-        
+        minOffsetX = -1.5f;
+        maxOffsetX = 140f;
+        minOffsetY = -16f;
+        maxOffsetY = 21f;
     }
 
     //private void FixedUpdate()
@@ -31,11 +41,11 @@ public class CameraFollow : MonoBehaviour
         //transform.position = playerController.transform.position;   
         transform.position = new Vector3(playercontroller.transform.position.x, playercontroller.transform.position.y, -10f);
     }
-    //private void LateUpdate()
-    //{
-    //    transform.position = new Vector3(
-    //        Mathf.Clamp(Camera.main.transform.position.x, -offsetX, offsetX),
-    //        Mathf.Clamp(Camera.main.transform.position.y, -offsetY, offsetY),
-    //        Mathf.Clamp(Camera.main.transform.position.z, offsetZ, offsetZ));
-    //}
+    private void LateUpdate()
+    {
+        transform.position = new Vector3(
+            Mathf.Clamp(Camera.main.transform.position.x, minOffsetX, maxOffsetX),
+            Mathf.Clamp(Camera.main.transform.position.y, minOffsetY, maxOffsetY),
+            Mathf.Clamp(Camera.main.transform.position.z, offsetZ, offsetZ));
+    }
 }
