@@ -32,13 +32,16 @@ public class PlayerController : MonoBehaviour, IDamageable
     // SJ_
     // Damage 확인용
     private int hp = 3;
-    private float pressTime = 0f;
 
+    // SJ_
+    // Dodge Test
+    public bool isDodge = default; // public : OnDamge에서 misiile을 닷지했을 떄 사용 
+    private float colliderSwitchDuration; // dodge 지속시간
 
-
-    private float colliderSwitchDuration; // 콜라이더 전환 지속 시간
+    // LEGACY : Collider 전환 형 닷지 
     private Collider2D[] colliders; // 모든 콜라이더 컴포넌트
     private bool isColliderSwitching = false; // 콜라이더 전환 중인지 여부
+
     private void Start()
     {
         Cursor.SetCursor(cursorIcon, Vector2.zero, CursorMode.Auto);
@@ -52,7 +55,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         bulletSpeed = 20f;
 
-        colliderSwitchDuration = 2.0f; // 0.5f
+        colliderSwitchDuration = 1.0f; // 0.5f
 
         // 콜라이더 컴포넌트들을 모두 가져와서 배열에 저장
         colliders = GetComponents<Collider2D>();
@@ -83,6 +86,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         //Debug.Log(gas);
     }
+
+    // TODO : Collider 변경점 
     private void Update()
     {
         if (isDead)
@@ -143,7 +148,6 @@ public class PlayerController : MonoBehaviour, IDamageable
 
             MakeCloud();
 
-
             AliveChild("downSpaceEffect");
             AliveChild("keepSpaceEffect");
 
@@ -203,7 +207,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             GameObject bullet = GameManager.Instance.poolManager.
                 SpawnFromPool(RDefine.PLAYER_BULLET, bulletPos.position, transform.rotation );
             bullet.GetComponent<Rigidbody2D>().AddForce(this.transform.right * bulletSpeed, ForceMode2D.Impulse);
-            shooTimer = Time.time + 0.11f;
+            shooTimer = Time.time + 0.11f; 
             myAudio.clip = fireClip;
             myAudio.PlayOneShot(myAudio.clip);
 
@@ -220,19 +224,24 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private IEnumerator SwitchCollidersCoroutine()
     {
-        // 모든 콜라이더 컴포넌트의 활성/비활성 전환
-        foreach (Collider2D collider in colliders)
-        {
-            collider.enabled = !collider.enabled;
-        }
-
+        // LEGACY : 
+        //// 모든 콜라이더 컴포넌트의 활성/비활성 전환
+        //foreach (Collider2D collider in colliders)
+        //{
+        //    collider.enabled = !collider.enabled;
+        //}
+        isDodge = true;
+        
         // 지정된 시간 후에 다시 콜라이더 복구
         yield return new WaitForSeconds(colliderSwitchDuration);
 
-        foreach (Collider2D collider in colliders)
-        {
-            collider.enabled = !collider.enabled;
-        }
+        // LEGACY : 
+        //foreach (Collider2D collider in colliders)
+        //{
+        //    collider.enabled = !collider.enabled;
+        //}
+
+        isDodge = false;
 
         isColliderSwitching = false; // 콜라이더 전환 상태 해제
     }
@@ -287,18 +296,26 @@ public class PlayerController : MonoBehaviour, IDamageable
     // Hp 깎는 함수 , IDamageable에서 가져옴
     public void OnDamage(int damage)
     {
+        // TEST :
+        if (isDodge == false)
+        {
+            if (hp > damage)
+            {
+                hp -= damage;
+                Debug.LogFormat("hp  : {0}", hp);
+            }       // if : damage보다 클때만 동작
+            else
+            {
+                // TEST : 0되면 Destroy()
+                Destroy(this.gameObject);
+                Die();
+            }       // else : damage보다 작을 떄 Die() 함수 호출
+        
+        }       // if : Dodge 중일 때 피해 입지 않음
+        else { /* Do Nothing */ }
 
-        if (hp > damage)
-        {
-            hp -= damage;
-            Debug.LogFormat("hp  : {0}", hp);
-        }       // if : damage보다 클때만 동작
-        else
-        {
-            // TEST : 0되면 Destroy()
-            Destroy(this.gameObject);
-            Die();
-        }       // else : damage보다 작을 떄 Die() 함수 호출
+        Debug.LogFormat("hp  : {0}", hp);
+
     }       // OnDamage()
 
 

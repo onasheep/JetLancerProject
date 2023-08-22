@@ -18,6 +18,7 @@ public class PoolManager : MonoBehaviour
     private void Awake()
     {
         GameManager.Instance.poolManager = this;
+        Debug.LogFormat("{0}", GameManager.Instance.poolManager == null);
     }
     void Start()
     {
@@ -31,6 +32,7 @@ public class PoolManager : MonoBehaviour
             for(int i = 0; i < pool.size; i++)
             {
                 GameObject obj = Instantiate(pool.prefabs, poolConstaincer.transform);
+                Debug.LogFormat("{0}", pool == null);
                 obj.SetActive(false);
                 objectPool.Enqueue(obj);
             }
@@ -57,10 +59,11 @@ public class PoolManager : MonoBehaviour
             objectToSpawn.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
         }       // if : rigidBody를 가지고 있는 객체의 속도 초기화
 
+        // TODO : 필요성 확인 후 삭제 
         if(objectToSpawn.GetComponent<Animator>() != null)
         {
             objectToSpawn.GetComponent<Animator>().enabled = true;
-        }
+        }       // if : Animator를 가지고 있는 객체의 애니메이터 초기화
 
         
         objectToSpawn.SetActive(true);
@@ -73,4 +76,6 @@ public class PoolManager : MonoBehaviour
         return objectToSpawn;
     }
     
+    
+
 }

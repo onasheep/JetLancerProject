@@ -50,6 +50,7 @@ public class FadeInOut : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex == 0 )
         {
             MiddleMove();
+
         }
     }
    
@@ -111,9 +112,10 @@ public class FadeInOut : MonoBehaviour
             }
             else // 애니메이션이 완료된 경우
             {
-                //TODO public 으로 받아오는거 스크립트로 받아오게 바꿔야함
-                rectTransform.sizeDelta = new Vector2(targetWidth, rectTransform.sizeDelta.y); // 목표 너비로 크기 조정
-                animationStarted = false; // 애니메이션 종료 플래그 설정
+                ////TODO public 으로 받아오는거 스크립트로 받아오게 바꿔야함
+                //rectTransform.sizeDelta = new Vector2(targetWidth, rectTransform.sizeDelta.y); // 목표 너비로 크기 조정
+                //animationStarted = false; // 애니메이션 종료 플래그 설정
+                /* Do nothing */
             }
         }
     }

@@ -15,6 +15,7 @@ public class HomingMissile : MonoBehaviour, IDamageable, IDeactive
     private int hp = 2;
     private float speed = 5f;
     private float maxChaseTime = 15f;
+    private float rotateSpeed = 200f;
 
     private void Awake()
     {
@@ -46,8 +47,14 @@ public class HomingMissile : MonoBehaviour, IDamageable, IDeactive
         // angularvelocity를 사용하여 따라가는 로직, 원하는 만큼 회전하며 따라가지만 
         // velocity를 건드린다는 문제가 있음.. 
         // 정 안되면 이 부분으로 가겠지만 , 한번 추가적으로 알아볼 필요가 있다.
+        
+        if(dir.magnitude < 2)
+        {
+            rotateSpeed = 300f;
+        }
+
         float rotateAmount = Vector3.Cross(dir, transform.right).z;
-        rigid.angularVelocity = -rotateAmount * 200f;
+        rigid.angularVelocity = -rotateAmount * rotateSpeed;
         rigid.velocity = transform.right * speed;
 
  
@@ -72,13 +79,21 @@ public class HomingMissile : MonoBehaviour, IDamageable, IDeactive
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.layer.Equals(LayerMask.NameToLayer("Player")))
-        {
+        {            
             int damage = 1;
-            collision.GetComponent<PlayerController>().OnDamage(damage);
+            PlayerController player = collision.GetComponent<PlayerController>();
+            
+            player.OnDamage(damage);
+
+
+            // TODO : 플레이어가 회피 했을 때 , 일정시간 후 자동으로 터지는 유도탄
+            if (player.isDodge == true)
+            {
+                
+            }
 
             GameObject missile_explosion = GameManager.Instance.poolManager.SpawnFromPool(RDefine.MISSILE_EXPLOSION, this.transform.position, Quaternion.identity);
             missile_explosion.transform.localScale *= 0.5f;
-
             Deactive();
         }
     }

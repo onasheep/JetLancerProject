@@ -16,6 +16,7 @@ public class TransitionScript : MonoBehaviour
     private Rigidbody2D playerRigid;
     void Start()
     {
+
         if (SceneManager.GetActiveScene().buildIndex == 2)
         {
             playCanvas = GFunc.GetRootObj(RDefine.PLAYER_CANVAS);

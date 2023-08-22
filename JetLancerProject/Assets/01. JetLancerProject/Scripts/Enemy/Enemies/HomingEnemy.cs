@@ -24,7 +24,6 @@ public class HomingEnemy : EnemyBase, IDamageable
     {
         CheckTarget();
         Move();
-
         Fire();
     }
 
@@ -32,6 +31,8 @@ public class HomingEnemy : EnemyBase, IDamageable
     // 해당 초기화 값은 임시값 
     protected override void Init()
     {
+        base.Init();
+
         Type = TYPE.HOMING;
         hp = 5;
         damage = 1;
@@ -39,8 +40,7 @@ public class HomingEnemy : EnemyBase, IDamageable
         maxSpeed = 10f;
 
         fireMTime = 0f;
-        maxfireTime = 5f;
-        rigid = GetComponent<Rigidbody2D>();
+        maxfireTime = 15f;
 
     }
     protected override void Move()
@@ -71,6 +71,7 @@ public class HomingEnemy : EnemyBase, IDamageable
 
                 Debug.Log("미사일발사");
                 FireMissile();
+                audioSource.PlayOneShot(fireClip);
             }
         }
     }
@@ -79,7 +80,7 @@ public class HomingEnemy : EnemyBase, IDamageable
     {
         GameManager.Instance.poolManager.
             SpawnFromPool(RDefine.ENEMY_ROCKET, this.transform.position, Quaternion.identity);
-
+       
     }
 
 

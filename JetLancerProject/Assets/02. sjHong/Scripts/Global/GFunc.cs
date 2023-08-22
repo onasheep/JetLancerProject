@@ -27,7 +27,11 @@ public static partial class GFunc
         return !isInValid;
     }       // IsValid()
 
-
+    public static bool IsValid<T>(this Queue<T> queue_)
+    {
+        bool isInValid = (queue_ == null || queue_.Count < 1);
+        return !isInValid;
+    }       // IsValid()
 
 }
 

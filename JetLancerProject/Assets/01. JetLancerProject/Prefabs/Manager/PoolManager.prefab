@@ -47,7 +47,7 @@ MonoBehaviour:
   pools:
   - tag: enemy_bullet
     prefabs: {fileID: 538208885923733723, guid: d4efc85d2cbf19048b53edd2a66eb6d3, type: 3}
-    size: 200
+    size: 100
   - tag: enemy_rocket
     prefabs: {fileID: 2402976704339834407, guid: 0dafc76f81ac86143936de8db853422b, type: 3}
     size: 50
@@ -65,4 +65,16 @@ MonoBehaviour:
     size: 20
   - tag: missile_explosion
     prefabs: {fileID: 6702849975833041062, guid: 0afb5ed89bd48674d91d4332974203c8, type: 3}
+    size: 20
+  - tag: enemy_jet_01
+    prefabs: {fileID: 883308900542118089, guid: 3b29643ad7f627146b690d68d49adde9, type: 3}
+    size: 20
+  - tag: enemy_jet_02
+    prefabs: {fileID: 6334109242977546828, guid: 2d0bd47b19cffaf40974fccd4e007090, type: 3}
+    size: 20
+  - tag: enemy_jet_03
+    prefabs: {fileID: 6868963604740084292, guid: 947c5780636014145ab02a1f9270bde8, type: 3}
+    size: 20
+  - tag: enemy_jet_04
+    prefabs: {fileID: 5716908739867795807, guid: 61a05b3061f7c6445b8823af068a771c, type: 3}
     size: 20
