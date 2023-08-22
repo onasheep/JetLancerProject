@@ -14,19 +14,26 @@ public class WaveManager : MonoBehaviour
 
     [SerializeField]
     public List<GameObject> enemyList;
-    [SerializeField]
-    private int curWave = 1;
+    public int curWave = 1;
     [SerializeField]
     private int remainToSpawn = default;
     private float minSpawnTime = 0.5f;
     private float maxSpawnTime = 5f;
 
+    // 형준이 Intro 시간 4.3f
+    // 나중에 수정 필요
+    private float introTime = 6.0f;
+
     private bool isSpawn = default;
-    [SerializeField]
-    private bool isClear = default;
+    public bool isClear = default;
     
     private PoolManager pool;
 
+    private void Awake()
+    {
+        isClear = false;
+        isSpawn = false;
+    }
     void Start()
     {
         pool = GameManager.Instance.poolManager;
@@ -35,24 +42,26 @@ public class WaveManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // 인트로 타임 이후부터 스폰 시작!
+        if (introTime > Time.time) { return; }
 
         if (isSpawn == false && isClear == false)
-        {
+        { 
             isSpawn = true;
+            Debug.LogFormat("{0}", curWave);
             SetWave(curWave);
 
             StartCoroutine(SpawnEnemy());
-        }
-
-
-        if (CheckActive() == false)
-        {
-            enemyList.Clear();            
-            isClear = false;
             curWave += 1;
         }
 
+        if (CheckActive() == false)
+        {
+
+            enemyList.Clear();            
+            isClear = true;
+            isSpawn = false;
+        }
 
     }
     void SetWave(int waveIdx)
@@ -78,26 +87,6 @@ public class WaveManager : MonoBehaviour
         return false;
     }
 
-    void AddEnemyToList()
-    {
-        float randNum = Random.Range(1, 5);
-        switch (randNum)
-        {
-            case 1:
-                SpawnWaveEnemy(RDefine.ENEMY_JET_01);
-                break;
-            case 2:
-                SpawnWaveEnemy(RDefine.ENEMY_JET_02);
-                break;
-            case 3:
-                SpawnWaveEnemy(RDefine.ENEMY_JET_03);
-                break;
-            case 4:
-                SpawnWaveEnemy(RDefine.ENEMY_JET_04);
-                break;
-        }
-        remainToSpawn--;
-    }
     IEnumerator SpawnEnemy()
     {
         // 구조 이상 변경 필요
@@ -106,8 +95,6 @@ public class WaveManager : MonoBehaviour
         {
             if (remainToSpawn <= 0)
             {
-                isClear = true;
-                isSpawn = false;
                 yield break;
             }
 
@@ -129,8 +116,6 @@ public class WaveManager : MonoBehaviour
                     break;
             }
             remainToSpawn--;
-
-
             yield return new WaitForSeconds(spawnTime);
         }
     }

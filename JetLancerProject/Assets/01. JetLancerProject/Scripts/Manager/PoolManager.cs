@@ -17,8 +17,7 @@ public class PoolManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.poolManager = this;
-        Debug.LogFormat("{0}", GameManager.Instance.poolManager == null);
+        GameManager.Instance.poolManager = this;        
     }
     void Start()
     {
@@ -32,7 +31,7 @@ public class PoolManager : MonoBehaviour
             for(int i = 0; i < pool.size; i++)
             {
                 GameObject obj = Instantiate(pool.prefabs, poolConstaincer.transform);
-                Debug.LogFormat("{0}", pool == null);
+
                 obj.SetActive(false);
                 objectPool.Enqueue(obj);
             }

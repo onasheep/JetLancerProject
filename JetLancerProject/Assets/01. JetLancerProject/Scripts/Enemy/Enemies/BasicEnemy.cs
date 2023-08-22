@@ -31,7 +31,7 @@ public class BasicEnemy : EnemyBase, IDamageable
         base.Init();
 
         Type = TYPE.BASIC;
-        hp = 5;
+        hp = 1; // 3;
         damage = 1;
         speed = 5f;
         maxSpeed = 10f;

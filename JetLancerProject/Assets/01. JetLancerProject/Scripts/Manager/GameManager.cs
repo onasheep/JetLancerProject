@@ -9,7 +9,8 @@ public class GameManager : GSingleton<GameManager>
 {
     public PoolManager poolManager = default;
     public WaveManager waveManager = default;
-    
+    public PlayerController player = default;
+
     private bool isGameOver = default;
 
     // ≈ÿΩ∫∆Æ
@@ -44,6 +45,9 @@ public class GameManager : GSingleton<GameManager>
         poolManager = GFunc.GetRootObj("PoolManager").GetComponent<PoolManager>();
         if (GFunc.GetRootObj("WaveManager").IsValid() == false) { return; }
         waveManager = GFunc.GetRootObj("WaveManager").GetComponent<WaveManager>();
+        if (GFunc.GetRootObj("Player").IsValid() == false) { return; }
+        player = GFunc.GetRootObj("Player").GetComponent<PlayerController>();
+
     }
 
 
