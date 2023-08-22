@@ -32,7 +32,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     // SJ_
     // Damage 확인용
     private int hp = 3;
-    private float pressTime = 0f;
 
     // SJ_
     // Dodge Test
@@ -87,6 +86,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         //Debug.Log(gas);
     }
+
+    // TODO : Collider 변경점 
     private void Update()
     {
         if (isDead)

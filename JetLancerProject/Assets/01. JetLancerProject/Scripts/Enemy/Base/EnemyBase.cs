@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -42,27 +41,34 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
     protected float targetAngle = default;
     // Enemy 공격시 탐지 범위 및 각도}
 
-
+    // 추후 겹치기 방지용
+    //protected OverlapChecker OverlapChecker;
 
     protected Rigidbody2D rigid = default;
     protected Animator anim = default;
-
     protected AudioSource audioSource = default;
 
     public AudioClip fireClip = default;
-
+    public Transform trailPos = default; 
+ 
     // Target 정보
     protected GameObject target = default;
 
     protected virtual void Init()
     {
         rigid = GetComponent<Rigidbody2D>();
+        // TEST : 
         if (anim.IsValid() == true)
         {
             anim = GetComponent<Animator>();
 
         }
         audioSource = GetComponent<AudioSource>();
+
+        trailPos = this.GetComponentInChildren<Transform>();
+        // TEST : 추후 기능 추가 겹치기 방지
+        //OverlapChecker = GetComponentInChildren<OverlapChecker>();
+        //Debug.LogFormat("{0}", OverlapChecker == null);
     }
     protected abstract void SetTarget();
     protected abstract void CheckTarget();
@@ -85,95 +91,78 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
 
     private void DefaultMove()
     {
-        float rotateAmount = Vector3.Cross(dirToTarget ,transform.right ).z;
-
+        float rotateAmount = Vector3.Cross(dirToTarget, transform.right).z;
         if (rigid.velocity.magnitude > maxSpeed)
         {
             rigid.velocity = rigid.velocity.normalized * maxSpeed;
         }       // if : 속도가 최대 속도를 넘어가면 최대속도로 고정
 
-        if(rotateAmount == Mathf.Epsilon)
-        {            
-            rigid.angularVelocity *= - 1f;
-        }
-
-
-        if ((CheckIsOverlap().transform.position - this.transform.position).magnitude < 2f)
-        {
-            Vector2 dir = (CheckIsOverlap().transform.position - this.transform.position).normalized;
-            float rotate = Vector3.Cross(this.transform.right , - dir ).z;
-            StartCoroutine(EvadeOverlap(rotate));
-        }
-
 
         if (distToTarget > 3f)
-        {            
+        {
             rigid.angularVelocity = -rotateAmount * 150f;
             rigid.velocity = transform.right * speed;
-        }       // if : 일정 거리까지 플레이어를 향해 이동
+        }       // if : 일정 거리까지 플레이어를 향해 이동        
         else
         {
             // 회피기동 구현
             StartCoroutine(EvadeMotion(rotateAmount));
-        }       // else : 일정 거리 내에 들어갓을 때 할 행동   
+        }       // else : 일정 거리 내에 들어갓을 때 할 행동           
+        MakeCloud();
     }       // DefaultMove()
 
+    private void MakeCloud()
+    {
+        //SJ_ 
+        GameObject player_trail = GameManager.Instance.poolManager.
+            SpawnFromPool(RDefine.PLAYER_TRAIL, trailPos.position, Quaternion.identity);
+        // { player_trail scale 변동 
+        float randScale = Random.Range(0.1f, 0.4f);
+        player_trail.transform.localScale =
+            new Vector3(randScale, randScale);
+        //  player_trail scale 변동 }
+    }
+
+
+    #region 회피 기동 코루틴
     IEnumerator EvadeMotion(float rotateAmount_)
     {
         float evadeTime = 3f;
         float time = Time.time;
         while (evadeTime < time)
         {
-            time = 0f;            
-            float randomRot = UnityEngine.Random.Range(200f, 300f);
-            rigid.angularVelocity = rotateAmount_ * randomRot;
+            time = 0f;
+            float randomRotSpeed = Random.Range(150f, 200f);
+            rigid.angularVelocity = rotateAmount_ * randomRotSpeed;
             rigid.velocity = transform.right * speed;
             yield return null;  
         }
     }       // EvadeMotion()
 
+    // 겹치지 않는 랜덤 움직임 만들기
 
-    private GameObject CheckIsOverlap()
+    IEnumerator EvadeRandom()
     {
-        List<GameObject> overlapCheck = GameManager.Instance.waveManager.enemyList;
-        float minDist = float.MaxValue;
-        int index = 0;
-        for (int i = 0; i < overlapCheck.Count; i++)
-        {
-            float dist = (this.transform.position - overlapCheck[i].transform.position).magnitude;
-            if (dist < minDist && dist != Mathf.Epsilon)
-            {
-                minDist = dist;
-                index = i;
-            }
-        }
-        return overlapCheck[index];
-
-
-
-
-    }
-
-    IEnumerator EvadeOverlap(float rotatetAmount_)
-    {
-        float evadeTime = 3f;
+        float evadeTime = 1f;
+        float randRotAmount = Random.Range(-1, 1);
+        float randomRotSpeed = Random.Range(150f, 200f);
         float time = Time.time;
-        while (evadeTime < time)
+        while (evadeTime > time)
         {
             time = 0f;
-            rigid.angularVelocity = rotatetAmount_ * 200f;
+            rigid.angularVelocity = randRotAmount * randomRotSpeed;
             rigid.velocity = transform.right * speed;
             yield return null;
         }
     }
+    #endregion
 
 
     // 위에 배껴서 짠 Fire Delegate 활용
     protected virtual void Fire()
     {
         if (fireFunc == default)
-        {
-         
+        {         
             this.fireFunc = () => DefaultFire(0f);
         }
 
@@ -215,10 +204,11 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
         dirBullet.Normalize();
         bulletObj.transform.right = dirBullet;
 
-        bulletObj.GetComponent<Rigidbody2D>().
-            AddForce(300f * rigid.velocity.magnitude * dirBullet * Time.deltaTime, ForceMode2D.Impulse);
-
+        //bulletObj.GetComponent<Rigidbody2D>().
+        //    AddForce(300f * rigid.velocity.magnitude * dirBullet * Time.deltaTime, ForceMode2D.Impulse);
+        bulletObj.GetComponent<Rigidbody2D>().velocity = dirBullet * 10f;
     }       // DefaultFire()
+
 
     // 탄환이 Layer를 검사해서 해당 함수를 호출할 것
     public void OnDamage(int damage)

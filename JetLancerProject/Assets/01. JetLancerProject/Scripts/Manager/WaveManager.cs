@@ -77,6 +77,27 @@ public class WaveManager : MonoBehaviour
         }
         return false;
     }
+
+    void AddEnemyToList()
+    {
+        float randNum = Random.Range(1, 5);
+        switch (randNum)
+        {
+            case 1:
+                SpawnWaveEnemy(RDefine.ENEMY_JET_01);
+                break;
+            case 2:
+                SpawnWaveEnemy(RDefine.ENEMY_JET_02);
+                break;
+            case 3:
+                SpawnWaveEnemy(RDefine.ENEMY_JET_03);
+                break;
+            case 4:
+                SpawnWaveEnemy(RDefine.ENEMY_JET_04);
+                break;
+        }
+        remainToSpawn--;
+    }
     IEnumerator SpawnEnemy()
     {
         // 구조 이상 변경 필요
@@ -85,9 +106,7 @@ public class WaveManager : MonoBehaviour
         {
             if (remainToSpawn <= 0)
             {
-                Debug.LogFormat("before : {0}", isClear);
                 isClear = true;
-                Debug.LogFormat("after : {0}", isClear);
                 isSpawn = false;
                 yield break;
             }
