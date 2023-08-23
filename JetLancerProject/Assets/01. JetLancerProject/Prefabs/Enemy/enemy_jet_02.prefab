@@ -45,13 +45,14 @@ GameObject:
   - component: {fileID: 6334109242977546830}
   - component: {fileID: 6001027842254706118}
   - component: {fileID: 8065267688039520983}
+  - component: {fileID: 920067921}
   m_Layer: 10
   m_Name: enemy_jet_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6334109242977546825
 Transform:
   m_ObjectHideFlags: 0
@@ -180,6 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireClip: {fileID: 8300000, guid: 8f1f21cc26e44c84b945809752650065, type: 3}
+  trailPos: {fileID: 0}
 --- !u!82 &8065267688039520983
 AudioSource:
   m_ObjectHideFlags: 0
@@ -276,3 +278,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &920067921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6334109242977546828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e8511f9865900446bbc35c986dba206, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  indicator: {fileID: 2299660995642163337, guid: 51ab933dc25aab34aa344b297c6e9765, type: 3}
+  indicatorCanvas: {fileID: 0}
+  player: {fileID: 0}
