@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -28,17 +29,23 @@ public class GameManager : GSingleton<GameManager>
     public TMP_Text scoreText = default;
     public TMP_Text bestScoreText = default;
     public TMP_Text timeText = default;
+    public TMP_Text bestTimeText = default;
     public TMP_Text waveText = default;
     public TMP_Text bestWaveText = default;
-    public TMP_Text[] tmpTextObjects = new TMP_Text[15];
+    public TMP_Text killsText = default;
+    public TMP_Text expTextNum = default;
+    public TMP_Text nextExpTextNum = default;
+    public TMP_Text[] tmpTextObjects = new TMP_Text[9];
 
     // 변수
     public int score = default;
     public int bestScore = default;
     public int wave = default;
     public int bestWave = default;  
-    public int kills = default;
     public float time = default;
+    public float bestTime = default;
+    public int kills = default;
+    
 
     //public float accuracy = default;
     //public float perfectEvasions = default;
@@ -52,8 +59,25 @@ public class GameManager : GSingleton<GameManager>
         isGameOver = false;    
         Init();
     }
+    //public override void Start()
+    //{
+    //} 
+    //TEST  start 입니다.
 
-   
+    public void ActiveText()
+    {
+        scoreText.gameObject.SetActive(true);
+        bestScoreText.gameObject.SetActive(true);
+        timeText.gameObject.SetActive(true);
+        bestTimeText.gameObject.SetActive(true);
+        waveText.gameObject.SetActive(true);
+        bestWaveText.gameObject.SetActive(true);
+        killsText.gameObject.SetActive(true);
+        expTextNum.gameObject.SetActive(true);
+        nextExpTextNum.gameObject.SetActive(true);
+    }
+
+
     private void Init()
     {
         
@@ -68,30 +92,63 @@ public class GameManager : GSingleton<GameManager>
         GameObject defeatUi = GFunc.GetRootObj(RDefine.DEFEAT_RESULT);
 
         defeatUiObj = GFunc.GetRootObj(RDefine.DEFEAT_RESULT).transform.GetChild(0).gameObject;       
-        tmpTextObjects = defeatUi.GetComponentsInChildren<TMP_Text>() ;
-
-        Debug.Log(defeatUi);
-
-        Debug.Log(tmpTextObjects.Length);
+        tmpTextObjects = defeatUi.transform.GetChild(2).transform.GetComponentsInChildren<TMP_Text>() ;
         foreach(TMP_Text text in tmpTextObjects)
-        {
-            Debug.LogFormat("{0}", text.name);
-            if (text.name == defeatUiObj.name)
-                return;
-        }
-        //GFunc.GetRootObj(RDefine.DEFEAT_RESULT).FindChildObj<TMP_Text>();
+        { 
+            if (text.name == "ScoreNum")
+            {
+                scoreText = text;
+            }
+            else if (text.name == "bestScoreNum")
+            {
+                bestScoreText = text;
+            }
+            else if (text.name == "TimeNum")
+            {
+                timeText = text;
+            }
+            else if (text.name == "bestTimeNum")
+            {
+                bestTimeText = text;
+            }
+            else if (text.name == "WaveNum")
+            {
+                waveText = text;
+            }
+            else if (text.name == "bestWaveNum")
+            {
+                bestWaveText = text;
+            }
+            else if (text.name == "killNum")
+            {
+                killsText = text;
+            }
+            else if (text.name == "expNum")
+            {
+                expTextNum = text;
+            }
+            else if (text.name == "nextExpNum")
+            {
+                nextExpTextNum = text;
+            }
+            //return;
+        } 
 
-        //scoreText = default;
-
-        //bestScoreText = default;
-        //timeText = default;
-        //waveText = default;
-        //bestWaveText = default;
+        scoreText.gameObject.SetActive(false);
+        bestScoreText.gameObject.SetActive(false);
+        timeText.gameObject.SetActive(false);
+        bestTimeText.gameObject.SetActive(false);
+        waveText.gameObject.SetActive(false);
+        bestWaveText.gameObject.SetActive(false);
+        killsText.gameObject.SetActive(false);
+        expTextNum.gameObject.SetActive(false);
+        nextExpTextNum.gameObject.SetActive(false);
     }
 
 
    
-    
+
+
 
     // =================================================================================HJK 추가한 부분 시작
     public void AddScore( int newScore )
