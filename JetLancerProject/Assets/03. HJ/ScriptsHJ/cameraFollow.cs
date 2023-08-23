@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public PlayerController playercontroller;
+    private PlayerController playercontroller;
     //TODO 각 콜라이더 위치 받아와서 카메라 이동 범위 제한해줘야 합니다.
     
 
@@ -23,6 +23,8 @@ public class CameraFollow : MonoBehaviour
     // 플레이어를 찾음
     void Start()
     {
+        playercontroller = GFunc.GetRootObj("Player").GetComponent<PlayerController>(); 
+
         minOffsetX = -1.5f;
         maxOffsetX = 140f;
         minOffsetY = -16f;

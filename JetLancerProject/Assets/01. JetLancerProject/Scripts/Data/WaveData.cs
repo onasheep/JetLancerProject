@@ -6,9 +6,7 @@ using UnityEngine;
 public class WaveData : ScriptableObject
 {
     public int waveCount;
-    public int enem_1_Num;
-    public int enem_2_Num;
-    public int enem_3_Num;
-    public int enem_4_Num;
+    public int enemNum;
+    public int bossNum;
     public string boss_Type;
 }

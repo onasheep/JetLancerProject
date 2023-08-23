@@ -13,17 +13,18 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
     private GameObject instance;
     private float defaultAngle;
 
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
         player = GFunc.GetRootObj("Player");
         indicatorCanvas = GFunc.GetRootObj("playCanvas");
-
-        //instance = indicator.gameObject;
         instance = Instantiate(indicator);
         instance.transform.SetParent(indicatorCanvas.transform);
-        //
         instance.transform.localScale = new Vector3(180, 180, 180);
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
 
         Vector2 dir = new Vector2(Screen.width, Screen.height);
         defaultAngle = Vector2.Angle(new Vector2(0, 1), dir);

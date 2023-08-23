@@ -39,6 +39,7 @@ public class DeleteBullet : MonoBehaviour, IDeactive
         //{ EnemyBase 에 있는 OnDamage() 를 호출함        
 
         // TODO : 추후 데미지 추가되면 임시변수가 아닌 가져와서 쓸것
+        // TEST : 1 => 10
         int damge = 1;
 
         if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Enemy")) ||

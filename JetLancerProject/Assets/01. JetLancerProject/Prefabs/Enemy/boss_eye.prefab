@@ -105,8 +105,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1394266975
-  m_SortingLayer: 1
+  m_SortingLayerID: -2000368699
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 072f6349c9400b147b860a0cbc79b68e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -189,7 +189,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1570597325
+  m_SortingLayerID: -2000368699
   m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 514fffbc0dd12b94ea30de58e518c15a, type: 3}
@@ -305,9 +305,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1970643621
-  m_SortingLayer: 4
-  m_SortingLayerID: -1993026131
+  m_SortingLayerID: -1570597325
   m_SortingLayer: 9
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 89bb0dd40a242d64ea7109b222ab8fe6, type: 3}
@@ -387,8 +385,8 @@ GameObject:
   - component: {fileID: 3796296043483502716}
   - component: {fileID: 3796296043483502719}
   - component: {fileID: 3796296043483502718}
-  - component: {fileID: 3796296043483502719}
   - component: {fileID: 1931260235}
+  - component: {fileID: 1640115955}
   m_Layer: 10
   m_Name: boss_eye
   m_TagString: Untagged
@@ -406,7 +404,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3796296044217183700}
   - {fileID: 3796296044279174000}
@@ -453,8 +451,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 845970159
-  m_SortingLayer: 3
+  m_SortingLayerID: -2000368699
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -467,6 +465,29 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3796296043483502719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3796296043483502690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83196c2f48cef3a4b873777ed4d51410, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myPattern: 0
+  barrel: {fileID: 3796296044279174001}
+  laser_Start: {fileID: 3340525329609248878}
+  laser_Hitbox: {fileID: 1320089418225705994}
+  laserBarrelPos: {fileID: 3796296042283058724}
+  GunBarrel_Left: {fileID: 3796296043530382264}
+  GunBarrel_Right: {fileID: 3796296043138153546}
+  fireClip: {fileID: 8300000, guid: 172eaf5901904484880240c7ec3dad70, type: 3}
+  laserPrepClip: {fileID: 8300000, guid: 6552845a946edd84184458be13ec0c22, type: 3}
+  laserFireClip: {fileID: 8300000, guid: a42e58db93ae80346869cae931631fcf, type: 3}
+  laserAfterClip: {fileID: 8300000, guid: e2946efc3c2c8714296a347ade70d014, type: 3}
 --- !u!61 &3796296043483502718
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -493,29 +514,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.27, y: 1.6}
   m_EdgeRadius: 0
---- !u!114 &3796296043483502719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3796296043483502690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83196c2f48cef3a4b873777ed4d51410, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myPattern: 0
-  barrel: {fileID: 3796296044279174001}
-  laser_Start: {fileID: 3340525329609248878}
-  laser_Hitbox: {fileID: 1320089418225705994}
-  laserBarrelPos: {fileID: 3796296042283058724}
-  GunBarrel_Left: {fileID: 3796296043530382264}
-  GunBarrel_Right: {fileID: 3796296043138153546}
-  fireClip: {fileID: 8300000, guid: 172eaf5901904484880240c7ec3dad70, type: 3}
-  laserPrepClip: {fileID: 8300000, guid: 6552845a946edd84184458be13ec0c22, type: 3}
-  laserFireClip: {fileID: 8300000, guid: a42e58db93ae80346869cae931631fcf, type: 3}
-  laserAfterClip: {fileID: 8300000, guid: e2946efc3c2c8714296a347ade70d014, type: 3}
 --- !u!82 &1931260235
 AudioSource:
   m_ObjectHideFlags: 0
@@ -612,6 +610,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1640115955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3796296043483502690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e8511f9865900446bbc35c986dba206, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  indicator: {fileID: 2299660995642163337, guid: 51ab933dc25aab34aa344b297c6e9765, type: 3}
+  indicatorCanvas: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &3796296043493579735
 GameObject:
   m_ObjectHideFlags: 0
@@ -683,8 +696,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1394266975
-  m_SortingLayer: 1
+  m_SortingLayerID: -2000368699
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a554c0f24ce601440b4c2c99c8cb1168, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -799,8 +812,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -219642925
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 9635e818bb8ed7743a14c1108ab3986d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1011,8 +1024,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1993026131
-  m_SortingLayer: 9
+  m_SortingLayerID: -2000368699
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 17ef50ad960393b4699bb9c4d28f64ae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1150,6 +1163,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1942398571758974813, guid: b008898217a6d3b4caed78ef9c2a6e37, type: 3}
+      propertyPath: m_SortingLayer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1942398571758974813, guid: b008898217a6d3b4caed78ef9c2a6e37, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1993026131
+      objectReference: {fileID: 0}
     - target: {fileID: 1942398571758974814, guid: b008898217a6d3b4caed78ef9c2a6e37, type: 3}
       propertyPath: m_Name
       value: sp_armada_laser_dz_0
@@ -1237,6 +1258,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 678095381d851334fb550c5032ba1a81, type: 3}
+    - target: {fileID: 2809895937381102657, guid: 3f728e0aa9e62604b9a9a91e8b68fe04, type: 3}
+      propertyPath: m_SortingLayer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2809895937381102657, guid: 3f728e0aa9e62604b9a9a91e8b68fe04, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1993026131
+      objectReference: {fileID: 0}
     - target: {fileID: 2809895937381102657, guid: 3f728e0aa9e62604b9a9a91e8b68fe04, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -1340,6 +1369,14 @@ PrefabInstance:
     - target: {fileID: 2809895937381102656, guid: 3f728e0aa9e62604b9a9a91e8b68fe04, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2809895937381102657, guid: 3f728e0aa9e62604b9a9a91e8b68fe04, type: 3}
+      propertyPath: m_SortingLayer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2809895937381102657, guid: 3f728e0aa9e62604b9a9a91e8b68fe04, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1993026131
       objectReference: {fileID: 0}
     - target: {fileID: 2809895937381102662, guid: 3f728e0aa9e62604b9a9a91e8b68fe04, type: 3}
       propertyPath: m_Name

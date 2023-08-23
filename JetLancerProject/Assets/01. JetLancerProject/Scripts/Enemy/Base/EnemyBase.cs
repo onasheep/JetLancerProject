@@ -46,6 +46,8 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
 
     protected Rigidbody2D rigid = default;
     protected Animator anim = default;
+    protected SpriteRenderer sprite = default;
+    
     protected AudioSource audioSource = default;
 
     public AudioClip fireClip = default;
@@ -65,13 +67,39 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
         }
         audioSource = GetComponent<AudioSource>();
 
+        sprite = GetComponent<SpriteRenderer>();
+
         trailPos = this.gameObject.FindChildComponent<Transform>("trailPos");
         // TEST : 추후 기능 추가 겹치기 방지
         //OverlapChecker = GetComponentInChildren<OverlapChecker>();
         //Debug.LogFormat("{0}", OverlapChecker == null);
     }
-    protected abstract void SetTarget();
-    protected abstract void CheckTarget();
+    protected virtual void SetTarget()
+    {
+        if (target.IsValid() == false)
+        {
+            target = GFunc.GetRootObj("Player");
+            targetPos = target.transform;
+        }       // if : 타겟이 null 이거나 default인 경우 타겟을 가져옴
+        else
+        {
+            Debug.LogWarning("Target is already exist.");
+        }       // else : 타겟이 있으면 로그 출력
+    }       // SetTarget()
+
+
+    // 플레이어 포지션, 플레이어와의 거리, 방향벡터, 각들을 계산
+    protected virtual void CheckTarget()
+    {
+        if(target.IsValid() == false) {  return; }
+     
+        // { 타겟, 거리, 방향 정보값, 발사에 필요한 정보가 담겨 있으므로, 위치가 변경 될 수 있음
+        Transform targetPos = target.transform;
+        distToTarget = (targetPos.position - this.transform.position).magnitude;
+        dirToTarget = (targetPos.position - this.transform.position).normalized;
+        targetAngle = Mathf.Atan(dirToTarget.y / dirToTarget.x) * Mathf.Rad2Deg;
+        //  타겟, 거리, 방향 정보값, 발사에 필요한 정보가 담겨 있으므로, 위치가 변경 될 수 있음 }
+    }       // CheckTarget()
 
 
 
@@ -204,8 +232,6 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
         dirBullet.Normalize();
         bulletObj.transform.right = dirBullet;
 
-        //bulletObj.GetComponent<Rigidbody2D>().
-        //    AddForce(300f * rigid.velocity.magnitude * dirBullet * Time.deltaTime, ForceMode2D.Impulse);
         bulletObj.GetComponent<Rigidbody2D>().velocity = dirBullet * 10f;
     }       // DefaultFire()
 
@@ -214,13 +240,11 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
     public void OnDamage(int damage)
     {
         if (hp > damage)
-        {
+        {    
             hp -= damage;
         }       // if : damage보다 클때만 동작
         else
         {
-            // TODO : 체력이 0이 되면 파괴되도록 함 (테스트 완료)
-            // 추후 오브젝트 풀이 추가되면 수정 예정
             Deactive();
             Die();
         }       // else : damage보다 작을 때 Die() 함수 호출

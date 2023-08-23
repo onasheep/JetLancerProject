@@ -64,7 +64,6 @@ public class HomingMissile : MonoBehaviour, IDamageable, IDeactive
     {
         if(hp > damage)
         {
-            Debug.LogFormat("hp{0}", hp);
             hp -= damage;
         }
         else

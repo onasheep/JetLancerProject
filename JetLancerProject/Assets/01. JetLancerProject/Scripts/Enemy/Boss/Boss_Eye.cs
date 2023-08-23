@@ -5,11 +5,11 @@ using Unity.VisualScripting;
 using UnityEditor.EditorTools;
 using UnityEngine;
 
-public class Boss_Eye : MonoBehaviour, IDamageable
+public class Boss_Eye : MonoBehaviour, IDamageable, IDeactive
 {
     private enum PATTERN
     {
-        NONE = -1, BULLET, LASER
+        NONE = -1, WAIT, BULLET, LASER
     }
 
     [SerializeField]
@@ -30,7 +30,7 @@ public class Boss_Eye : MonoBehaviour, IDamageable
     private float playTime = 0f;
     private float count = 0f;
 
-    private float hp = 1f;
+    private float hp = 100f;
 
 
     // 쏠 준비 탄환    
@@ -60,13 +60,12 @@ public class Boss_Eye : MonoBehaviour, IDamageable
     void Start()
     {
         // TEST GPT
-        initialRotationSpeed = rotationSpeed;
-        //
+        initialRotationSpeed = rotationSpeed;       
 
         poolmanager = GameManager.Instance.poolManager;
         audioSource = GetComponent<AudioSource>();
 
-        myPattern = PATTERN.LASER;
+        myPattern = PATTERN.WAIT;
         SetTarget();
     }
 
@@ -77,7 +76,7 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
         switch (myPattern)
         {
-            case PATTERN.NONE:
+            case PATTERN.WAIT:
                 playTime += Time.deltaTime;
                 isLaser = false;
                 laser_Hitbox.SetActive(false);
@@ -196,7 +195,7 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
             laserTrackingStarted = false;
             rotationSpeed = initialRotationSpeed;
-            myPattern = PATTERN.NONE;
+            myPattern = PATTERN.WAIT;
             laser_Start.SetActive(false);
             isLaser = false;
         }
@@ -243,7 +242,7 @@ public class Boss_Eye : MonoBehaviour, IDamageable
         if (count > 3)
         {
             count = 0;
-            myPattern = PATTERN.NONE;
+            myPattern = PATTERN.WAIT;
         }
         // LookRotation, FromToRotation으로 해결하려고 함. 짐벌락 남아있고 회전 자체가 망가짐
         //barrel.transform.rotation = Quaternion.FromToRotation(Vector3.Slerp(barrel.transform.up, dirToTarget, Time.deltaTime * 0.5f),Vector3.up);
@@ -321,6 +320,7 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
     private void Die()
     {
+
         GameManager.Instance.poolManager.
             SpawnFromPool(RDefine.ENEMY_EXPLOSION, this.transform.position , Quaternion.identity)
             .transform.localScale *= 2f;
@@ -336,8 +336,15 @@ public class Boss_Eye : MonoBehaviour, IDamageable
         {
             // TEST : OnDamge 테스트용
             // 추후 오브젝트 풀이 추가되면 수정 예정
-            Destroy(this.gameObject);
+            Deactive();
             Die();
         }       // else : damage보다 작을 떄 Die() 함수 호출
     }
+
+    public void Deactive()
+    {
+        // Interface 내용
+        this.gameObject.SetActive(false);
+
+    }       // Deactive()
 }

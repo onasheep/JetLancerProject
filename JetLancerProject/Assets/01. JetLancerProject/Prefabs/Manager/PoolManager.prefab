@@ -78,3 +78,6 @@ MonoBehaviour:
   - tag: enemy_jet_04
     prefabs: {fileID: 5716908739867795807, guid: 61a05b3061f7c6445b8823af068a771c, type: 3}
     size: 20
+  - tag: boss_eye
+    prefabs: {fileID: 3796296043483502690, guid: 6ba0c9127758cf84788536e311218f79, type: 3}
+    size: 20

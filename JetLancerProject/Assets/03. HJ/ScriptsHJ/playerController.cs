@@ -29,11 +29,12 @@ public class PlayerController : MonoBehaviour, IDamageable
     public bool isOverhitBoost;
     private bool isDead;
 
-    
+
 
     // SJ_
     // Damage 확인용
-    private int hp = 3;
+
+
 
     // SJ_
     // Dodge Test
@@ -48,7 +49,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         Cursor.SetCursor(cursorIcon, Vector2.zero, CursorMode.Auto);
         myRigid = GetComponent<Rigidbody2D>();
-        
+
         isOverhitBoost = false; 
         isBoost = false;
         //isFire = false;
@@ -307,12 +308,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             if (health > damage)
             {
+                
                 health -= damage;
-                Debug.LogFormat("hp  : {0}", hp);
             }       // if : damage보다 클때만 동작
             else
             {
-                // TEST : 0되면 Destroy()
                 Destroy(this.gameObject);
                 Die();
             }       // else : damage보다 작을 떄 Die() 함수 호출
