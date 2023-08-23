@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class WaveManager : MonoBehaviour
 {
@@ -13,12 +14,15 @@ public class WaveManager : MonoBehaviour
     private int enem_4_Num;
 
     [SerializeField]
-    public List<GameObject> enemyList;
+    private List<GameObject> enemyList;
+
     public int curWave = 1;
     [SerializeField]
     private int remainToSpawn = default;
     private float minSpawnTime = 0.5f;
     private float maxSpawnTime = 5f;
+
+    private Vector3 spawnOffset;
 
     // 형준이 Intro 시간 4.3f
     // 나중에 수정 필요
@@ -37,6 +41,7 @@ public class WaveManager : MonoBehaviour
     void Start()
     {
         pool = GameManager.Instance.poolManager;
+        enemyList = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -46,13 +51,12 @@ public class WaveManager : MonoBehaviour
         if (introTime > Time.time) { return; }
 
         if (isSpawn == false && isClear == false)
-        { 
+        {
             isSpawn = true;
-            Debug.LogFormat("{0}", curWave);
             SetWave(curWave);
 
-            StartCoroutine(SpawnEnemy());
             curWave += 1;
+            StartCoroutine(SpawnEnemy());
         }
 
         if (CheckActive() == false)
@@ -62,10 +66,15 @@ public class WaveManager : MonoBehaviour
             isClear = true;
             isSpawn = false;
         }
+        else
+        {
+            isSpawn = true;
+        }
 
     }
     void SetWave(int waveIdx)
     {
+
         waveCount = waves[waveIdx - 1].waveCount;
         enem_1_Num = waves[waveIdx - 1].enem_1_Num;
         enem_2_Num = waves[waveIdx - 1].enem_2_Num;
@@ -79,7 +88,7 @@ public class WaveManager : MonoBehaviour
     {
         for (int i = 0; i < enemyList.Count; i++)
         {
-            if (enemyList[i].gameObject.activeSelf == true)
+            if (enemyList[i].activeSelf == true)
             {
                 return true;
             }
@@ -122,7 +131,10 @@ public class WaveManager : MonoBehaviour
 
     void SpawnWaveEnemy(string name_)
     {
-        enemyList.Add(pool.SpawnFromPool(name_, this.transform.position, Quaternion.identity));
+
+        Vector3 spawnPos = GameManager.Instance.player.transform.position + new Vector3(2 * Camera.main.orthographicSize * Camera.main.aspect, 2 * Camera.main.orthographicSize);
+
+        enemyList.Add(pool.SpawnFromPool(name_, spawnPos/* this.transform.position*/, Quaternion.identity));
     }       // SpawnWaveEnemy()
 
 

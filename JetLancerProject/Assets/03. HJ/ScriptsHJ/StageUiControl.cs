@@ -281,7 +281,8 @@ public class StageUiControl : MonoBehaviour
             StartCoroutine(OpenCard());
             StopCoroutine(OpenCard());
         }
-        else if(GameManager.Instance.waveManager.curWave == 5 || GameManager.Instance.waveManager.curWave == 8 || GameManager.Instance.waveManager.curWave == 10)
+        // SJ_ stage 1 Ãß°¡ 
+        else if(GameManager.Instance.waveManager.curWave == 1 || GameManager.Instance.waveManager.curWave == 5 || GameManager.Instance.waveManager.curWave == 8 || GameManager.Instance.waveManager.curWave == 10)
         {
             yield return new WaitForSeconds(1f);
             GameManager.Instance.waveManager.isClear = false;
@@ -294,7 +295,6 @@ public class StageUiControl : MonoBehaviour
         
         isAnimation = false;
 
-    
         //StartCoroutine(OpenCard());
         //StopCoroutine(OpenCard());
 
