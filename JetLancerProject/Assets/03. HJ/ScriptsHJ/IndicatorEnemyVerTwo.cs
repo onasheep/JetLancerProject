@@ -4,19 +4,25 @@ using UnityEngine;
 
 public class IndicatorEnemyVerTwo : MonoBehaviour
 {
-
+    // TODO : 오브젝트풀 보낸다 임시 ) 
     public GameObject indicator;
+
     public GameObject indicatorCanvas;
     public GameObject player; // target
+    
     private GameObject instance;
     private float defaultAngle;
 
     // Start is called before the first frame update
     void Start()
     {
+        player = GFunc.GetRootObj("Player");
+        indicatorCanvas = GFunc.GetRootObj("playCanvas");
+
         //instance = indicator.gameObject;
         instance = Instantiate(indicator);
         instance.transform.SetParent(indicatorCanvas.transform);
+        //
         instance.transform.localScale = new Vector3(180, 180, 180);
 
         Vector2 dir = new Vector2(Screen.width, Screen.height);

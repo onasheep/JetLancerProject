@@ -19,7 +19,7 @@ public class HomingMissile : MonoBehaviour, IDamageable, IDeactive
 
     private void Awake()
     {
-        target = FindObjectOfType<PlayerController>().transform;
+        target = GFunc.GetRootObj("Player").GetComponent<PlayerController>().transform;
         overlayAnim = GetComponentInChildren<Animator>();      
         rigid = GetComponent<Rigidbody2D>();
     }

@@ -31,7 +31,7 @@ public class GoldEnemy : EnemyBase, IDamageable
         base.Init();
 
         Type = TYPE.GOLD;
-        hp = 10;
+        hp = 1; //5;
         damage = 1;
         speed = 5f;
         maxSpeed = 10f;

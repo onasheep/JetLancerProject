@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: WaveData 1
   m_EditorClassIdentifier: 
   waveCount: 1
-  enem_1_Num: 2
-  enem_2_Num: 1
+  enem_1_Num: 3
+  enem_2_Num: 0
   enem_3_Num: 0
   enem_4_Num: 0
   boss_Type: 

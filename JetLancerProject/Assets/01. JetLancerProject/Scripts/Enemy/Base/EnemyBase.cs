@@ -65,7 +65,7 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
         }
         audioSource = GetComponent<AudioSource>();
 
-        trailPos = this.GetComponentInChildren<Transform>();
+        trailPos = this.gameObject.FindChildComponent<Transform>("trailPos");
         // TEST : 추후 기능 추가 겹치기 방지
         //OverlapChecker = GetComponentInChildren<OverlapChecker>();
         //Debug.LogFormat("{0}", OverlapChecker == null);
@@ -216,7 +216,6 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
         if (hp > damage)
         {
             hp -= damage;
-            Debug.LogFormat("{0}", hp);
         }       // if : damage보다 클때만 동작
         else
         {

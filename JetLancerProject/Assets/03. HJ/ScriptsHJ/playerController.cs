@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         isBoost = false;
         //isFire = false;
         isDead = false;
-        shooTimer = Time.time + 0.1f;
+        shooTimer = Time.time + 0.01f;//0.1f;
 
 
         bulletSpeed = 20f;
@@ -211,8 +211,9 @@ public class PlayerController : MonoBehaviour, IDamageable
             //GameObject bullet = Instantiate(bulletPrefab, bulletPos.position, transform.rotation);
             GameObject bullet = GameManager.Instance.poolManager.
                 SpawnFromPool(RDefine.PLAYER_BULLET, bulletPos.position, transform.rotation );
+            bullet.transform.localScale *= 2f;
             bullet.GetComponent<Rigidbody2D>().AddForce(this.transform.right * bulletSpeed, ForceMode2D.Impulse);
-            shooTimer = Time.time + 0.11f; 
+            shooTimer = Time.time + 0.11f;
             myAudio.clip = fireClip;
             myAudio.PlayOneShot(myAudio.clip);
 
@@ -304,9 +305,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         // TEST :
         if (isDodge == false)
         {
-            if (hp > damage)
+            if (health > damage)
             {
-                hp -= damage;
+                health -= damage;
                 Debug.LogFormat("hp  : {0}", hp);
             }       // if : damage보다 클때만 동작
             else
@@ -318,8 +319,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         
         }       // if : Dodge 중일 때 피해 입지 않음
         else { /* Do Nothing */ }
-
-        Debug.LogFormat("hp  : {0}", hp);
 
     }       // OnDamage()
 

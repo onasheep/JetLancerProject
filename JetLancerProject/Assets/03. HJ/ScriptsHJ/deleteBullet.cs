@@ -5,7 +5,7 @@ using UnityEngine;
 public class DeleteBullet : MonoBehaviour, IDeactive
 {
     // 이름 변경 deleteTimer => existTime
-    private float existTime = 12f;
+    private float existTime = 2f;
     private Rigidbody2D rigid;
 
     // Start is called before the first frame update

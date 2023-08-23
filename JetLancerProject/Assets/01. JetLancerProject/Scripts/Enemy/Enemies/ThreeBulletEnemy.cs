@@ -32,7 +32,7 @@ public class ThreeBulletEnemy : EnemyBase, IDamageable
         base.Init();
 
         Type = TYPE.BIGBULLET;
-        hp = 8;
+        hp = 1; //4;
         damage = 1;
         speed = 5f;
         maxSpeed = 10f;
