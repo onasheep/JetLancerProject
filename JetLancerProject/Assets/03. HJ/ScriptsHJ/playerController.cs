@@ -3,25 +3,30 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
-
+    //오브젝트들 관련 변수
     public float moveSpeed = 5f;
     public float rotationSpeed;
     public Transform wbottlePos;
     public Transform bulletPos;
     public GameObject wPrefab;
     public GameObject bulletPrefab;
+   
+    public GameObject playerCanvas;
+    public GameObject defeatUi;
 
+    //음악 관련 변수
     public AudioClip dodgeClip;
     public AudioClip deathClip;
     public AudioClip fireClip;
     public Texture2D cursorIcon;
 
+    //플레이어 스테이터스 관련 변수
     public float health = 3f;
     public float gas = 100f;
     private float maxGas = 100f;
     public float bulletSpeed;
+    
     private float shooTimer;
-
     private Rigidbody2D myRigid;
     private Animator myAnimator;
     private AudioSource myAudio;
@@ -121,6 +126,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         //Debug.Log(transform.rotation.z.ToString("F3"));
     }
 
+    //private void OnDisable()
+    //{
+    //    Die();
+    //}
     private void MoveCharacter()
     {
         if (Input.GetKey(KeyCode.W))
@@ -288,15 +297,20 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
     }
 
-    private void Die()
-    {
-        // TODO : Die 함수 채우기 
-        // 여기에는 GameOver와 관련된 로직이 있으면 좋을 듯?
-        // + 죽음 이펙트 
-        // 죽음 이펙트
-        GameManager.Instance.poolManager.SpawnFromPool(RDefine.ENEMY_EXPLOSION, this.transform.position, Quaternion.identity);
+    //private void Die()
+    //{
+    //    // TODO : Die 함수 채우기 
+    //    // 여기에는 GameOver와 관련된 로직이 있으면 좋을 듯?
+    //    // + 죽음 이펙트 
+    //    // 죽음 이펙트
+    //    playerCanvas.SetActive(false);
+    //    defeatUi.SetActive(true);
+    //    myRigid.constraints = RigidbodyConstraints2D.FreezeAll;
 
-    }
+    //    GameManager.Instance.poolManager.SpawnFromPool(RDefine.ENEMY_EXPLOSION, this.transform.position, Quaternion.identity);
+    //    GameManager.Instance.DefeatGame();
+
+    //}
 
     // SJ_ 
     // Hp 깎는 함수 , IDamageable에서 가져옴
@@ -313,8 +327,11 @@ public class PlayerController : MonoBehaviour, IDamageable
             else
             {
                 // TEST : 0되면 Destroy()
-                Destroy(this.gameObject);
-                Die();
+                //Destroy(this.gameObject);
+                // TEST : 0되면 off
+                //Die();
+                StartCoroutine(DiePlayer());
+                StopCoroutine(DiePlayer());
             }       // else : damage보다 작을 떄 Die() 함수 호출
         
         }       // if : Dodge 중일 때 피해 입지 않음
@@ -322,5 +339,17 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     }       // OnDamage()
 
+    IEnumerator DiePlayer()
+    {
+        GameManager.Instance.poolManager.SpawnFromPool(RDefine.ENEMY_EXPLOSION, this.transform.position, Quaternion.identity);
+        playerCanvas.SetActive(false); //UI 꺼주기
+        myRigid.constraints = RigidbodyConstraints2D.FreezeAll;  //조작 못하게 멈춰주고 
+        yield return new WaitForSeconds(1.5f);
+        //패배 결과창 띄어줍니다.
+        GameManager.Instance.DefeatGame();
+        //defeatUi.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        this.gameObject.SetActive(false);
+    }
 
 }

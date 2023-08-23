@@ -9,7 +9,7 @@ public class DefeatAniScript : MonoBehaviour
     public Transform targetPos;
     private float moveSpeed;
     private float delayTime;
-    private float setTime = 3f;
+    //private float setTime = 3f;
     //private Animator defeatAni;
 
     bool isMove = true;

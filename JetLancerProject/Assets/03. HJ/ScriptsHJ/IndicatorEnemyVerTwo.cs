@@ -134,6 +134,8 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
     }
     private void OnDisable()
     {
+        // TODO 점수 처리 해줘야합니다.
+        //GameManager.Instance.AddScore(10); //10 매직넘버는 score에 추가되는 숫자입니다.
         if(!gameObject.activeSelf)
         instance.SetActive(false);
     }

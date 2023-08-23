@@ -20,7 +20,15 @@ public class PlaySceneStartSound : MonoBehaviour
 
     }
 
-
+    private void Update()
+    {
+        
+        if(GameManager.Instance.isGameOver)
+        {
+            myAudio.volume = 0.01f;
+            
+        }
+    }
     IEnumerator PlaySound()
     {
         yield return new WaitForSeconds(0.3f);
