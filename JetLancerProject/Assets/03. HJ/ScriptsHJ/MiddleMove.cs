@@ -13,11 +13,12 @@ public class MiddleMove : MonoBehaviour
     private void Start()
     {
         rectTransform = GetComponent<RectTransform>(); // UI 이미지의 RectTransform 컴포넌트 가져오기
+        rectTransform.sizeDelta = new Vector2(0,rectTransform.sizeDelta.y);
     }
 
     private void Update()
     {
-        if (Input.anyKeyDown && !animationStarted) // 아무 키나 누르고 애니메이션이 시작되지 않았다면
+        if (Input.anyKeyDown && !animationStarted) // 아무 키나 누르고 애니메이션이 시작되지 않았다면  
         {
             animationStarted = true; // 애니메이션 시작 플래그 설정
             startTime = Time.time; // 애니메이션 시작 시간 기록

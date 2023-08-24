@@ -90,7 +90,16 @@ public class StageUiControl : MonoBehaviour
             }
 
         }
-        if (isAnimation)
+        if (GameManager.Instance.isVictory)  // >>>>> victoryObj를 추가합니다.
+        {
+            victoryObj.SetActive(true);
+
+            scoreText.text = GameManager.Instance.scoreText.text;
+            bestScoreText.text = GameManager.Instance.bestScoreText.text;
+            Invoke("OffVictoryAni", 8f); // 승리 페이지 애니메이션 끝나면 글자 초기화 해줄려고 씁니다.
+        }
+
+        if (isAnimation && !GameManager.Instance.isVictory) //KH 승리 되면 실행 못하게
         {
             isAnimation = false;
 
@@ -99,14 +108,6 @@ public class StageUiControl : MonoBehaviour
             isWaveClear = true;
             waveClearUi.GetComponent<Animator>().SetBool("WaveUi", isWaveClear);
             ChangeWaveAni(); //스테이지 별로 애니메이션을 다르게 출력합니다.
-        }
-        if (GameManager.Instance.isVictory)  // >>>>> victoryObj를 추가합니다.
-        {
-            victoryObj.SetActive(true);
-            
-            scoreText.text = GameManager.Instance.scoreText.text;
-            bestScoreText.text = GameManager.Instance.bestScoreText.text;
-            Invoke("OffVictoryAni", 8f); // 승리 페이지 애니메이션 끝나면 글자 초기화 해줄려고 씁니다.
         }
 
         if (isUpgradeComplete != true && isRewardAnimation)

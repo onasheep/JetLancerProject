@@ -33,7 +33,7 @@ public class FadeInOut : MonoBehaviour
         //unlockSound = GameObject.Find("OneSoundOn");
         activeObj.SetActive(false);
         rectTransform = middleObj.GetComponent<RectTransform>();
-        rectTransform.sizeDelta = new Vector2(0, 720);
+        rectTransform.sizeDelta = new Vector2(0, rectTransform.sizeDelta.y);
         StartCoroutine(StartFadeInOut());
 
     }
@@ -47,7 +47,7 @@ public class FadeInOut : MonoBehaviour
                 activeObj.SetActive(true);  //TODO public 으로 받아오는거 스크립트로 받아오게 바꿔야함
             }
         }
-        if (SceneManager.GetActiveScene().buildIndex == 0 )
+        if (SceneManager.GetActiveScene().buildIndex == 0)
         {
             MiddleMove();
 

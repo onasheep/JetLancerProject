@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
@@ -90,9 +91,12 @@ public class PlayerController : MonoBehaviour, IDamageable
     // TODO : Collider 변경점 
     private void Update()
     {
-        if (isDead)
+        if (isDead || GameManager.Instance.isVictory)
         {
             //myAnimator.SetTrigger("Die", isDead);
+            //TODO 항상 실행되는 밑에 구문 바꿔야 합니다.
+            //이렇게 하면 바로 굳어버리는 문제가 있어서 고민을 해봐야 할 것 같습니다.
+            myRigid.constraints = RigidbodyConstraints2D.FreezeAll;
             return;
         }
         if (!GameManager.Instance.isEngague)
@@ -292,8 +296,37 @@ public class PlayerController : MonoBehaviour, IDamageable
         // Damage : 1 
         OnDamage(1);
     }
-    
-    
+
+    //TODO 벽 트리거 공간에 닿으면 실행시켜줄 구문 추가 예정
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
+        {
+
+        }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
+        {
+            Debug.Log("찍히나?0");  
+                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector3 moveDirection = (mousePosition - transform.position).normalized;
+                float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+                Quaternion currentRotation = transform.rotation;
+                Quaternion targetQuaternion = Quaternion.Euler(new Vector3(0f, 0f, -angle));
+                transform.rotation = Quaternion.Lerp(currentRotation, targetQuaternion, rotationSpeed * Time.deltaTime);
+           
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
+        {
+
+        }
+    }
+
     private void AliveChild(string child)
     {
 
@@ -352,13 +385,12 @@ public class PlayerController : MonoBehaviour, IDamageable
             }       // if : damage보다 클때만 동작
             else
             {
-                // TEST : 0되면 Destroy()
-                //Destroy(this.gameObject);
-                // TEST : 0되면 off
-                //Die();
-                StartCoroutine(DiePlayer());
-                StopCoroutine(DiePlayer());
-
+                // 승리창 켜지면 패배 창 안나오게 설정   
+                if (!GameManager.Instance.isVictory)
+                {
+                    StartCoroutine(DiePlayer());
+                    StopCoroutine(DiePlayer());
+                }
             }       // else : damage보다 작을 떄 Die() 함수 호출
         
         }       // if : Dodge 중일 때 피해 입지 않음
