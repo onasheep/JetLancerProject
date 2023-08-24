@@ -143,6 +143,6 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
         if(!gameObject.activeSelf)
         instance.SetActive(false);
         GameManager.Instance.AddScore(50);
-        Debug.Log(GameManager.Instance.score);
+        //Debug.Log(GameManager.Instance.score);
     }
 }

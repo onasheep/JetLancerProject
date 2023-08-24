@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IDamageable
@@ -355,6 +356,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         //defeatUi.SetActive(true);
         yield return new WaitForSeconds(1f);
         this.gameObject.SetActive(false);
+        yield break;
     }
 
 }

@@ -12,7 +12,7 @@ public class TransitionScript : MonoBehaviour
     public GameObject burnStart;
     public GameObject countdown;
 
-
+    //=========================================================0824 승리 결과 작업을 여기서 처리해줍니다.
     private Rigidbody2D playerRigid;
     void Start()
     {
@@ -35,7 +35,7 @@ public class TransitionScript : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Escape) && SceneManager.GetActiveScene().buildIndex == 1) //CharacterSelect 씬일때만 활성화
         {
             ani2.SetActive(true);
-        }
+        }//Title 와 캐릭터 선택 씬에서 트랜지션 애니메이션 오브젝트를 출력해주빈디ㅏㄷ
     }
 
     IEnumerator AliveObj()
@@ -48,7 +48,6 @@ public class TransitionScript : MonoBehaviour
         burnStart.SetActive(false);
         GameManager.Instance.isEngague = false;
         playerRigid.constraints = RigidbodyConstraints2D.None;
-
     }
 
 }

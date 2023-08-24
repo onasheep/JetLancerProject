@@ -25,6 +25,9 @@ public class GameManager : GSingleton<GameManager>
     //public bool isGameover { get; private set; } 
     public bool isGameOver = default;
 
+    public bool isVictory = false;
+    public bool isVictoryText = false;
+
     public bool isActiveText = false;
     public bool isEngague = true;
 
@@ -61,27 +64,19 @@ public class GameManager : GSingleton<GameManager>
  
     public override void Update()
     {
-        if(isGameOver && !Input.anyKey)
+        if(isGameOver && !Input.anyKey) //계속 실행 시켜줍니다.
         {
-            if (bestScore < score)
+            if (bestScore < score) 
             {
                 bestScore = score;
                 Debug.LogFormat("이거 스코어 갱신 됨? {0}",bestScore);
                 bestScoreText.text = string.Format("{0}", bestScore);
-            }
-            else
-            {
-                score = 0;
             }
             if ( bestTime < time) 
             {
                 TimeSpan currentTime = TimeSpan.FromSeconds(time);
                 bestTime = time;
                 bestTimeText.text = string.Format("{0}:{1}:{2}", currentTime.Hours, currentTime.Minutes, currentTime.Seconds);
-            }
-            else
-            {
-                time = 0f;
             }
             if(bestWave < wave)
             {
@@ -99,11 +94,6 @@ public class GameManager : GSingleton<GameManager>
             if (pushAnykey > 5f)
             {
                 SceneManager.LoadScene("CharacterSelect");
-                isGameOver = false;
-                score = 0;
-                time = 0f;
-                wave = 0;
-                kills = 0;
             }
         }    
         else
@@ -214,26 +204,11 @@ public class GameManager : GSingleton<GameManager>
         {
             score += newScore;
             kills += 1;
-            scoreText.text = string.Format("{0}", newScore);
+            scoreText.text = string.Format("{0}", score);
             killsText.text = string.Format("{0}", kills);
             bestScoreText.text = string.Format("{0}", bestScore);
         }
     }
-
-    //TEST
-    //public void UpdateBestScore()
-    //{
-    //    if(bestScore < score)
-    //    {
-    //        bestScore = score;
-            
-    //    }
-    //    else
-    //    {
-    //        score = 0;
-    //    }
-
-    //}
 
     public void UpdateTime()
     {
@@ -254,7 +229,7 @@ public class GameManager : GSingleton<GameManager>
     public void DefeatGame()
     {   //TODO 소리 관련 작업 해줘야합니다 + 그 외 다른 죽었는데 피격이 되서 이펙트가 나온다던가 등 처리
         isGameOver = true;  //이게 true가 되면 일단은 배경음을 줄여줍니다
-        defeatUiObj.SetActive(true);
+        defeatUiObj.SetActive(true);   // >>>>>>> defeat bottom 오브젝트를 켜줍니다 . 그러면 애니메이션이 시작됩니다.
     }
     
 }

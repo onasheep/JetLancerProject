@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class StageUiControl : MonoBehaviour
@@ -35,7 +36,10 @@ public class StageUiControl : MonoBehaviour
     public GameObject secondArrow;  // 위치만 다르고 동일
     public GameObject thirdArrow;   // 위치만 다르고 동일
 
-
+    [Header("victory page")]
+    public GameObject victoryObj;//승리 애니메이션 출력
+    public TMP_Text scoreText;
+    public TMP_Text bestScoreText;
 
 
     // SJ_
@@ -76,11 +80,11 @@ public class StageUiControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+
         if (GameManager.Instance.waveManager.isClear == true)
         {
-            if(isStartCoroutine == true && GameManager.Instance.waveManager.curWave < 10)
-            {            
+            if (isStartCoroutine == true && GameManager.Instance.waveManager.curWave < 10)
+            {
                 StartCoroutine(VictoryStage());
                 StopCoroutine(VictoryStage());
             }
@@ -95,6 +99,16 @@ public class StageUiControl : MonoBehaviour
             isWaveClear = true;
             waveClearUi.GetComponent<Animator>().SetBool("WaveUi", isWaveClear);
             ChangeWaveAni(); //스테이지 별로 애니메이션을 다르게 출력합니다.
+        }
+        if (GameManager.Instance.isVictory)  // >>>>> victoryObj를 추가합니다.
+        {
+            victoryObj.SetActive(true);
+            
+            scoreText.text = GameManager.Instance.scoreText.text;
+            Debug.Log(scoreText.text);
+            bestScoreText.text = GameManager.Instance.bestScoreText.text;
+            Debug.Log(bestScoreText.text);
+            Invoke("OffVictoryAni", 8f); // 승리 페이지 애니메이션 끝나면 글자 초기화 해줄려고 씁니다.
         }
 
         if (isUpgradeComplete != true && isRewardAnimation)
@@ -182,18 +196,18 @@ public class StageUiControl : MonoBehaviour
 
                     if (cardInfo.isSpecial)//rareCard.GetComponent<CardInfo>().isSpecial)
                     {
-                       cardInfo.state = CardInfo.State.Apply;
+                        cardInfo.state = CardInfo.State.Apply;
                     }
                     else
                     {
-                       cardInfo.state = CardInfo.State.Plus;
+                        cardInfo.state = CardInfo.State.Plus;
                     }
                     cardInfo.ChooseCard();
                     normalCard.GetComponent<RectTransform>().anchoredPosition = new Vector2(-9999f, -9999f);
                     uncommonCard.GetComponent<RectTransform>().anchoredPosition = new Vector2(-9999f, -9999f);
                     StartCoroutine(SelectCardAndSetOff(rareCard)); //카드 올려주고 reward ui 꺼주는 코루틴입니다.
                     StopCoroutine(SelectCardAndSetOff(rareCard));
-                   
+
                     rewardCardPool.Add(uncommonCard);// Add(uncommonCard);
                     rewardCardPool.Add(normalCard);
                     isUpgradeComplete = true;
@@ -238,7 +252,7 @@ public class StageUiControl : MonoBehaviour
                     StartCoroutine(SelectCardAndSetOff(uncommonCard)); //카드 올려주고 reward ui 꺼주는 코루틴입니다.
                     StopCoroutine(SelectCardAndSetOff(uncommonCard));
 
-                    
+
                     rewardCardPool.Add(normalCard);
                     rewardCardPool.Add(rareCard);
                     normalCard.GetComponent<RectTransform>().anchoredPosition = new Vector2(-9999f, -9999f);
@@ -284,12 +298,12 @@ public class StageUiControl : MonoBehaviour
             StopCoroutine(OpenCard());
         }
         // SJ_ stage 1 추가 
-        else if ( GameManager.Instance.waveManager.curWave == 4 || GameManager.Instance.waveManager.curWave == 5 || GameManager.Instance.waveManager.curWave == 7 || GameManager.Instance.waveManager.curWave == 9)
+        else if (GameManager.Instance.waveManager.curWave == 4 || GameManager.Instance.waveManager.curWave == 5 || GameManager.Instance.waveManager.curWave == 7 || GameManager.Instance.waveManager.curWave == 9)
         {
             GameManager.Instance.waveManager.isClear = false;
             isStartCoroutine = true;
             yield return new WaitForSeconds(1f);
-        }      
+        }
         //waveClearUi.SetActive(false);   //애니메이션으로 바꿔줘야하기에 끄지 않을려고합니다.
         isWaveClear = false; //waveClearUI 애니메이션 관리합니다. 결국 스테이지 클리어 전까지는 투명상태를 유지하기위해
         waveClearUi.GetComponent<Animator>().SetBool("WaveUi", isWaveClear);
@@ -310,7 +324,7 @@ public class StageUiControl : MonoBehaviour
         Debug.Log("In?");
 
         randIdx = Random.Range(0, bgList.Count);
-        Debug.LogFormat("{0}",randIdx);
+        Debug.LogFormat("{0}", randIdx);
         foreach (GameObject gameObject in bgList)
         {
             gameObject.SetActive(false);
@@ -379,21 +393,21 @@ public class StageUiControl : MonoBehaviour
         }
     }
     //} 선택을 하기 위한 기준 choiceNum 을 변경시켜주는 함수 끝
-    
+
     void MoveAllIcon()
     {
         if (GameManager.Instance.waveManager.curWave == 5 || GameManager.Instance.waveManager.curWave == 6 || GameManager.Instance.waveManager.curWave == 10)
         {
             float distanceBossPos = wavePos[5].position.x - wavePos[4].position.x;
-            allWaveIcon.transform.position = new Vector2(allWaveIcon.transform.position.x-distanceBossPos, allWaveIcon.transform.position.y);
-                       
+            allWaveIcon.transform.position = new Vector2(allWaveIcon.transform.position.x - distanceBossPos, allWaveIcon.transform.position.y);
+
         }
-        else 
+        else
         {
             float distancPos = wavePos[1].position.x - allWaveIcon.transform.position.x;
-            allWaveIcon.transform.position = new Vector2(allWaveIcon.transform.position.x-distancPos, allWaveIcon.transform.position.y);
+            allWaveIcon.transform.position = new Vector2(allWaveIcon.transform.position.x - distancPos, allWaveIcon.transform.position.y);
         }
-        
+
     }
     void MoveFirstCard()
     {
@@ -426,9 +440,9 @@ public class StageUiControl : MonoBehaviour
     {
         float max = -90; //내려가는 최대 위치입니다.
         float height = arrow.GetComponent<RectTransform>().anchoredPosition.y;
-        for (int i = 0; i < 20; i ++)
+        for (int i = 0; i < 20; i++)
         {
-            if (height<=max) yield break;
+            if (height <= max) yield break;
 
             height -= 4.5f;
             arrow.GetComponent<RectTransform>().anchoredPosition = new Vector2(arrow.GetComponent<RectTransform>().anchoredPosition.x, height);
@@ -450,7 +464,7 @@ public class StageUiControl : MonoBehaviour
         float height = card.GetComponent<RectTransform>().anchoredPosition.y;
         for (int i = 0; i < 20; i++)
         {
-            if (height>=max) yield break;
+            if (height >= max) yield break;
 
             height += 2f;
             card.GetComponent<RectTransform>().anchoredPosition = new Vector2(card.GetComponent<RectTransform>().anchoredPosition.x, height);
@@ -463,7 +477,7 @@ public class StageUiControl : MonoBehaviour
                             yield return new WaitForSeconds(0.001f);
             */
         }
-        
+
     }
 
     IEnumerator SelectCardAndSetOff(GameObject card)
@@ -474,19 +488,19 @@ public class StageUiControl : MonoBehaviour
         float height = card.GetComponent<RectTransform>().anchoredPosition.y;
         for (int i = 0; i < 20; i++)
         {
-            if (height>=max) yield break;
+            if (height >= max) yield break;
 
             height += 32f;
             card.GetComponent<RectTransform>().anchoredPosition = new Vector2(card.GetComponent<RectTransform>().anchoredPosition.x, height);
             yield return new WaitForSeconds(0.01f);
         }
         yield return new WaitForSeconds(0.5f);
-        card.SetActive(false); 
+        card.SetActive(false);
         rewardUi.SetActive(false);
         rewardTransition.GetComponent<Animator>().SetTrigger("OffCicle");
         yield return new WaitForSeconds(1f);
         // 플레이어 자유롭게 풀어주기
-        GameManager.Instance.player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;        
+        GameManager.Instance.player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         rewardTransition.SetActive(false);
     }
 
@@ -529,5 +543,11 @@ public class StageUiControl : MonoBehaviour
         card = rewardCardPool[cardIndex];
         rewardCardPool.RemoveAt(cardIndex);
         return card;
+    }
+
+    void OffVictoryAni()
+    {
+       
+        victoryObj.GetComponent<Animator>().enabled = false;
     }
 }
