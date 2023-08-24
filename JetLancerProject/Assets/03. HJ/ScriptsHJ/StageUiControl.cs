@@ -105,9 +105,7 @@ public class StageUiControl : MonoBehaviour
             victoryObj.SetActive(true);
             
             scoreText.text = GameManager.Instance.scoreText.text;
-            Debug.Log(scoreText.text);
             bestScoreText.text = GameManager.Instance.bestScoreText.text;
-            Debug.Log(bestScoreText.text);
             Invoke("OffVictoryAni", 8f); // 승리 페이지 애니메이션 끝나면 글자 초기화 해줄려고 씁니다.
         }
 

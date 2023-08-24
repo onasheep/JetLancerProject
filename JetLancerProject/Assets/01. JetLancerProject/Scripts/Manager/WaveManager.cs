@@ -125,7 +125,6 @@ public class WaveManager : MonoBehaviour
     {
         SetWave(curWave);
         yield return new WaitForSeconds(2.0f);
-        Debug.Log("Spawn!");
         StartCoroutine(SpawnEnemy());
     }       // DelayBeforeSpawn()
 

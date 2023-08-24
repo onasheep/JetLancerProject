@@ -7,11 +7,16 @@ public class IntroEffect : MonoBehaviour
     // Start is called before the first frame update
     private Transform[] speedEffects;
     private Vector3 spawnPos;
+    private PlayerController player;
     void Start()
     {
-        //    spawnPos = Vector3.zero;
-        //    speedEffects = new Transform[5];
-        //    this.transform.GetComponentInChildren<Transform>();    
+        if(player.IsValid() == false)
+        {
+            player = GFunc.GetRootObj("Player").GetComponent<PlayerController>();
+        }
+        spawnPos = Vector3.zero;
+        speedEffects = new Transform[5];
+        this.transform.GetComponentInChildren<Transform>();
     }
 
 
