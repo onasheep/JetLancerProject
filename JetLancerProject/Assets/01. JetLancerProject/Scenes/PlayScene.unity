@@ -37383,7 +37383,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1461122471303392182, guid: 13190cdd770c531419d79dad11448e43, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4105109541987227231, guid: 13190cdd770c531419d79dad11448e43, type: 3}
       propertyPath: m_Camera
@@ -38559,6 +38559,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   setOne: {fileID: 7134127911228080420}
   setTwo: {fileID: 6214281615610801111}
+  selectTexts:
+  - {fileID: 286244301}
+  - {fileID: 1277413631}
+  - {fileID: 158562920}
+  - {fileID: 1236493623}
+  - {fileID: 1586794582}
+  - {fileID: 1210812856}
+  - {fileID: 440127471}
+  - {fileID: 1854958856}
+  - {fileID: 2044249103}
 --- !u!222 &536770699034770155
 CanvasRenderer:
   m_ObjectHideFlags: 0

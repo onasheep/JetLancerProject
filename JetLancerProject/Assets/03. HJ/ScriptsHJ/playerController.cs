@@ -82,13 +82,16 @@ public class PlayerController : MonoBehaviour, IDamageable
             return;
         }
         MoveCharacter();
-        RotateCharacter();
+        if (!GameManager.Instance.isEngague)
+        { 
+            RotateCharacter(); 
+        }
         //부스터 게이지 관련 시작입니다
         if (isBoost && gas > 0f && isOverhitBoost != true)
         {
             gas -= 28f * Time.deltaTime;
             BoostPlayer();
-            LimitVelocity(10f);
+            LimitVelocity(8f);
         }
         else
         {

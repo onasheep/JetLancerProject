@@ -37,7 +37,10 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
         {
             indicator.SetActive(false);
         }
-
+        if(GameManager.Instance.isGameOver)
+        {
+            instance.SetActive(false);
+        }
     }
 
     public void SetIndicator()
@@ -57,7 +60,7 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
 
         if (-defaultAngle <= angle && angle <= defaultAngle)
         {
-            Debug.Log("up");
+            //Debug.Log("up");
             //anchor minY, maxY 0.96
 
             float anchorMinMaxY = 0.96f;
@@ -72,7 +75,7 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
         }
         else if (defaultAngle <= angle && angle <= 180 - defaultAngle)
         {
-            Debug.Log("right");
+            //Debug.Log("right");
             //anchor minX, maxX 0.94
 
             float anchorMinMaxX = 0.94f;
@@ -87,7 +90,7 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
         }
         else if (-180 + defaultAngle <= angle && angle <= -defaultAngle)
         {
-            Debug.Log("left");
+            //Debug.Log("left");
             //anchor minX, maxX 0.06
 
             float anchorMinMaxX = 0.06f;
@@ -102,7 +105,7 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
         }
         else if (-180 <= angle && angle <= -180 + defaultAngle || 180 - defaultAngle <=angle && angle <= 180)
         {
-            Debug.Log("down");
+            //Debug.Log("down");
             //anchor minY, maxY 0.04
 
             float anchorMinMaxY = 0.04f;
@@ -138,5 +141,7 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
         //GameManager.Instance.AddScore(10); //10 매직넘버는 score에 추가되는 숫자입니다.
         if(!gameObject.activeSelf)
         instance.SetActive(false);
+        GameManager.Instance.AddScore(50);
+        Debug.Log(GameManager.Instance.score);
     }
 }

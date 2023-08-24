@@ -1,5 +1,7 @@
 using System.Collections;
-
+using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +11,7 @@ public class ActiveOneSec : MonoBehaviour
     Image myImg;
 
     public GameObject setOne, setTwo;
-    
+    public List<GameObject> selectTexts = default;
     //private float alphaNum;
 
     // GameObject.Find("Player").GetComponent<playerController>().health;
@@ -22,22 +24,25 @@ public class ActiveOneSec : MonoBehaviour
         StartCoroutine(DownAlphaColor());
         Invoke("ActivateObject1", 1f);
         Invoke("ActivateObject2", 2f);
-        
     }
-
- 
-    
     void ActivateObject1()
     {
         //GameObject.Find("whiteImg").transform.FindChild("timeSprite").gameObject.SetActive(true);
         setOne.SetActive(true);
+        
     }
     void ActivateObject2() 
     {
         //GameObject.Find("whiteImg").transform.FindChild("waveSprite").gameObject.SetActive(true);
         setTwo.SetActive(true);
+        GameManager.Instance.isActiveText = true;
+        for (int i = 0; i < selectTexts.Count; i++)
+        {
+            selectTexts[i].SetActive(false);
+        }
     }
 
+  
     IEnumerator DownAlphaColor()
     {
         

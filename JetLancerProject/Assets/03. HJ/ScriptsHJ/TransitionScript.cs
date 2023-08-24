@@ -46,6 +46,7 @@ public class TransitionScript : MonoBehaviour
         yield return new WaitForSeconds(3f);
         playCanvas.SetActive(true);
         burnStart.SetActive(false);
+        GameManager.Instance.isEngague = false;
         playerRigid.constraints = RigidbodyConstraints2D.None;
 
     }

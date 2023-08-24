@@ -25,6 +25,10 @@ public class GameManager : GSingleton<GameManager>
     //public bool isGameover { get; private set; } 
     public bool isGameOver = default;
 
+    public bool isActiveText = false;
+    public bool isEngague = true;
+
+
     // 텍스트
     public TMP_Text scoreText = default;
     public TMP_Text bestScoreText = default;
@@ -47,34 +51,88 @@ public class GameManager : GSingleton<GameManager>
     public int kills = default;
     
 
-    //public float accuracy = default;
-    //public float perfectEvasions = default;
-    //public float overChargedTime = default;
-    //public float rocketShotdown = default;
-    //public float unguidedAirShots = default;
-
+   
     
     public override void Awake()
     {
         isGameOver = false;    
         Init();
     }
-    //public override void Start()
-    //{
-    //} 
-    //TEST  start 입니다.
+ 
+    public override void Update()
+    {
+        if(isGameOver && !Input.anyKey)
+        {
+            if (bestScore < score)
+            {
+                bestScore = score;
+                Debug.LogFormat("이거 스코어 갱신 됨? {0}",bestScore);
+                bestScoreText.text = string.Format("{0}", bestScore);
+            }
+            else
+            {
+                score = 0;
+            }
+            if ( bestTime < time) 
+            {
+                TimeSpan currentTime = TimeSpan.FromSeconds(time);
+                bestTime = time;
+                bestTimeText.text = string.Format("{0}:{1}:{2}", currentTime.Hours, currentTime.Minutes, currentTime.Seconds);
+            }
+            else
+            {
+                time = 0f;
+            }
+            if(bestWave < wave)
+            {
+                bestWave = wave;
+                bestWaveText.text = string.Format("{0}", bestWave);
+            }
+            Invoke("ActiveText",2f);
+            
+        }
+        else if (isGameOver && Input.anyKey)
+        {
+            float pushAnykey = 0f;
+            pushAnykey += 0.1f * Time.time;
+            Debug.LogFormat("{0}",pushAnykey);
+            if (pushAnykey > 5f)
+            {
+                SceneManager.LoadScene("CharacterSelect");
+                isGameOver = false;
+                score = 0;
+                time = 0f;
+                wave = 0;
+                kills = 0;
+            }
+        }    
+        else
+        {
+            UpdateTime();
+            UpdateWave();
+        }
+        
+    }
 
     public void ActiveText()
     {
-        scoreText.gameObject.SetActive(true);
-        bestScoreText.gameObject.SetActive(true);
-        timeText.gameObject.SetActive(true);
-        bestTimeText.gameObject.SetActive(true);
-        waveText.gameObject.SetActive(true);
-        bestWaveText.gameObject.SetActive(true);
-        killsText.gameObject.SetActive(true);
-        expTextNum.gameObject.SetActive(true);
-        nextExpTextNum.gameObject.SetActive(true);
+        if (isActiveText)
+        {
+            scoreText.gameObject.SetActive(true);
+            bestScoreText.gameObject.SetActive(true);
+            expTextNum.gameObject.SetActive(true);
+            nextExpTextNum.gameObject.SetActive(true);
+
+
+            timeText.gameObject.SetActive(true);
+            bestTimeText.gameObject.SetActive(true);
+
+            waveText.gameObject.SetActive(true);
+            bestWaveText.gameObject.SetActive(true);
+
+
+            killsText.gameObject.SetActive(true);
+        }
     }
 
 
@@ -131,7 +189,6 @@ public class GameManager : GSingleton<GameManager>
             {
                 nextExpTextNum = text;
             }
-            //return;
         } 
 
         scoreText.gameObject.SetActive(false);
@@ -146,7 +203,7 @@ public class GameManager : GSingleton<GameManager>
     }
 
 
-   
+  
 
 
 
@@ -156,15 +213,42 @@ public class GameManager : GSingleton<GameManager>
         if(!isGameOver)
         {
             score += newScore;
+            kills += 1;
             scoreText.text = string.Format("{0}", newScore);
+            killsText.text = string.Format("{0}", kills);
+            bestScoreText.text = string.Format("{0}", bestScore);
         }
-        
     }
 
-    public float AddTime(ref float newTime )
+    //TEST
+    //public void UpdateBestScore()
+    //{
+    //    if(bestScore < score)
+    //    {
+    //        bestScore = score;
+            
+    //    }
+    //    else
+    //    {
+    //        score = 0;
+    //    }
+
+    //}
+
+    public void UpdateTime()
     {
-        newTime += Time.deltaTime;
-        return newTime;
+        if (!isActiveText)
+        {
+            time += Time.deltaTime;
+        }
+        TimeSpan currentTime = TimeSpan.FromSeconds(time);
+        timeText.text = string.Format("{0}:{1}:{2}", currentTime.Hours,currentTime.Minutes, currentTime.Seconds);
+    }
+    public void UpdateWave()
+    {
+        wave = waveManager.curWave;
+        waveText.text = string.Format("{0}",wave);
+
     }
 
     public void DefeatGame()
@@ -172,4 +256,5 @@ public class GameManager : GSingleton<GameManager>
         isGameOver = true;  //이게 true가 되면 일단은 배경음을 줄여줍니다
         defeatUiObj.SetActive(true);
     }
+    
 }
