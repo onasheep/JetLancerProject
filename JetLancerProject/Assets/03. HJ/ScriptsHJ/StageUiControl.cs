@@ -35,14 +35,19 @@ public class StageUiControl : MonoBehaviour
     public GameObject secondArrow;  // 위치만 다르고 동일
     public GameObject thirdArrow;   // 위치만 다르고 동일
 
+
+
+
     // SJ_
     // 애니메이션 시작을 위함 
     private bool isAnimation;
     // 코루틴 시작을 위함
     private bool isStartCoroutine;
-    // SJ_
-    private int stageNum;  //현재 웨이브 번호입니다.
-    // TEST : 
+    // SJ_ 
+    // background 변경위한 
+    private GameObject bgRoot = default;
+    private List<GameObject> bgList = default;
+    private int randIdx = default;
 
     private bool isRewardUi; //보상 ui 가 켜졌는지 확인하는 bool값입니다.
     private bool isRewardAnimation; //보상 애니메이션 출력됐는지 확인하는 bool값
@@ -54,7 +59,14 @@ public class StageUiControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //stageNum = 1; //현재 스테이지 번호입니다.
+        // SJ_
+        bgRoot = GFunc.GetRootObj("BackGrounds");
+        bgList = new List<GameObject>();
+        for (int i = 0; i < bgRoot.transform.childCount; i++)
+        {
+            bgList.Add(bgRoot.transform.GetChild(i).gameObject);
+        }
+
         choiceNum = 1; // 카드 선택시 쓰일 기준 넘버입니다.
         isRewardAnimation = false;  //보상 애니메이션 false 값으로 놔둡니다.
         isAnimation = false;
@@ -64,13 +76,11 @@ public class StageUiControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
        
         if (GameManager.Instance.waveManager.isClear == true)
         {
             if(isStartCoroutine == true && GameManager.Instance.waveManager.curWave < 10)
-            {
-            
+            {            
                 StartCoroutine(VictoryStage());
                 StopCoroutine(VictoryStage());
             }
@@ -139,11 +149,9 @@ public class StageUiControl : MonoBehaviour
                     rewardCardPool.Add(rareCard);
                     isUpgradeComplete = true;
 
-                    // TEST : 
                     GameManager.Instance.waveManager.isClear = false;
-                    //GameManager.Instance.player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-
                     isStartCoroutine = true;
+
                 }       // if : Enter키를 눌러서 1번 카드를 선택하는 순간
             }
             else if (choiceNum == 1 && isRewardUi)
@@ -190,9 +198,8 @@ public class StageUiControl : MonoBehaviour
                     rewardCardPool.Add(normalCard);
                     isUpgradeComplete = true;
 
-                    // TEST : 
-                    GameManager.Instance.waveManager.isClear = false;
 
+                    GameManager.Instance.waveManager.isClear = false;
                     isStartCoroutine = true;
                 }       // if : Enter키를 눌러서 2번 카드를 선택하는 순간
             }
@@ -240,10 +247,9 @@ public class StageUiControl : MonoBehaviour
                     //rareCard = null; //어디가 오류 났는지 찾기위해 설정해놨었습니다.
                     isUpgradeComplete = true;
 
-                    // TEST : 
                     GameManager.Instance.waveManager.isClear = false;
-                    //GameManager.Instance.player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
                     isStartCoroutine = true;
+
                 }       // if : Enter키를 눌러서 3번 카드를 선택하는 순간
             }
             else { } //DO NOTHING
@@ -268,6 +274,9 @@ public class StageUiControl : MonoBehaviour
         {
             rewardTransition.SetActive(true);
             yield return new WaitForSeconds(1f);
+
+            ChangeBackground();
+
             isRewardUi = true;
             choiceNum = 1;
             rewardUi.SetActive(true);
@@ -280,26 +289,7 @@ public class StageUiControl : MonoBehaviour
             GameManager.Instance.waveManager.isClear = false;
             isStartCoroutine = true;
             yield return new WaitForSeconds(1f);
-            //GameManager.Instance.player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        }
-        //if (GameManager.Instance.waveManager.curWave == 2 || GameManager.Instance.waveManager.curWave == 3 || GameManager.Instance.waveManager.curWave == 4 || GameManager.Instance.waveManager.curWave == 7 || GameManager.Instance.waveManager.curWave == 9)
-        //{
-        //    rewardTransition.SetActive(true);
-        //    yield return new WaitForSeconds(1f);
-        //    isRewardUi = true;
-        //    choiceNum = 1;
-        //    rewardUi.SetActive(true);
-        //    StartCoroutine(OpenCard());
-        //    StopCoroutine(OpenCard());
-        //}
-        //// SJ_ stage 1 추가 
-        //else if(GameManager.Instance.waveManager.curWave == 1 || GameManager.Instance.waveManager.curWave == 5 || GameManager.Instance.waveManager.curWave == 6 || GameManager.Instance.waveManager.curWave == 8 || GameManager.Instance.waveManager.curWave == 10)
-        //{
-        //    GameManager.Instance.waveManager.isClear = false;
-        //    isStartCoroutine = true;
-        //    yield return new WaitForSeconds(1f);
-        //    //GameManager.Instance.player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        //}
+        }      
         //waveClearUi.SetActive(false);   //애니메이션으로 바꿔줘야하기에 끄지 않을려고합니다.
         isWaveClear = false; //waveClearUI 애니메이션 관리합니다. 결국 스테이지 클리어 전까지는 투명상태를 유지하기위해
         waveClearUi.GetComponent<Animator>().SetBool("WaveUi", isWaveClear);
@@ -313,6 +303,23 @@ public class StageUiControl : MonoBehaviour
         //=======================================================
 
     }
+
+    // SJ_
+    private void ChangeBackground()
+    {
+        Debug.Log("In?");
+
+        randIdx = Random.Range(0, bgList.Count);
+        Debug.LogFormat("{0}",randIdx);
+        foreach (GameObject gameObject in bgList)
+        {
+            gameObject.SetActive(false);
+        }
+
+        bgList[randIdx].SetActive(true);
+
+    }       // ChangeBackground()
+
 
     IEnumerator OpenCard()
     {

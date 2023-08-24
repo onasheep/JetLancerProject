@@ -180,6 +180,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f886799b9c12a3347ac4b8bf7d6522a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
   fireClip: {fileID: 8300000, guid: 172eaf5901904484880240c7ec3dad70, type: 3}
   trailPos: {fileID: 0}
 --- !u!82 &189442244278729360

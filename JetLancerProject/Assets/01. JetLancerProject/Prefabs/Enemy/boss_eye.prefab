@@ -477,13 +477,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83196c2f48cef3a4b873777ed4d51410, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myPattern: 0
   barrel: {fileID: 3796296044279174001}
   laser_Start: {fileID: 3340525329609248878}
   laser_Hitbox: {fileID: 1320089418225705994}
   laserBarrelPos: {fileID: 3796296042283058724}
   GunBarrel_Left: {fileID: 3796296043530382264}
   GunBarrel_Right: {fileID: 3796296043138153546}
+  materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
   fireClip: {fileID: 8300000, guid: 172eaf5901904484880240c7ec3dad70, type: 3}
   laserPrepClip: {fileID: 8300000, guid: 6552845a946edd84184458be13ec0c22, type: 3}
   laserFireClip: {fileID: 8300000, guid: a42e58db93ae80346869cae931631fcf, type: 3}
@@ -1024,8 +1026,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -2000368699
-  m_SortingLayer: 8
+  m_SortingLayerID: -1570597325
+  m_SortingLayer: 9
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 17ef50ad960393b4699bb9c4d28f64ae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1175,6 +1177,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: sp_armada_laser_dz_0
       objectReference: {fileID: 0}
+    - target: {fileID: 1942398571758974814, guid: b008898217a6d3b4caed78ef9c2a6e37, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b008898217a6d3b4caed78ef9c2a6e37, type: 3}
 --- !u!4 &3340525329609248876 stripped
@@ -1257,7 +1263,7 @@ PrefabInstance:
     - target: {fileID: 2809895937381102657, guid: 3f728e0aa9e62604b9a9a91e8b68fe04, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 678095381d851334fb550c5032ba1a81, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 2809895937381102657, guid: 3f728e0aa9e62604b9a9a91e8b68fe04, type: 3}
       propertyPath: m_SortingLayer
       value: 10
@@ -1268,7 +1274,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2809895937381102657, guid: 3f728e0aa9e62604b9a9a91e8b68fe04, type: 3}
       propertyPath: m_WasSpriteAssigned
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2809895937381102662, guid: 3f728e0aa9e62604b9a9a91e8b68fe04, type: 3}
       propertyPath: m_Name
@@ -1384,7 +1390,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2809895937381102662, guid: 3f728e0aa9e62604b9a9a91e8b68fe04, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f728e0aa9e62604b9a9a91e8b68fe04, type: 3}

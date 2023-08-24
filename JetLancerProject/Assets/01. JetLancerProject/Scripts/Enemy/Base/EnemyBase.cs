@@ -41,12 +41,15 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
     protected float targetAngle = default;
     // Enemy 공격시 탐지 범위 및 각도}
 
-    // 추후 겹치기 방지용
-    //protected OverlapChecker OverlapChecker;
+ 
 
     protected Rigidbody2D rigid = default;
-    protected Animator anim = default;
+    
     protected SpriteRenderer sprite = default;
+
+    // Test : 데미지 입엇을때 material 변경
+    // default 메터리얼과, SDF 메테리얼로 Swap 시도해보기 
+    public Material[] materials = default;
     
     protected AudioSource audioSource = default;
 
@@ -59,20 +62,13 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
     protected virtual void Init()
     {
         rigid = GetComponent<Rigidbody2D>();
-        // TEST : 
-        if (anim.IsValid() == true)
-        {
-            anim = GetComponent<Animator>();
-
-        }
+        
         audioSource = GetComponent<AudioSource>();
 
         sprite = GetComponent<SpriteRenderer>();
 
         trailPos = this.gameObject.FindChildComponent<Transform>("trailPos");
-        // TEST : 추후 기능 추가 겹치기 방지
-        //OverlapChecker = GetComponentInChildren<OverlapChecker>();
-        //Debug.LogFormat("{0}", OverlapChecker == null);
+
     }
     protected virtual void SetTarget()
     {
@@ -125,7 +121,6 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
             rigid.velocity = rigid.velocity.normalized * maxSpeed;
         }       // if : 속도가 최대 속도를 넘어가면 최대속도로 고정
 
-
         if (distToTarget > 3f)
         {
             rigid.angularVelocity = -rotateAmount * 150f;
@@ -141,7 +136,6 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
 
     private void MakeCloud()
     {
-        //SJ_ 
         GameObject player_trail = GameManager.Instance.poolManager.
             SpawnFromPool(RDefine.PLAYER_TRAIL, trailPos.position, Quaternion.identity);
         // { player_trail scale 변동 
@@ -220,8 +214,6 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
     protected void DefaultFire(float angle)
     {
 
-        // TODO : 탄환 발사 
-        // 추후 리소스 매니저와 오브젝트 풀을 추가하면 수정 예정
         bulletTimer = 0f;
         GameObject bulletObj = GameManager.Instance.poolManager.
             SpawnFromPool(RDefine.ENEMY_BULLET, this.transform.position, Quaternion.identity);
@@ -240,7 +232,8 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
     public void OnDamage(int damage)
     {
         if (hp > damage)
-        {    
+        {
+            StartCoroutine(SwapSprite());
             hp -= damage;
         }       // if : damage보다 클때만 동작
         else
@@ -249,6 +242,15 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
             Die();
         }       // else : damage보다 작을 때 Die() 함수 호출
     }
+    
+    
+   IEnumerator SwapSprite()
+    {
+        sprite.sharedMaterial = materials[1];
+        yield return new WaitForSeconds(0.1f);
+        sprite.sharedMaterial = materials[0];
+    }       // SwapSprite()
+
     protected abstract void Die();
 
     public void Deactive()
