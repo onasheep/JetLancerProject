@@ -9,11 +9,15 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
 
     public GameObject indicatorCanvas;
     public GameObject player; // target
-    
+
+    [SerializeField]
     private GameObject instance;
     private float defaultAngle;
 
-
+    // TODO : 
+    // Indicator가 적에 직접 붙어 있는 것 보다 
+    // 어떤 상위 오브젝트가 Player 와 WaveManger에 있는 enemyList를 체크해서 
+    // 직접 playCanvas에 찍어 주는게 좋을 것 같다. 
     private void Awake()
     {
         player = GFunc.GetRootObj("Player");
@@ -21,11 +25,12 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
         instance = Instantiate(indicator);
         instance.transform.SetParent(indicatorCanvas.transform);
         instance.transform.localScale = new Vector3(180, 180, 180);
+
     }
     // Start is called before the first frame update
     void Start()
     {
-
+        
         Vector2 dir = new Vector2(Screen.width, Screen.height);
         defaultAngle = Vector2.Angle(new Vector2(0, 1), dir);
     }
@@ -140,9 +145,10 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
     {
         // TODO 점수 처리 해줘야합니다.
         //GameManager.Instance.AddScore(10); //10 매직넘버는 score에 추가되는 숫자입니다.
-        if(!gameObject.activeSelf)
-        instance.SetActive(false);
-        GameManager.Instance.AddScore(50);
-        //Debug.Log(GameManager.Instance.score);
+
+        if (!gameObject.activeSelf)
+        {
+            instance.SetActive(false);
+        }
     }
 }

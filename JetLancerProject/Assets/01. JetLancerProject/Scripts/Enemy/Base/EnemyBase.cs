@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -256,6 +254,8 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
     public void Deactive()
     {
         // Interface 내용
+        GameManager.Instance.AddScore(50);
+
         this.gameObject.SetActive(false);
 
     }       // Deactive()

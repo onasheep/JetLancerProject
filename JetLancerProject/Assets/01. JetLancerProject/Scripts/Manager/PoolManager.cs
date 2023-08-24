@@ -17,7 +17,7 @@ public class PoolManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.poolManager = this;        
+        //GameManager.Instance.poolManager = this;        
     }
     void Start()
     {
@@ -33,6 +33,7 @@ public class PoolManager : MonoBehaviour
                 GameObject obj = Instantiate(pool.prefabs, poolConstaincer.transform);
 
                 obj.SetActive(false);
+                
                 objectPool.Enqueue(obj);
             }
             poolDictinoary.Add(pool.tag, objectPool);

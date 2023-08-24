@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IDamageable
@@ -22,7 +21,14 @@ public class PlayerController : MonoBehaviour, IDamageable
     public Texture2D cursorIcon;
 
     //플레이어 스테이터스 관련 변수
-    public float health = 3f;
+    
+    //SJ_
+    public float health = default;
+    public float maxHealth = 3f;
+    private DangerPanel dangerPanel;
+
+
+    //
     public float gas = 100f;
     private float maxGas = 100f;
     public float bulletSpeed;
@@ -37,13 +43,10 @@ public class PlayerController : MonoBehaviour, IDamageable
 
 
 
-    // SJ_
-    // Damage 확인용
-
 
 
     // SJ_
-    // Dodge Test
+    // TODO : 변수 이름 변경해야 함 ColliderSwitch 방식이 아님 
     public bool isDodge = default; // public : OnDamge에서 misiile을 닷지했을 떄 사용 
     private float colliderSwitchDuration; // dodge 지속시간
 
@@ -56,6 +59,15 @@ public class PlayerController : MonoBehaviour, IDamageable
         Cursor.SetCursor(cursorIcon, Vector2.zero, CursorMode.Auto);
         myRigid = GetComponent<Rigidbody2D>();
 
+        // SJ_
+        // 체력 초기화 시점
+        health = maxHealth;
+
+        playerCanvas = GFunc.GetRootObj("playCanvas");
+        dangerPanel = playerCanvas.FindChildObj("danger_panel").GetComponent<DangerPanel>();
+
+        // SJ_
+        
         isOverhitBoost = false; 
         isBoost = false;
         //isFire = false;
@@ -83,49 +95,50 @@ public class PlayerController : MonoBehaviour, IDamageable
             //myAnimator.SetTrigger("Die", isDead);
             return;
         }
-        MoveCharacter();
         if (!GameManager.Instance.isEngague)
-        { 
-            RotateCharacter(); 
-        }
-        //부스터 게이지 관련 시작입니다
-        if (isBoost && gas > 0f && isOverhitBoost != true)
         {
-            gas -= 28f * Time.deltaTime;
-            BoostPlayer();
-            LimitVelocity(8f);
-        }
-        else
-        {
-            if (gas < maxGas)
+            MoveCharacter();
+            RotateCharacter();
+            //부스터 게이지 관련 시작입니다
+            if (isBoost && gas > 0f && isOverhitBoost != true)
             {
-                gas += 33f * Time.deltaTime;
+                gas -= 28f * Time.deltaTime;
+                BoostPlayer();
+                LimitVelocity(8f);
             }
-        }
-        if (gas >= maxGas)
-        {
-            isOverhitBoost = false;
-        }
+            else
+            {
+                if (gas < maxGas)
+                {
+                    gas += 33f * Time.deltaTime;
+                }
+            }
+            if (gas >= maxGas)
+            {
+                isOverhitBoost = false;
+            }
 
-        
-        //부스터 게이지 관련 끝입니다
 
-        if (Input.GetMouseButton(0))
-        {
-            ShotMinigun();
+            //부스터 게이지 관련 끝입니다
+
+            if (Input.GetMouseButton(0))
+            {
+                ShotMinigun();
+            }
+            if (Input.GetMouseButtonDown(1) && !isColliderSwitching)
+            {
+                StartCoroutine(SwitchCollidersCoroutine());
+
+                myAudio.clip = dodgeClip;
+                myAudio.PlayOneShot(myAudio.clip);
+                isColliderSwitching = true;
+
+            }
+
+            myAnimator.SetBool("Dodged", isColliderSwitching);
+
+            myAnimator.SetFloat("Rotation", transform.rotation.z);
         }
-        if (Input.GetMouseButtonDown(1) && !isColliderSwitching)
-        {
-            StartCoroutine(SwitchCollidersCoroutine());
-            
-            myAudio.clip = dodgeClip;
-            myAudio.PlayOneShot(myAudio.clip);
-            isColliderSwitching = true;
-
-        }
-        myAnimator.SetBool("Dodged", isColliderSwitching);
-
-        myAnimator.SetFloat("Rotation", transform.rotation.z);
 
         //Debug.Log(myRigid.velocity.magnitude);
         //Debug.Log(transform.rotation.z.ToString("F3"));
@@ -176,6 +189,13 @@ public class PlayerController : MonoBehaviour, IDamageable
             KillChild("downSpaceEffect");
             KillChild("keepSpaceEffect");
             isBoost = false;
+        }
+
+
+        // TEST : shake 확인용
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            OnDamage(0);
         }
     }
     private void BoostPlayer()
@@ -326,7 +346,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             if (health > damage)
             {
-                
+                StartCoroutine(dangerPanel.SwapImage());
+                StartCoroutine(Camera.main.GetComponent<CameraFollow>().ShakeCamera());
                 health -= damage;
             }       // if : damage보다 클때만 동작
             else
@@ -344,6 +365,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         else { /* Do Nothing */ }
 
     }       // OnDamage()
+
+    
+
 
     IEnumerator DiePlayer()
     {

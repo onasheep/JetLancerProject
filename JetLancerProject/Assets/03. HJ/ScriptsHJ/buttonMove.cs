@@ -57,9 +57,8 @@ public class ButtonMove : MonoBehaviour
             SceneManager.LoadScene("CharacterSelect");
         }
         else if (btnChoice == 2)
-        {
-            UnityEditor.EditorApplication.isPlaying = false; // 플레이 모드 종료
-            // Application.Quit(); // 어플 종료
+        {            
+             Application.Quit(); // 어플 종료
         }
     }
 
