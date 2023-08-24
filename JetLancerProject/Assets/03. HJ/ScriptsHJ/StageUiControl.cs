@@ -310,7 +310,6 @@ public class StageUiControl : MonoBehaviour
         Debug.Log("In?");
 
         randIdx = Random.Range(0, bgList.Count);
-        Debug.LogFormat("{0}",randIdx);
         foreach (GameObject gameObject in bgList)
         {
             gameObject.SetActive(false);

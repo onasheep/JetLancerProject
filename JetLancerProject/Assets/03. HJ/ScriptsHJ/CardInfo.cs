@@ -76,7 +76,12 @@ public class CardInfo : MonoBehaviour
         }
         else if (state == State.Plus)
         {
-            playerObj.GetComponent<PlayerController>().health += cardData.healAmount;
+            // SJ_
+            if (playerObj.GetComponent<PlayerController>().health < playerObj.GetComponent<PlayerController>().maxHealth)
+            {
+                playerObj.GetComponent<PlayerController>().health += cardData.healAmount;
+
+            }       // if : 최대체력과 체력이 같으면 회복 되지 않도록
             playerObj.GetComponent<PlayerController>().bulletSpeed += cardData.damage;
             playerObj.GetComponent<PlayerController>().bulletSpeed += cardData.bulletSpeed;
         }

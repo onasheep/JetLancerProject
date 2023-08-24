@@ -13,7 +13,7 @@ public class ChangeHpSprite : MonoBehaviour
     void Start()
     {
         mySprite = GetComponent<SpriteRenderer>();
-        DetectSpriteError(mySprite);
+        DetectSpriteError(mySprite);        
         playerHp = GameObject.Find("Player").GetComponent<PlayerController>().health;
     }
 

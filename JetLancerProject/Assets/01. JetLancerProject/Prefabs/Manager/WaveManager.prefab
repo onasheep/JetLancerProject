@@ -56,6 +56,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d0c938642d255254ea6568e1a105aa5c, type: 2}
   - {fileID: 11400000, guid: ebf95613b7a502b439de2e6c14fa8b61, type: 2}
   enemyList: []
-  curWave: 1
+  curWave: 0
   remainToSpawn: 0
+  remainToSpawn_Boss: 0
   isClear: 0

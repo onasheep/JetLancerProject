@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -69,10 +67,6 @@ public class GameManager : GSingleton<GameManager>
                 Debug.LogFormat("이거 스코어 갱신 됨? {0}",bestScore);
                 bestScoreText.text = string.Format("{0}", bestScore);
             }
-            else
-            {
-                score = 0;
-            }
             if ( bestTime < time) 
             {
                 TimeSpan currentTime = TimeSpan.FromSeconds(time);
@@ -100,7 +94,9 @@ public class GameManager : GSingleton<GameManager>
             {
                 SceneManager.LoadScene("CharacterSelect");
                 isGameOver = false;
+                Debug.LogFormat("bef score : {0}", score);
                 score = 0;
+                Debug.LogFormat("aft score : {0}", score);
                 time = 0f;
                 wave = 0;
                 kills = 0;

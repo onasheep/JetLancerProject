@@ -13,8 +13,15 @@ public class CameraFollow : MonoBehaviour
     private float maxOffsetX;
     private float maxOffsetY;
 
+    // SJ_
+    // 카메라 흔들림에 사용될 변수
+    private float time = default;
+    private float shakeTimer = 0.5f;
+    private float randPos = default;
+    private float posMin = 0.2f;
+    private float posMax = 0.5f;
+    //
 
-  
     private float offsetZ = -10;
     // Start is called before the first frame update
 
@@ -50,4 +57,19 @@ public class CameraFollow : MonoBehaviour
             Mathf.Clamp(Camera.main.transform.position.y, minOffsetY, maxOffsetY),
             Mathf.Clamp(Camera.main.transform.position.z, offsetZ, offsetZ));
     }
+
+    // SJ_ 
+    // PlayerController의 OnDamage() 시 카메라를 흔들어줌
+    public IEnumerator ShakeCamera()
+    {
+        
+        while(time < shakeTimer)
+        {
+            time += Time.deltaTime;
+            randPos = Random.Range(posMin, posMax);
+            this.transform.position += new Vector3(randPos, randPos);
+            yield return null;            
+        }
+        time = 0f;
+    }       // ShakeCamera()
 }
