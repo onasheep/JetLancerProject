@@ -5,16 +5,14 @@ using Unity.VisualScripting;
 using UnityEditor.EditorTools;
 using UnityEngine;
 
-public class Boss_Eye : MonoBehaviour, IDamageable
+public class Boss_Eye : MonoBehaviour, IDamageable, IDeactive
 {
     private enum PATTERN
     {
-        NONE = -1, BULLET, LASER
+        NONE = -1, WAIT, BULLET, LASER
     }
 
-    [SerializeField]
     PATTERN myPattern = default;
-
         
     // TEST : test를 위한 바인딩들 
     // TODO : 추후 찾아와서 가져올 오브젝트들
@@ -25,12 +23,17 @@ public class Boss_Eye : MonoBehaviour, IDamageable
     public Transform GunBarrel_Left = default;
     public Transform GunBarrel_Right = default;
 
+    // 본체 중앙 구 spriteRender를 가져오기 위함
+    private GameObject bossHead = default;
+    private SpriteRenderer sprite = default;
+    public Material[] materials = default;
+
     private float distToTarget = default;
     private float targetAngle = default;
     private float playTime = 0f;
     private float count = 0f;
 
-    private float hp = 1f;
+    private float hp = 100f;
 
 
     // 쏠 준비 탄환    
@@ -60,13 +63,19 @@ public class Boss_Eye : MonoBehaviour, IDamageable
     void Start()
     {
         // TEST GPT
+        Init();
+    }
+
+    void Init()
+    {
         initialRotationSpeed = rotationSpeed;
-        //
+
 
         poolmanager = GameManager.Instance.poolManager;
+        bossHead = this.gameObject.FindChildObj("BossHead");
+        sprite = bossHead.FindChildComponent<SpriteRenderer>("sp_boss_first_head_0");
         audioSource = GetComponent<AudioSource>();
-
-        myPattern = PATTERN.LASER;
+        myPattern = PATTERN.WAIT;
         SetTarget();
     }
 
@@ -77,7 +86,7 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
         switch (myPattern)
         {
-            case PATTERN.NONE:
+            case PATTERN.WAIT:
                 playTime += Time.deltaTime;
                 isLaser = false;
                 laser_Hitbox.SetActive(false);
@@ -196,7 +205,7 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
             laserTrackingStarted = false;
             rotationSpeed = initialRotationSpeed;
-            myPattern = PATTERN.NONE;
+            myPattern = PATTERN.WAIT;
             laser_Start.SetActive(false);
             isLaser = false;
         }
@@ -243,7 +252,7 @@ public class Boss_Eye : MonoBehaviour, IDamageable
         if (count > 3)
         {
             count = 0;
-            myPattern = PATTERN.NONE;
+            myPattern = PATTERN.WAIT;
         }
         // LookRotation, FromToRotation으로 해결하려고 함. 짐벌락 남아있고 회전 자체가 망가짐
         //barrel.transform.rotation = Quaternion.FromToRotation(Vector3.Slerp(barrel.transform.up, dirToTarget, Time.deltaTime * 0.5f),Vector3.up);
@@ -282,8 +291,6 @@ public class Boss_Eye : MonoBehaviour, IDamageable
 
     private void FireBullet()
     {
-
-
         // 총알 발사 로직 
 
         // { 왼쪽 포문
@@ -313,14 +320,11 @@ public class Boss_Eye : MonoBehaviour, IDamageable
         bulletRigid1.transform.right = barrel.transform.up;
 
 
-        //Invoke(GameManager.Instance.poolManager.DeactiveObj(bossBullet), 5);
-        //Invoke(GameManager.Instance.poolManager.DeactiveObj(bossBullet1), 5);
-
-
     }
 
     private void Die()
     {
+
         GameManager.Instance.poolManager.
             SpawnFromPool(RDefine.ENEMY_EXPLOSION, this.transform.position , Quaternion.identity)
             .transform.localScale *= 2f;
@@ -330,14 +334,28 @@ public class Boss_Eye : MonoBehaviour, IDamageable
     {
         if (hp > damage)
         {
+            StartCoroutine(SwapSprite());
             hp -= damage;
         }       // if : damage보다 클때만 동작
         else
         {
             // TEST : OnDamge 테스트용
             // 추후 오브젝트 풀이 추가되면 수정 예정
-            Destroy(this.gameObject);
+            Deactive();
             Die();
         }       // else : damage보다 작을 떄 Die() 함수 호출
     }
+    IEnumerator SwapSprite()
+    {
+        sprite.sharedMaterial = materials[1];
+        yield return new WaitForSeconds(0.1f);
+        sprite.sharedMaterial = materials[0];
+    }       // SwapSprite()
+
+    public void Deactive()
+    {
+        // Interface 내용
+        this.gameObject.SetActive(false);
+
+    }       // Deactive()
 }

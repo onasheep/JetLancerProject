@@ -15,12 +15,12 @@ public class ThreeBulletEnemy : EnemyBase, IDamageable
 
     private void Start()
     {
-        SetTarget();
+        base.SetTarget();
     }
 
     private void Update()
     {
-        CheckTarget();
+        base.CheckTarget();
         Move();
         Fire();
     }
@@ -32,7 +32,7 @@ public class ThreeBulletEnemy : EnemyBase, IDamageable
         base.Init();
 
         Type = TYPE.BIGBULLET;
-        hp = 1; //4;
+        hp = 4;
         damage = 1;
         speed = 5f;
         maxSpeed = 10f;
@@ -64,31 +64,6 @@ public class ThreeBulletEnemy : EnemyBase, IDamageable
         base.Fire();
         
     }
-
-    protected override void SetTarget()
-    {
-        if (target.IsValid() == false)
-        {
-            target = FindObjectOfType<PlayerController>().gameObject;
-            targetPos = target.transform;
-        }       // if : 타겟이 null 이거나 default인 경우 타겟을 가져옴
-        else
-        {
-            Debug.LogWarning("Target is already exist.");
-        }       // else : 타겟이 있으면 로그 출력
-    }       // SetTarget()
-
-    // 플레이어 포지션, 플레이어와의 거리, 방향벡터, 각들을 계산
-    protected override void CheckTarget()
-    {
-        // { 타겟, 거리, 방향 정보값, 발사에 필요한 정보가 담겨 있으므로, 위치가 변경 될 수 있음
-        Transform targetPos = target.transform;
-        distToTarget = (targetPos.position - this.transform.position).magnitude;
-        dirToTarget = (targetPos.position - this.transform.position).normalized;
-        targetAngle = Mathf.Atan(dirToTarget.y / dirToTarget.x) * Mathf.Rad2Deg;
-        //  타겟, 거리, 방향 정보값, 발사에 필요한 정보가 담겨 있으므로, 위치가 변경 될 수 있음 }
-    }       // CheckTarget()
-
 
     protected override void Die()
     {

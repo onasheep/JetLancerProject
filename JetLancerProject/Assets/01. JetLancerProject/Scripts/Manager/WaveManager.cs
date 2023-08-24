@@ -8,10 +8,8 @@ public class WaveManager : MonoBehaviour
     public List<WaveData> waves;
     
     private int waveCount;
-    private int enem_1_Num;
-    private int enem_2_Num;
-    private int enem_3_Num;
-    private int enem_4_Num;
+    private int enemNum;
+    private int bossNum;
 
     
     public List<GameObject> enemyList;
@@ -19,69 +17,89 @@ public class WaveManager : MonoBehaviour
     public int curWave = 1;
     [SerializeField]
     private int remainToSpawn = default;
+    [SerializeField]
+    private int remainToSpawn_Boss = default;
+
     private float minSpawnTime = 0.5f;
     private float maxSpawnTime = 5f;
 
-    private Vector3 spawnOffset;
 
     // 형준이 Intro 시간 4.3f
     // 나중에 수정 필요
     private float introTime = 6.0f;
+    private float introTimer;
 
-    private bool isSpawn = default;
+
+
     public bool isClear = default;
-    
+    private bool isSpawn = default;
+    private bool isCheckable = default;
+
     private PoolManager pool;
 
     private void Awake()
     {
+        if(enemyList.Count != 0)
+        {
+            foreach(GameObject enemy in enemyList)
+            {
+                enemy.SetActive(false);                
+            }
+            enemyList.Clear();
+        }       // if : 게임 재시작시 적이 남아 있는 경우 enemy List를 초기화
+
+        introTimer = 0f;
+
         isClear = false;
         isSpawn = false;
+        isCheckable = false;
     }
     void Start()
     {
         pool = GameManager.Instance.poolManager;
         enemyList = new List<GameObject>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        // 인트로 타임 이후부터 스폰 시작!
-        if (introTime > Time.time) { return; }
+        // { 씬이 로드되거나, 최초 인트로 시간 이후 스폰 시작
+        introTimer += Time.deltaTime;
+        if (introTime > introTimer) { return; }
+        //  씬이 로드되거나, 최초 인트로 시간 이후 스폰 시작 }
+
 
         if (isSpawn == false && isClear == false)
         {
             isSpawn = true;
-            SetWave(curWave);
+
+            StartCoroutine(DelayBeforeSpawn());
 
             curWave += 1;
-            StartCoroutine(SpawnEnemy());
+
+
         }
 
-        if (CheckActive() == false)
+        if (isCheckable == true && CheckActive() == false)
         {
-
-            enemyList.Clear();            
+            
+            enemyList.Clear();
+            isCheckable = false;
             isClear = true;
             isSpawn = false;
-        }
-        else
-        {
-            isSpawn = true;
         }
 
     }
     void SetWave(int waveIdx)
     {
 
-        waveCount = waves[waveIdx - 1].waveCount;
-        enem_1_Num = waves[waveIdx - 1].enem_1_Num;
-        enem_2_Num = waves[waveIdx - 1].enem_2_Num;
-        enem_3_Num = waves[waveIdx - 1].enem_3_Num;
-        enem_4_Num = waves[waveIdx - 1].enem_4_Num;
+        waveCount = waves[waveIdx].waveCount;
+        enemNum = waves[waveIdx].enemNum;
+        bossNum = waves[waveIdx].bossNum;
 
-        remainToSpawn = enem_1_Num + enem_2_Num + enem_3_Num + enem_4_Num;
+        remainToSpawn = enemNum;
+        remainToSpawn_Boss = bossNum;
     }
 
     bool CheckActive()
@@ -93,8 +111,18 @@ public class WaveManager : MonoBehaviour
                 return true;
             }
         }
+        isSpawn = false;
         return false;
     }
+
+    IEnumerator DelayBeforeSpawn()
+    {
+        SetWave(curWave);
+        yield return new WaitForSeconds(2.0f);
+        Debug.Log("Spawn!");
+        StartCoroutine(SpawnEnemy());
+    }       // DelayBeforeSpawn()
+
 
     IEnumerator SpawnEnemy()
     {
@@ -102,9 +130,18 @@ public class WaveManager : MonoBehaviour
         float spawnTime = default;
         while (isSpawn == true)
         {
-            if (remainToSpawn <= 0)
+           
+
+            if (remainToSpawn <= 0 && remainToSpawn_Boss <= 0)
             {
+                isCheckable = true;
                 yield break;
+            }
+
+            if (remainToSpawn_Boss > 0)
+            {
+                SpawnWaveEnemy(RDefine.BOSS_EYE);
+                remainToSpawn_Boss -= 1;
             }
 
             float randNum = Random.Range(1, 5);
@@ -127,14 +164,32 @@ public class WaveManager : MonoBehaviour
             remainToSpawn--;
             yield return new WaitForSeconds(spawnTime);
         }
-    }
+    }       // SpawnEnemy()
 
     void SpawnWaveEnemy(string name_)
     {
+        float randNum = Random.Range(0, 2);
 
-        Vector3 spawnPos = GameManager.Instance.player.transform.position + new Vector3(2 * Camera.main.orthographicSize * Camera.main.aspect, 2 * Camera.main.orthographicSize);
+        int mult = 1;
+        switch (randNum)
+        {
 
-        enemyList.Add(pool.SpawnFromPool(name_, spawnPos/* this.transform.position*/, Quaternion.identity));
+            case 0:
+                mult = 1;
+                break;
+            case 1:
+                mult = -1;
+                break;
+        }
+        // X 위치를 카메라 화면의 너비만큼 + 혹은 - 해서 스폰 위치를 설정 
+        // Y 위치를 카메라 화면의 높이만큼 + 혹은 - 해서 스폰 위치를 설정
+        Vector3 spawnPos = 
+            GameManager.Instance.player.transform.position +
+            new Vector3(2 * Camera.main.orthographicSize * Camera.main.aspect * mult, 2 * Camera.main.orthographicSize * mult) ;
+        
+        enemyList.Add(pool.SpawnFromPool(name_, spawnPos, Quaternion.identity));
+
+        
     }       // SpawnWaveEnemy()
 
 
