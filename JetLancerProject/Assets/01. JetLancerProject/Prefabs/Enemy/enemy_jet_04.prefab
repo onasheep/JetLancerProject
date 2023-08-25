@@ -182,7 +182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
+  - {fileID: 2100000, guid: a00013af81304728b2be1f4309ee2433, type: 2}
   fireClip: {fileID: 8300000, guid: 172eaf5901904484880240c7ec3dad70, type: 3}
   trailPos: {fileID: 0}
 --- !u!82 &-5411648163058519416
@@ -296,3 +296,4 @@ MonoBehaviour:
   indicator: {fileID: 2299660995642163337, guid: 51ab933dc25aab34aa344b297c6e9765, type: 3}
   indicatorCanvas: {fileID: 0}
   player: {fileID: 0}
+  instance: {fileID: 0}
