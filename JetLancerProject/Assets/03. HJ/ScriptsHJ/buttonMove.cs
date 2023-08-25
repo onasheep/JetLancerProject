@@ -53,7 +53,6 @@ public class ButtonMove : MonoBehaviour
         if (btnChoice == 0)
         {
             //PlaySoundEffect(enterSoundEffect); // Enter 효과음을 재생합니다.
-           
             SceneManager.LoadScene("CharacterSelect");
         }
         else if (btnChoice == 2)

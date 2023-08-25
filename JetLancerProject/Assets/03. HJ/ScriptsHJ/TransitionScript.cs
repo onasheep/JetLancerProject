@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class TransitionScript : MonoBehaviour
 {
+    // SJ_
+    private GameObject boostEffect;
+    
     public GameObject ani1;
     public GameObject ani2;
 
@@ -15,8 +18,7 @@ public class TransitionScript : MonoBehaviour
     //=========================================================0824 승리 결과 작업을 여기서 처리해줍니다.
     private Rigidbody2D playerRigid;
     void Start()
-    {
-
+    {   
         if (SceneManager.GetActiveScene().buildIndex == 2)
         {
             playCanvas = GFunc.GetRootObj(RDefine.PLAYER_CANVAS);
