@@ -40,9 +40,9 @@ public class PlayAudioTitle : MonoBehaviour
         //{
         //    audioSource.Play(); //소리재생
         //    DontDestroyOnLoad(backMusic); //사라지지않게끔
-            
+
         //}
-        
+
     }
 
     private void Update()

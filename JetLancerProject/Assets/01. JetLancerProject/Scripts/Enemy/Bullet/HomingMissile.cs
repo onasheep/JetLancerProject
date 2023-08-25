@@ -43,10 +43,7 @@ public class HomingMissile : MonoBehaviour, IDamageable, IDeactive
         {
             speed = 9f;
         }
-
-        // angularvelocity를 사용하여 따라가는 로직, 원하는 만큼 회전하며 따라가지만 
-        // velocity를 건드린다는 문제가 있음.. 
-        // 정 안되면 이 부분으로 가겠지만 , 한번 추가적으로 알아볼 필요가 있다.
+       
         
         if(dir.magnitude < 2)
         {
@@ -98,8 +95,7 @@ public class HomingMissile : MonoBehaviour, IDamageable, IDeactive
     }
     public void Deactive()
     {
-        // Interface 내용
-       
+        // Interface 내용       
         this.gameObject.SetActive(false);
     }       // Deactive()
 

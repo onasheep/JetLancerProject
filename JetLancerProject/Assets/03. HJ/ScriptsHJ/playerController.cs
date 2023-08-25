@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public float health = default;
     public float maxHealth = 3f;
     private DangerPanel dangerPanel;
+    public GameObject boostEffect;
 
 
     //
@@ -174,6 +175,9 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         if (Input.GetKey(KeyCode.Space))
         {
+            boostEffect.SetActive(true);
+            //boostEffect.transform.rotation = this.transform.rotation;
+            boostEffect.GetComponent<BoostEffect>().ScrollEffect() ;
             if (gas <= 0)
             {
                 isOverhitBoost = true;
@@ -189,6 +193,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         
         if (Input.GetKeyUp(KeyCode.Space))
         {
+            boostEffect.SetActive(false);
             KillChild("downSpaceEffect");
             KillChild("keepSpaceEffect");
             isBoost = false;

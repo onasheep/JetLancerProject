@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 //using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class ButtonMove : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class ButtonMove : MonoBehaviour
     private void Start()
     {
         btnChoice = 0;
+
         UpdateButtonPosition();
     }
 
@@ -25,9 +27,14 @@ public class ButtonMove : MonoBehaviour
 
         // Enter 키 입력을 처리합니다.
         if (Input.GetKeyDown(KeyCode.Return))
-            Invoke("EnterKey", 0.7f);
-                //EnterKey();
+        {
+            EnterKey();
+            //Invoke("EnterKey", 0.7f);
+        }
+        //EnterKey();
     }
+
+
 
     // 버튼 입력 처리 함수
     private void HandleButtonInput(KeyCode key, int change)
@@ -53,13 +60,15 @@ public class ButtonMove : MonoBehaviour
         if (btnChoice == 0)
         {
             //PlaySoundEffect(enterSoundEffect); // Enter 효과음을 재생합니다.
-           
             SceneManager.LoadScene("CharacterSelect");
         }
         else if (btnChoice == 2)
         {            
              Application.Quit(); // 어플 종료
+
         }
+
+
     }
 
     // 효과음을 재생하는 함수

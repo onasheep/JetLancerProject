@@ -12,7 +12,6 @@ public class DefeatAniScript : MonoBehaviour
     //private float setTime = 3f;
     //private Animator defeatAni;
 
-    bool isMove = true;
     // Start is called before the first frame update
     void Start()
     {

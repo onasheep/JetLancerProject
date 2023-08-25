@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class FadeInOut : MonoBehaviour
 {
     public GameObject deActiveObj;
-    public GameObject activeObj;
 
+    // 못찾아와서 Update문에서 강제로 찾아온다.
+    public GameObject activeObj;
     public GameObject middleObj; // 검은색 펼쳐지는 오브젝트 입니다.
+    
     private float animationDuration = 3f; // 애니메이션 진행 시간 (초)
     private float targetWidth = 500f; // 목표 너비
 
@@ -40,6 +42,14 @@ public class FadeInOut : MonoBehaviour
     }
     private void Update()
     {
+        if(middleObj.IsValid() == false && activeObj.IsValid() == false && SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            GameObject MiddleUi = GFunc.GetRootObj("MiddleUI");
+            middleObj = MiddleUi.FindChildObj("middleImg");
+            activeObj = MiddleUi.FindChildObj("AllText");
+        }
+
+
         if (SceneManager.GetActiveScene().buildIndex == 0 )
         {
             if (Input.anyKeyDown && !animationStarted)

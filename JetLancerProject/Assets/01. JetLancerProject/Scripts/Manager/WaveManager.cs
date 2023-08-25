@@ -78,10 +78,7 @@ public class WaveManager : MonoBehaviour
 
             curWave += 1;
 
-            if (curWave > 10) //>>>> stageUIControl로 가야합니다.
-            {
-                GameManager.Instance.isVictory = true;
-            }
+          
         }
         if (Input.GetKeyDown(KeyCode.N)) // >>>> stageUIControl로 가야합니다.
         {
@@ -94,6 +91,11 @@ public class WaveManager : MonoBehaviour
             isCheckable = false;
             isClear = true;
             isSpawn = false;
+
+            if (curWave >= 10 && isClear == true) //>>>> stageUIControl로 가야합니다.
+            {
+                GameManager.Instance.isVictory = true;
+            }
         }
 
     }

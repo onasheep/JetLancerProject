@@ -40,7 +40,6 @@ public class Boss_Eye : MonoBehaviour, IDamageable, IDeactive
 
     // 쏠 준비 레이저
     private bool isLaser = false;
-    private float track_StartTime = 3f;
     private float rotationSpeed = 0f;
 
     // target 확인용 임시 
