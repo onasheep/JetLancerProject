@@ -11,6 +11,7 @@ public class MoveButton : MonoBehaviour
     public TMP_Text[] buttonText;
     public Transform btnSprite;
     private int btnChoice;
+    private float pushGauge = 0f;
     //public AudioSource soundEffect;
     //public AudioSource enterSoundEffect;
 
@@ -18,6 +19,7 @@ public class MoveButton : MonoBehaviour
     {
         btnChoice = 0;
         UpdateButtonPosition();
+        pushGauge = 0f;
     }
 
     private void Update()
@@ -52,6 +54,18 @@ public class MoveButton : MonoBehaviour
             btnChoice += change; // 버튼 선택을 변경합니다.
             UpdateButtonPosition(); // 버튼 스프라이트 위치를 업데이트합니다.
             //PlaySoundEffect(soundEffect); // 효과음을 재생합니다.
+        }
+        if (Input.anyKey && GameManager.Instance.isVictory)
+        {
+            pushGauge += Time.deltaTime;
+            if (pushGauge > 7f)
+            {
+                SceneManager.LoadScene("TitleScene");
+            }
+        }
+        else 
+        {
+            pushGauge = 0f;
         }
     }
 

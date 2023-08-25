@@ -10,7 +10,7 @@ public class IntroEffect : MonoBehaviour
     private PlayerController player;
     void Start()
     {
-        if(player.IsValid() == false)
+        if(player.IsValid() != false)
         {
             player = GFunc.GetRootObj("Player").GetComponent<PlayerController>();
         }

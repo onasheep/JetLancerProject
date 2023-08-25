@@ -91,12 +91,11 @@ public class PlayerController : MonoBehaviour, IDamageable
     // TODO : Collider 변경점 
     private void Update()
     {
-        if (isDead || GameManager.Instance.isVictory)
+        if (isDead)
         {
             //myAnimator.SetTrigger("Die", isDead);
             //TODO 항상 실행되는 밑에 구문 바꿔야 합니다.
             //이렇게 하면 바로 굳어버리는 문제가 있어서 고민을 해봐야 할 것 같습니다.
-            myRigid.constraints = RigidbodyConstraints2D.FreezeAll;
             return;
         }
         if (!GameManager.Instance.isEngague)
