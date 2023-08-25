@@ -30,7 +30,6 @@ public class TransitionScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Return) && SceneManager.GetActiveScene().buildIndex == 0) // Title씬일때만 활성화
         {
-
             ani1.SetActive(true);
         }
         if (Input.GetKeyDown(KeyCode.Escape) && SceneManager.GetActiveScene().buildIndex == 1) //CharacterSelect 씬일때만 활성화

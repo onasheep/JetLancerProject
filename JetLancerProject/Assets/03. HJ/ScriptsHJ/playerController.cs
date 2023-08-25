@@ -27,14 +27,14 @@ public class PlayerController : MonoBehaviour, IDamageable
     public float health = default;
     public float maxHealth = 3f;
     private DangerPanel dangerPanel;
-    public GameObject boostEffect;
 
 
     //
     public float gas = 100f;
     private float maxGas = 100f;
     public float bulletSpeed;
-    
+    public float damage;
+
     private float shooTimer;
     private Rigidbody2D myRigid;
     private Animator myAnimator;
@@ -62,8 +62,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         myRigid = GetComponent<Rigidbody2D>();
 
         // SJ_
-        // 체력 초기화 시점
+        // 초기화 시점
         health = maxHealth;
+        damage = 1;
+
 
         playerCanvas = GFunc.GetRootObj("playCanvas");
         dangerPanel = playerCanvas.FindChildObj("danger_panel").GetComponent<DangerPanel>();
@@ -175,9 +177,6 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         if (Input.GetKey(KeyCode.Space))
         {
-            boostEffect.SetActive(true);
-            //boostEffect.transform.rotation = this.transform.rotation;
-            boostEffect.GetComponent<BoostEffect>().ScrollEffect() ;
             if (gas <= 0)
             {
                 isOverhitBoost = true;
@@ -193,18 +192,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            boostEffect.SetActive(false);
             KillChild("downSpaceEffect");
             KillChild("keepSpaceEffect");
             isBoost = false;
         }
 
-
-        // TEST : shake 확인용
-        if(Input.GetKeyDown(KeyCode.I))
-        {
-            OnDamage(0);
-        }
     }
     private void BoostPlayer()
     {
@@ -253,6 +245,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             //GameObject bullet = Instantiate(bulletPrefab, bulletPos.position, transform.rotation);
             GameObject bullet = GameManager.Instance.poolManager.
                 SpawnFromPool(RDefine.PLAYER_BULLET, bulletPos.position, transform.rotation );
+            bullet.GetComponent<DeleteBullet>().damage = this.damage;
             bullet.transform.localScale *= 2f;
             bullet.GetComponent<Rigidbody2D>().AddForce(this.transform.right * bulletSpeed, ForceMode2D.Impulse);
             shooTimer = Time.time + 0.11f;

@@ -70,9 +70,9 @@ public class CardInfo : MonoBehaviour
     {
         if (state == State.Ready)
         {
-            Debug.Log(playerObj.GetComponent<PlayerController>().health += cardData.healAmount);
-            Debug.Log(playerObj.GetComponent<PlayerController>().bulletSpeed += cardData.damage);
-            Debug.Log(playerObj.GetComponent<PlayerController>().bulletSpeed += cardData.bulletSpeed);
+            //Debug.Log(playerObj.GetComponent<PlayerController>().health += cardData.healAmount);
+            //Debug.Log(playerObj.GetComponent<PlayerController>().bulletSpeed += cardData.damage);
+            //Debug.Log(playerObj.GetComponent<PlayerController>().bulletSpeed += cardData.bulletSpeed);
         }
         else if (state == State.Plus)
         {
@@ -82,7 +82,7 @@ public class CardInfo : MonoBehaviour
                 playerObj.GetComponent<PlayerController>().health += cardData.healAmount;
 
             }       // if : 최대체력과 체력이 같으면 회복 되지 않도록
-            playerObj.GetComponent<PlayerController>().bulletSpeed += cardData.damage;
+            playerObj.GetComponent<PlayerController>().damage += cardData.damage;
             playerObj.GetComponent<PlayerController>().bulletSpeed += cardData.bulletSpeed;
         }
         else if (state == State.Apply && isSpecial == true)
