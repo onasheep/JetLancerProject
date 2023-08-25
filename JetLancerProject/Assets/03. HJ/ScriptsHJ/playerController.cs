@@ -13,12 +13,15 @@ public class PlayerController : MonoBehaviour, IDamageable
     public GameObject bulletPrefab;
    
     public GameObject playerCanvas;
-    public GameObject defeatUi;
+    //public GameObject defeatUi;
+
+    public GameObject boosterSound;
 
     //음악 관련 변수
     public AudioClip dodgeClip;
     public AudioClip deathClip;
     public AudioClip fireClip;
+    public AudioClip boosterClip;
     public Texture2D cursorIcon;
 
     //플레이어 스테이터스 관련 변수
@@ -43,8 +46,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public bool isOverhitBoost;
     private bool isDead;
 
-
-
+    
 
 
     // SJ_
@@ -114,6 +116,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             }
             else
             {
+               
                 if (gas < maxGas)
                 {
                     gas += 33f * Time.deltaTime;
@@ -175,6 +178,11 @@ public class PlayerController : MonoBehaviour, IDamageable
             KillChild("wBrnEffect");
         }
 
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            myAudio.PlayOneShot(boosterClip);
+            //boosterSound.GetComponent<PlaySceneStartSound>().isOverHeat = false;
+        }    
         if (Input.GetKey(KeyCode.Space))
         {
             if (gas <= 0)
