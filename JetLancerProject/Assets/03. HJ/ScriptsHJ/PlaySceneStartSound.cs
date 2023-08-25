@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
+
 
 public class PlaySceneStartSound : MonoBehaviour
 {
@@ -10,6 +12,10 @@ public class PlaySceneStartSound : MonoBehaviour
     public AudioClip engaugeSound;
     public AudioClip backGroundSound;
 
+    private GameObject player;
+    //private bool playerOverheat;
+    public AudioClip overHeatSound;
+    public bool isOverHeat;
     private AudioSource myAudio;
 
     void Start()
@@ -17,18 +23,42 @@ public class PlaySceneStartSound : MonoBehaviour
         myAudio = GetComponent<AudioSource>();
         StartCoroutine(PlaySound());
         StopCoroutine(PlaySound());
-
+        player = GFunc.GetRootObj("Player");
     }
 
+    //private void FixedUpdate()
+    //{
+        //playerOverheat = player.GetComponent<PlayerController>().isOverhitBoost;
+    //    if (isOverHeat)
+    //    {
+    //        myAudio.volume = 0.8f;
+    //        if (playerOverheat)
+    //        {
+    //            isOverHeat = false;
+    //            myAudio.PlayOneShot(overHeatSound);
+    //        }
+    //    }
+    //}
     private void Update()
     {
-        
-        if(GameManager.Instance.isGameOver)
+        isOverHeat = true;
+
+
+        if (GameManager.Instance.isGameOver)
         {
             myAudio.volume = 0.01f;
-            
         }
+        else if(GameManager.Instance.isVictory) 
+        { 
+            myAudio.volume = 0.01f;
+        }
+        
+        
+        
     }
+    
+    
+
     IEnumerator PlaySound()
     {
         yield return new WaitForSeconds(0.3f);
