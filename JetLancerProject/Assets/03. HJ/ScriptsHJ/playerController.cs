@@ -303,34 +303,34 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
 
     //TODO 벽 트리거 공간에 닿으면 실행시켜줄 구문 추가 예정
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
-        {
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
+    //    {
 
-        }
-    }
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
-        {
-            Debug.Log("찍히나?0");  
-                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Vector3 moveDirection = (mousePosition - transform.position).normalized;
-                float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-                Quaternion currentRotation = transform.rotation;
-                Quaternion targetQuaternion = Quaternion.Euler(new Vector3(0f, 0f, -angle));
-                transform.rotation = Quaternion.Lerp(currentRotation, targetQuaternion, rotationSpeed * Time.deltaTime);
+    //    }
+    //}
+    //private void OnTriggerStay2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
+    //    {
+    //        Debug.Log("찍히나?0");  
+    //            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    //            Vector3 moveDirection = (mousePosition - transform.position).normalized;
+    //            float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+    //            Quaternion currentRotation = transform.rotation;
+    //            Quaternion targetQuaternion = Quaternion.Euler(new Vector3(0f, 0f, -angle));
+    //            transform.rotation = Quaternion.Lerp(currentRotation, targetQuaternion, rotationSpeed * Time.deltaTime);
            
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
-        {
+    //    }
+    //}
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
+    //    {
 
-        }
-    }
+    //    }
+    //}
 
     private void AliveChild(string child)
     {
