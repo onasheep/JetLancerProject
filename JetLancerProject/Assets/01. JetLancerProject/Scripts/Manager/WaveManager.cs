@@ -77,16 +77,11 @@ public class WaveManager : MonoBehaviour
             StartCoroutine(DelayBeforeSpawn());
 
             curWave += 1;
-
           
         }
-        if (Input.GetKeyDown(KeyCode.N)) // >>>> stageUIControl로 가야합니다.
-        {
-            GameManager.Instance.isVictory = true;
-        }
+
         if (isCheckable == true && CheckActive() == false)
-        {
-            
+        {            
             enemyList.Clear();
             isCheckable = false;
             isClear = true;
