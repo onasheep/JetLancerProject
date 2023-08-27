@@ -54,11 +54,6 @@ public class BasicEnemy : EnemyBase, IDamageable
 
     protected override void Fire()
     {
-        //this.fireFunc = () =>
-        //{
-        //    // TODO : 특정 공격 방식을 구현한다면, 여기에다가 추가
-        //};
-
         this.fireFunc = default;
 
         base.Fire();

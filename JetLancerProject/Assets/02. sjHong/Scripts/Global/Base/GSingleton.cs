@@ -12,11 +12,9 @@ public class GSingleton<T> : GComponent where T : GSingleton<T>
         {
             if (GSingleton<T>._instance == default || _instance == default)
             {
-                GSingleton<T>._instance =
+                GSingleton<T>._instance = 
                     GFunc.CreateObj<T>(typeof(T).ToString());
-            }
-            
-            
+            }                       
             return _instance;
         }
     }
