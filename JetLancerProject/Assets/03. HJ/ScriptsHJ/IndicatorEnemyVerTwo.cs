@@ -6,6 +6,8 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
 {
     // TODO : 오브젝트풀 보낸다 임시 ) 
     public GameObject indicator;
+    public Sprite[] sprites = default; //스프라이트 변경
+    public GameObject indicatorChild = default;
 
     public GameObject indicatorCanvas;
     public GameObject player; // target
@@ -25,7 +27,7 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
         instance = Instantiate(indicator);
         instance.transform.SetParent(indicatorCanvas.transform);
         instance.transform.localScale = new Vector3(180, 180, 180);
-
+        
     }
     // Start is called before the first frame update
     void Start()
@@ -33,6 +35,7 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
         
         Vector2 dir = new Vector2(Screen.width, Screen.height);
         defaultAngle = Vector2.Angle(new Vector2(0, 1), dir);
+        indicatorChild = instance.transform.GetChild(0).gameObject;
     }
 
     // Update is called once per frame
@@ -68,6 +71,8 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
         {
             //Debug.Log("up");
             //anchor minY, maxY 0.96
+            instance.GetComponent<SpriteRenderer>().sprite = sprites[0];
+            indicatorChild.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -0.08f);//이건 안에 마크 위치 고정시켜줄려고 했습니다. //indicatorChild.GetComponent<RectTransform>().anchoredPosition.y);
 
             float anchorMinMaxY = 0.96f;
 
@@ -82,14 +87,16 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
         else if (defaultAngle <= angle && angle <= 180 - defaultAngle)
         {
             //Debug.Log("right");
-            //anchor minX, maxX 0.94
+            //anchor minX, maxX 0.94  > 0.96
+            instance.GetComponent<SpriteRenderer>().sprite = sprites[1];
+            indicatorChild.GetComponent<RectTransform>().anchoredPosition = new Vector2(-0.08f,0f);
 
-            float anchorMinMaxX = 0.94f;
+            float anchorMinMaxX = 0.96f;
 
             float anchorMinMaxY = y * (anchorMinMaxX - 0.5f) / x + 0.5f;
 
-            if (anchorMinMaxY >= 0.96f) anchorMinMaxY = 0.96f;
-            else if (anchorMinMaxY <= 0.04f) anchorMinMaxY = 0.04f;
+            if (anchorMinMaxY >= 0.94f) anchorMinMaxY = 0.94f;
+            else if (anchorMinMaxY <= 0.06f) anchorMinMaxY = 0.06f;
 
             indicatorRect.anchorMin = new Vector2(anchorMinMaxX, anchorMinMaxY);
             indicatorRect.anchorMax = new Vector2(anchorMinMaxX, anchorMinMaxY);
@@ -97,14 +104,15 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
         else if (-180 + defaultAngle <= angle && angle <= -defaultAngle)
         {
             //Debug.Log("left");
-            //anchor minX, maxX 0.06
-
-            float anchorMinMaxX = 0.06f;
+            //anchor minX, maxX 0.06 > 0.04
+            instance.GetComponent<SpriteRenderer>().sprite = sprites[2];
+            indicatorChild.GetComponent<RectTransform>().anchoredPosition = new Vector2(0.08f, 0f); 
+            float anchorMinMaxX = 0.04f;
 
             float anchorMinMaxY = (y * (anchorMinMaxX - 0.5f) / x) + 0.5f;
 
-            if (anchorMinMaxY >= 0.96f) anchorMinMaxY = 0.96f;
-            else if (anchorMinMaxY <= 0.04f) anchorMinMaxY = 0.04f;
+            if (anchorMinMaxY >= 0.94f) anchorMinMaxY = 0.94f;
+            else if (anchorMinMaxY <= 0.06f) anchorMinMaxY = 0.06f;
 
             indicatorRect.anchorMin = new Vector2(anchorMinMaxX, anchorMinMaxY);
             indicatorRect.anchorMax = new Vector2(anchorMinMaxX, anchorMinMaxY);
@@ -113,7 +121,8 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
         {
             //Debug.Log("down");
             //anchor minY, maxY 0.04
-
+            instance.GetComponent<SpriteRenderer>().sprite = sprites[3];
+            indicatorChild.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 0.08f);
             float anchorMinMaxY = 0.04f;
 
             float anchorMinMaxX = x * (anchorMinMaxY - 0.5f) / y + 0.5f;
@@ -126,6 +135,7 @@ public class IndicatorEnemyVerTwo : MonoBehaviour
         }
 
         indicatorRect.anchoredPosition = new Vector3(0, 0, 0);
+        //indicatorChild.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
     }
     private bool isOffScreen()
     {

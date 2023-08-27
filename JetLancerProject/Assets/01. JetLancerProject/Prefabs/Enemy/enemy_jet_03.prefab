@@ -294,6 +294,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indicator: {fileID: 2299660995642163337, guid: 51ab933dc25aab34aa344b297c6e9765, type: 3}
+  sprites:
+  - {fileID: 21300000, guid: 7d3faf94c72eec4489dcce27f0b0d3ec, type: 3}
+  - {fileID: 21300000, guid: 77bf613de07ae4c4db7d991c6c815062, type: 3}
+  - {fileID: 21300000, guid: 1f15a10c71b868e438142ae01fdcb239, type: 3}
+  - {fileID: 21300000, guid: c4c64f5af285b1a4788925cb2fcda05f, type: 3}
   indicatorCanvas: {fileID: 0}
   player: {fileID: 0}
   instance: {fileID: 0}
