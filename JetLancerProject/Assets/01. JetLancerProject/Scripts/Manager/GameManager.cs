@@ -87,9 +87,9 @@ public class GameManager : GSingleton<GameManager>
         else if (isGameOver && Input.anyKey)
         {
             float pushAnykey = 0f;
-            pushAnykey += 0.1f * Time.time;
+            pushAnykey +=  Time.time;
             Debug.LogFormat("{0}",pushAnykey);
-            if (pushAnykey > 5f)
+            if (pushAnykey > 3f)
             {
                 SceneManager.LoadScene("CharacterSelect");
             }
