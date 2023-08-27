@@ -13,12 +13,15 @@ public class PlayerController : MonoBehaviour, IDamageable
     public GameObject bulletPrefab;
    
     public GameObject playerCanvas;
-    public GameObject defeatUi;
+    //public GameObject defeatUi;
+
+    public GameObject boosterSound;
 
     //음악 관련 변수
     public AudioClip dodgeClip;
     public AudioClip deathClip;
     public AudioClip fireClip;
+    public AudioClip boosterClip;
     public Texture2D cursorIcon;
 
     //플레이어 스테이터스 관련 변수
@@ -43,8 +46,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public bool isOverhitBoost;
     private bool isDead;
 
-
-
+    
 
 
     // SJ_
@@ -114,6 +116,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             }
             else
             {
+               
                 if (gas < maxGas)
                 {
                     gas += 33f * Time.deltaTime;
@@ -175,6 +178,11 @@ public class PlayerController : MonoBehaviour, IDamageable
             KillChild("wBrnEffect");
         }
 
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            myAudio.PlayOneShot(boosterClip);
+            //boosterSound.GetComponent<PlaySceneStartSound>().isOverHeat = false;
+        }    
         if (Input.GetKey(KeyCode.Space))
         {
             if (gas <= 0)
@@ -295,34 +303,34 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
 
     //TODO 벽 트리거 공간에 닿으면 실행시켜줄 구문 추가 예정
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
-        {
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
+    //    {
 
-        }
-    }
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
-        {
-            Debug.Log("찍히나?0");  
-                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Vector3 moveDirection = (mousePosition - transform.position).normalized;
-                float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-                Quaternion currentRotation = transform.rotation;
-                Quaternion targetQuaternion = Quaternion.Euler(new Vector3(0f, 0f, -angle));
-                transform.rotation = Quaternion.Lerp(currentRotation, targetQuaternion, rotationSpeed * Time.deltaTime);
+    //    }
+    //}
+    //private void OnTriggerStay2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
+    //    {
+    //        Debug.Log("찍히나?0");  
+    //            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    //            Vector3 moveDirection = (mousePosition - transform.position).normalized;
+    //            float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+    //            Quaternion currentRotation = transform.rotation;
+    //            Quaternion targetQuaternion = Quaternion.Euler(new Vector3(0f, 0f, -angle));
+    //            transform.rotation = Quaternion.Lerp(currentRotation, targetQuaternion, rotationSpeed * Time.deltaTime);
            
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
-        {
+    //    }
+    //}
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
+    //    {
 
-        }
-    }
+    //    }
+    //}
 
     private void AliveChild(string child)
     {

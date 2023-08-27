@@ -41,7 +41,10 @@ public class StageUiControl : MonoBehaviour
     public TMP_Text scoreText;
     public TMP_Text bestScoreText;
 
-
+    [Header("sound page")]
+    public AudioSource waveAudio;
+    public AudioClip enterSound;
+    public AudioClip moveSound;
     // SJ_
     // 애니메이션 시작을 위함 
     private bool isAnimation;
@@ -75,6 +78,8 @@ public class StageUiControl : MonoBehaviour
         isRewardAnimation = false;  //보상 애니메이션 false 값으로 놔둡니다.
         isAnimation = false;
         isStartCoroutine = true;
+
+        waveAudio.clip = enterSound;
     }
 
     // Update is called once per frame
@@ -122,6 +127,7 @@ public class StageUiControl : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
                 {
+                    waveAudio.PlayOneShot(moveSound);
                     #region 다른 카드들은 제자리에 있도록 하는 스크립트들
                     secondArrow.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 0f);
                     uncommonCard.GetComponent<RectTransform>().anchoredPosition = new Vector2(uncommonCard.GetComponent<RectTransform>().anchoredPosition.x, 800f);
@@ -140,7 +146,7 @@ public class StageUiControl : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Return))
                 {
                     //rareCard.GetComponent<CardInfo>().isEnter = true;
-
+                    waveAudio.PlayOneShot(enterSound);
                     CardInfo cardInfo = normalCard.GetComponent<CardInfo>();
                     if (cardInfo.isSpecial)//rareCard.GetComponent<CardInfo>().isSpecial)
                     {
@@ -175,6 +181,7 @@ public class StageUiControl : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
                 {
+                    waveAudio.PlayOneShot(moveSound);
                     firstArrow.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
                     normalCard.GetComponent<RectTransform>().anchoredPosition = new Vector2(normalCard.GetComponent<RectTransform>().anchoredPosition.x, 800f);
                     thirdArrow.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 0f);
@@ -190,6 +197,8 @@ public class StageUiControl : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.Return))
                 {
+                    waveAudio.PlayOneShot(enterSound);
+
                     CardInfo cardInfo = rareCard.GetComponent<CardInfo>();
                     //rareCard.GetComponent<CardInfo>().isEnter = true;
 
@@ -223,6 +232,7 @@ public class StageUiControl : MonoBehaviour
                 thirdArrowBlur.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
                 {
+                    waveAudio.PlayOneShot(moveSound);
                     firstArrow.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 0f);
                     normalCard.GetComponent<RectTransform>().anchoredPosition = new Vector2(normalCard.GetComponent<RectTransform>().anchoredPosition.x, 800f);
                     secondArrow.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 0f);
@@ -238,6 +248,8 @@ public class StageUiControl : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.Return))
                 {
+                    waveAudio.PlayOneShot(enterSound);
+
                     CardInfo cardInfo = rareCard.GetComponent<CardInfo>();
                     if (cardInfo.isSpecial)//rareCard.GetComponent<CardInfo>().isSpecial)
                     {
