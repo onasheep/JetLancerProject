@@ -15,6 +15,10 @@ public class PoolManager : MonoBehaviour
     public List<Pool> pools;
     public Dictionary<string, Queue<GameObject>> poolDictinoary;
 
+    private void Awake()
+    {
+        //GameManager.Instance.poolManager = this;        
+    }
     void Start()
     {
         poolDictinoary = new Dictionary<string, Queue<GameObject>>();

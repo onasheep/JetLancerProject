@@ -85,16 +85,14 @@ public abstract class EnemyBase : MonoBehaviour, IDeactive
     // 플레이어 포지션, 플레이어와의 거리, 방향벡터, 각들을 계산
     protected virtual void CheckTarget()
     {
-        if(target.IsValid() == false) {  return; } 
-        // if : target이 null이거나, default인 경우 return
+        if(target.IsValid() == false) {  return; }
      
-        // { 타겟, 거리, 방향 정보값, 발사에 필요한 정보
+        // { 타겟, 거리, 방향 정보값, 발사에 필요한 정보가 담겨 있으므로, 위치가 변경 될 수 있음
         Transform targetPos = target.transform;
         distToTarget = (targetPos.position - this.transform.position).magnitude;
         dirToTarget = (targetPos.position - this.transform.position).normalized;
         targetAngle = Mathf.Atan(dirToTarget.y / dirToTarget.x) * Mathf.Rad2Deg;
-        //  타겟, 거리, 방향 정보값, 발사에 필요한 정보 }
-
+        //  타겟, 거리, 방향 정보값, 발사에 필요한 정보가 담겨 있으므로, 위치가 변경 될 수 있음 }
     }       // CheckTarget()
 
 
